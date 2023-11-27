@@ -1,0 +1,61 @@
+name: flymedia_app
+description: A new Flutter project.
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+
+version: 1.0.0+1
+
+environment:
+  sdk: '>=2.18.6 <3.0.0'
+
+dependencies:
+  cupertino_icons: ^1.0.2
+  equatable: ^2.0.5
+  file_selector_macos: ^0.9.3+3
+  fluentui_icons: ^1.0.0
+  flutter:
+    sdk: flutter
+  flutter_hooks: ^0.20.1
+  flutter_screenutil: ^5.9.0
+  flutter_svg: ^2.0.7
+  font_awesome_flutter: ^10.5.0
+  form_validators:
+    path: packages/form_validators
+  google_sign_in: ^6.1.5
+  hooks_riverpod: ^2.4.0
+  http: ^1.1.0
+  image_picker: ^1.0.4
+  loading_animation_widget: ^1.2.0+4
+  lottie: ^2.6.0
+  path_provider: ^2.1.1
+  pinput: ^3.0.1
+  riverpod_annotation: ^2.3.2
+  shared_preferences: ^2.2.2
+  unicons: ^2.1.1
+  webview_flutter: ^4.2.4
+  zoom_tap_animation: ^1.1.0
+
+dev_dependencies:
+  flutter_lints: ^2.0.0
+  flutter_test:
+    sdk: flutter
+
+flutter:
+
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+    - assets/images/cell.svg
+    - assets/images/Ellipse16.svg
+    - assets/images/firstOnboardEllipes.svg
+    - assets/images/handshake.svg
+    - assets/images/lineOnboard.svg
+    - assets/images/sophieEllipse.svg
+    - assets/images/verifyEmail.svg
+    - assets/images/onboardSvg.svg
+    - assets/countrY_list.json
+
+  fonts:
+    - family: Karla
+      fonts:
+        - asset: assets/fonts/karla.regular.ttf

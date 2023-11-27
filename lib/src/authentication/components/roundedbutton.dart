@@ -1,0 +1,60 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+
+import '../../../constants/colors.dart';
+
+class RoundedButtonWidget extends StatelessWidget {
+  final String title;
+  const RoundedButtonWidget({
+    super.key,
+    required this.title,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 310.w,
+      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 13.h),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(21.r),
+        color: AppColors.mainColor,
+      ),
+      child: Text(
+        title,
+        textAlign: TextAlign.center,
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+            color: Colors.white, fontWeight: FontWeight.w700, fontSize: 12.sp),
+      ),
+    );
+  }
+}
+
+class MiniRoundedButton extends StatelessWidget {
+  final String title;
+  const MiniRoundedButton({
+    super.key,
+    required this.title,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 100.w,
+      height: 36,
+      padding: EdgeInsets.only(top: 8.w),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(21.r),
+        color: AppColors.mainColor,
+      ),
+      child: Text(
+        title,
+        textAlign: TextAlign.center,
+        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: Colors.white,
+              fontWeight: FontWeight.w500,
+              fontSize: 10.sp,
+            ),
+      ),
+    );
+  }
+}
