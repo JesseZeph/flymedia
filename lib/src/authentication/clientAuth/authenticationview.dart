@@ -29,7 +29,7 @@ class _AuthenticationViewState extends State<AuthenticationView> {
                 Padding(
                   padding: EdgeInsets.all(20.r),
                   child: SlideFadeSwitcher(
-                    child: _showSignin ? const SigninWidget() : const SignUp(),
+                    child: _showSignin ? const SignInWidget() : const SignUp(),
                   ),
                 ),
                 AuthSwitchButton(

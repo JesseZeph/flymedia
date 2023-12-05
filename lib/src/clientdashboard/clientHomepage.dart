@@ -1,22 +1,22 @@
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:flymedia_app/providers/nav_notifier.dart';
 import 'package:flymedia_app/src/clientdashboard/dashboardPages/campaign.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../constants/colors.dart';
 import 'dashboardPages/help.dart';
 import 'dashboardPages/messages.dart';
 import 'dashboardPages/payment.dart';
 
-class ClientHomePage extends ConsumerStatefulWidget {
+class ClientHomePage extends StatefulWidget {
   const ClientHomePage({super.key});
 
   @override
-  ConsumerState<ClientHomePage> createState() => _ClientHomePageState();
+  State<ClientHomePage> createState() => _ClientHomePageState();
 }
 
-class _ClientHomePageState extends ConsumerState<ClientHomePage> {
+class _ClientHomePageState extends State<ClientHomePage> {
+  int _selectedIndex = 0;
+
   static final List<Widget> _widgetOptions = <Widget>[
     const Campaign(),
     const Messages(),
@@ -26,15 +26,16 @@ class _ClientHomePageState extends ConsumerState<ClientHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var navIndex = ref.watch(navProvider);
     return Scaffold(
       body: Center(
-        child: _widgetOptions[navIndex.index],
+        child: _widgetOptions[_selectedIndex],
       ),
       bottomNavigationBar: BottomNavigationBar(
-          currentIndex: navIndex.index,
+          currentIndex: _selectedIndex,
           onTap: (value) {
-            ref.read(navProvider.notifier).onIndexChange(value);
+            setState(() {
+              _selectedIndex = value;
+            });
           },
           elevation: 10,
           showSelectedLabels: true,

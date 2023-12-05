@@ -75,7 +75,7 @@ class CustomField extends StatelessWidget {
                   ),
             ),
             Container(
-              width: 150.w,
+              width: 140.w,
               padding: EdgeInsets.symmetric(horizontal: 10.w),
               margin: EdgeInsets.only(top: 10.w),
               decoration: BoxDecoration(

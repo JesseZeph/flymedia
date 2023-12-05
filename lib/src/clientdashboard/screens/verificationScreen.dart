@@ -4,18 +4,17 @@ import 'package:flymedia_app/constants/textstring.dart';
 import 'package:flymedia_app/src/authentication/components/animated_button.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/widgets/welcomeWidget.dart';
 import 'package:flymedia_app/utils/widgets/headings.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../constants/colors.dart';
 import '../../../utils/widgets/tiles.dart';
 import '../../authentication/components/roundedbutton.dart';
 import 'clientverificationdetails.dart';
 
-class ClientVerificationOnboarding extends HookConsumerWidget {
+class ClientVerificationOnboarding extends StatelessWidget {
   const ClientVerificationOnboarding({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [

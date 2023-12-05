@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'list.dart';
-
 class DropDowView extends StatefulWidget {
   const DropDowView({Key? key}) : super(key: key);
 
@@ -58,7 +56,7 @@ class _DropDowViewState extends State<DropDowView> {
                 children: [
                   Expanded(
                     child: ListView(
-                      children: citiesList
+                      children: viewsList
                           .where((city) => city
                               .toLowerCase()
                               .contains(searchController.text.toLowerCase()))
@@ -84,3 +82,10 @@ class _DropDowViewState extends State<DropDowView> {
   }
 }
 
+List<String> viewsList = <String>[
+  "10k - 50k",
+  "20k - 200k",
+  "200k - 500k",
+  "500k - 1m",
+  "1m and above"
+];

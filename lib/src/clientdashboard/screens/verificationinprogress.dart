@@ -3,16 +3,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/colors.dart';
 import 'package:flymedia_app/constants/textstring.dart';
 import 'package:flymedia_app/src/clientdashboard/clientHomepage.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../constants/imageStrings.dart';
 import '../../../route/route.dart';
 
-class VerificationInProgress extends HookConsumerWidget {
+class VerificationInProgress extends StatelessWidget {
   const VerificationInProgress({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(

@@ -1,11 +1,3 @@
-List<String> citiesList = <String>[
-  "10k - 50k",
-  "20k - 200k",
-  "200k - 500k",
-  "500k - 1m",
-  "1m and above"
-];
-
 // List<String> citiesList = <String>[
 //   "Afghanistan",
 //   "Åland Islands",

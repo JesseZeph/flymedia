@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flymedia_app/src/authentication/forgotpassword/screens/checkemail.dart';
 import 'package:flymedia_app/src/authentication/forgotpassword/screens/resetPassword.dart';
-import 'package:flymedia_app/src/authentication/forgotpassword/screens/resetSuccessful.dart';
 import 'package:flymedia_app/src/authentication/forgotpassword/screens/verifyEmail.dart';
-import 'package:flymedia_app/src/authentication/verification/useremailverification.dart';
-import 'package:flymedia_app/src/authentication/verification/userverificationsuccess.dart';
-import 'package:flymedia_app/src/authentication/verification/verifyemailaddress.dart';
 import 'package:flymedia_app/src/clientdashboard/clientHomepage.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/applications.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/view_campaign.dart';
@@ -18,7 +14,6 @@ import '../src/accountoption/view.dart';
 import '../src/authentication/clientAuth/authenticationview.dart';
 import '../src/authentication/forgotpassword/forgotpassword.dart';
 import '../src/clientdashboard/screens/campaignLive.dart';
-import '../src/clientdashboard/screens/jobSpecification.dart';
 import '../src/clientdashboard/screens/previewListing.dart';
 import '../src/clientdashboard/screens/verificationScreen.dart';
 import '../src/onboardingscreen/onboarding.dart';
@@ -48,27 +43,16 @@ Widget _getPage(String routeName) {
       return const CheckEmail();
     case '/verifyEmail':
       return VerifyEmail();
-    case '/resetSuccessful':
-      return const ResetSuccessful();
     case '/clientDashboard':
       return const ClientVerificationOnboarding();
     case '/clientHomePage':
       return const ClientHomePage();
-    case '/jobSpecification':
-      return JobSpecification();
 
     case '/accountOption':
       return const AccountOption();
 
-    //email verification
-    case '/verification':
-      return const VerifyEmailAccount();
-    case '/userEmailVerification':
-      return UserEmailVerification();
     case '/campaignLive':
       return const CampaignLive();
-    case '/userVerificationSuccess':
-      return const UserVerificationSuccessful();
     //done
     case '/previewListing':
       return const PreviewListing();

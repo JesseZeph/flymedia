@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:unicons/unicons.dart';
+import 'package:flymedia_app/controllers/campaign_provider.dart';
+import 'package:flymedia_app/models/response/campaign_upload_response.dart';
+import 'package:provider/provider.dart';
 
 import '../../../constants/colors.dart';
 import '../../../route/route.dart';
@@ -9,14 +10,14 @@ import '../../authentication/components/text_input_field.dart';
 import '../../clientdashboard/screens/widgets/appbar.dart';
 import '../../clientdashboard/screens/widgets/welcomeWidget.dart';
 
-class CampaignPage extends ConsumerStatefulWidget {
+class CampaignPage extends StatefulWidget {
   const CampaignPage({super.key});
 
   @override
-  ConsumerState createState() => _CampaignPageState();
+  State createState() => _CampaignPageState();
 }
 
-class _CampaignPageState extends ConsumerState<CampaignPage> {
+class _CampaignPageState extends State<CampaignPage> {
   TextEditingController searchController = TextEditingController();
   List<String> campaignList = ["Tiktok Influencer for a Skincare Brand"];
   List<String> filteredCampaignList = [];
@@ -162,74 +163,116 @@ class _CampaignPageState extends ConsumerState<CampaignPage> {
                     ),
               ),
             ),
-            GestureDetector(
-              onTap: () {
-                navigateToPage(context, '/viewCampaignListing');
-              },
-              child: Container(
-                width: 321.w,
-                margin: EdgeInsets.only(top: 15.h),
-                padding: EdgeInsets.symmetric(
-                  vertical: 10.w,
-                ),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(10.r)),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Container(
-                      width: 50.w,
-                      height: 50.h,
-                      padding: EdgeInsets.all(5.w),
-                      child: CircleAvatar(
-                        backgroundColor: AppColors.dialogColor,
-                        radius: 50.w,
-                        child: Icon(
-                          UniconsLine.user,
-                          color: AppColors.hintTextColor,
-                          size: 20.w,
-                        ),
-                      ),
+            Expanded(
+              child: Consumer<CampaignsNotifier>(
+                builder: (context, campaignNotifier, child) {
+                  campaignNotifier.getCampaigns();
+                  return Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 12.w),
+                    child: FutureBuilder<List<CampaignUploadResponse>>(
+                      future: campaignNotifier.campaignList,
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const CircularProgressIndicator();
+                        } else if (snapshot.hasError) {
+                          return Text('Error: ${snapshot.error}');
+                        } else if (snapshot.data!.isEmpty) {
+                          return const Text('No campaign available');
+                        } else {
+                          final campaigns = snapshot.data;
+
+                          return ListView.builder(
+                              itemCount: campaigns!.length,
+                              scrollDirection: Axis.vertical,
+                              physics: const AlwaysScrollableScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                var campaign = campaigns[index];
+                                return CampaignListTile(
+                                  campaign: campaign,
+                                );
+                              });
+                        }
+                      },
                     ),
-                    SizedBox(width: 10.w),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Tiktok Influencer for a Skincare Brand',
-                          style:
-                              Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: AppColors.mainTextColor,
-                                    fontWeight: FontWeight.w700,
-                                    fontSize: 14.sp,
-                                  ),
-                        ),
-                        Text(
-                          'Mooi',
-                          style:
-                              Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: AppColors.lightMainText,
-                                    fontWeight: FontWeight.w200,
-                                    fontSize: 12.sp,
-                                  ),
-                        ),
-                        Text(
-                          'Singapore',
-                          style:
-                              Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: AppColors.lightMainText,
-                                    fontWeight: FontWeight.w200,
-                                    fontSize: 12.sp,
-                                  ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
+                  );
+                },
               ),
             )
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class CampaignListTile extends StatelessWidget {
+  final CampaignUploadResponse campaign;
+  const CampaignListTile({
+    super.key,
+    required this.campaign,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return FittedBox(
+      child: GestureDetector(
+        onTap: () {
+          navigateToPage(context, '/viewCampaignListing');
+        },
+        child: Container(
+          width: 321.w,
+          margin: EdgeInsets.only(top: 15.h),
+          padding: EdgeInsets.symmetric(
+            vertical: 10.w,
+          ),
+          decoration: BoxDecoration(
+              color: Colors.white, borderRadius: BorderRadius.circular(10.r)),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                width: 50.w,
+                height: 50.h,
+                padding: EdgeInsets.all(5.w),
+                child: CircleAvatar(
+                  backgroundColor: AppColors.dialogColor,
+                  radius: 50.w,
+                  backgroundImage: NetworkImage(campaign.imageUrl),
+                ),
+              ),
+              SizedBox(width: 10.w),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    campaign.jobTitle,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppColors.mainTextColor,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 14.sp,
+                        ),
+                  ),
+                  Text(
+                    campaign.companyDescription,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppColors.lightMainText,
+                          fontWeight: FontWeight.w200,
+                          fontSize: 12.sp,
+                        ),
+                  ),
+                  Text(
+                    campaign.country,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppColors.lightMainText,
+                          fontWeight: FontWeight.w200,
+                          fontSize: 12.sp,
+                        ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

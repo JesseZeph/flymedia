@@ -4,18 +4,17 @@ import 'package:flymedia_app/constants/textstring.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/widgets/appbar.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/widgets/flyButton.dart';
 import 'package:flymedia_app/utils/widgets/divider.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../constants/colors.dart';
 import '../../../route/route.dart';
 import '../../../utils/widgets/headings.dart';
 // import 'companyDetails.dart';
 
-class PreviewListing extends HookConsumerWidget {
+class PreviewListing extends StatelessWidget {
   const PreviewListing({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     // final enteredText = ref.watch(enteredTextProvider.notifier).state;
 
     return Scaffold(

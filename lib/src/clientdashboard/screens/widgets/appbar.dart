@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flymedia_app/controllers/login_provider.dart';
 import 'package:flymedia_app/route/route.dart';
 import 'package:flymedia_app/src/accountoption/view.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../constants/colors.dart';
 
@@ -65,90 +67,106 @@ void _showLogoutDialog(BuildContext context) {
   showDialog(
     context: context,
     builder: (BuildContext context) {
-      return Dialog(
-        shadowColor: AppColors.lightHintTextColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(7.r),
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(16.w),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(
-                    Icons.exit_to_app,
-                    color: AppColors.errorColor,
-                    size: 22.sp,
-                  ),
-                ],
-              ),
-              SizedBox(height: 16.h),
-              Text(
-                'Are you sure you want to logout of the account?',
-                style: Theme.of(context)
-                    .textTheme
-                    .bodySmall
-                    ?.copyWith(fontSize: 12.sp),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 16.h),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 100.w,
-                    decoration: BoxDecoration(
-                      color: AppColors.errorColor,
-                      borderRadius: BorderRadius.circular(50.r),
-                    ),
-                    child: TextButton(
-                      onPressed: () {
-                        pushToAndClearStack(context, const AccountOption());
-                      },
-                      style: TextButton.styleFrom(
-                        foregroundColor: Colors.red,
-                      ),
-                      child: Text(
-                        'Log Out',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            fontSize: 12.sp,
-                            color: Colors.white,
-                            fontWeight: FontWeight.w700),
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    width: 20.w,
-                  ),
-                  Container(
-                    width: 100.w,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          width: 1, color: AppColors.lightHintTextColor),
-                      borderRadius: BorderRadius.circular(50.r),
-                    ),
-                    child: TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                      child: Text(
-                        'Cancel',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodySmall
-                            ?.copyWith(fontSize: 12.sp),
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      );
+      return const DialogWidget();
     },
   );
+}
+
+class DialogWidget extends StatefulWidget {
+  const DialogWidget({super.key});
+
+  @override
+  State<DialogWidget> createState() => _DialogWidgetState();
+}
+
+class _DialogWidgetState extends State<DialogWidget> {
+  @override
+  Widget build(BuildContext context) {
+    var loginNotifier = Provider.of<LoginNotifier>(context);
+    return Dialog(
+      shadowColor: AppColors.lightHintTextColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(7.r),
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(16.w),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.exit_to_app,
+                  color: AppColors.errorColor,
+                  size: 22.sp,
+                ),
+              ],
+            ),
+            SizedBox(height: 16.h),
+            Text(
+              'Are you sure you want to logout of the account?',
+              style: Theme.of(context)
+                  .textTheme
+                  .bodySmall
+                  ?.copyWith(fontSize: 12.sp),
+              textAlign: TextAlign.center,
+            ),
+            SizedBox(height: 16.h),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Container(
+                  width: 100.w,
+                  decoration: BoxDecoration(
+                    color: AppColors.errorColor,
+                    borderRadius: BorderRadius.circular(50.r),
+                  ),
+                  child: TextButton(
+                    onPressed: () {
+                      loginNotifier.logout();
+                      pushToAndClearStack(context, const AccountOption());
+                    },
+                    style: TextButton.styleFrom(
+                      foregroundColor: Colors.red,
+                    ),
+                    child: Text(
+                      'Log Out',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          fontSize: 12.sp,
+                          color: Colors.white,
+                          fontWeight: FontWeight.w700),
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  width: 20.w,
+                ),
+                Container(
+                  width: 100.w,
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                        width: 1, color: AppColors.lightHintTextColor),
+                    borderRadius: BorderRadius.circular(50.r),
+                  ),
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(
+                      'Cancel',
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodySmall
+                          ?.copyWith(fontSize: 12.sp),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }

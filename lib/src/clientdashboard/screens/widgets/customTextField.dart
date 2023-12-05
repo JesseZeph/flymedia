@@ -1,22 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../constants/colors.dart';
 import 'characterCount.dart';
 
-class CustomInputField extends ConsumerWidget {
+class CustomInputField extends StatelessWidget {
   final int maxLines;
   final int maxLength;
   final String hintText;
   final Function(String) onChanged;
   late final List<TextInputFormatter> inputFormatters;
-  final TextEditingController controller;
+  final TextEditingController? controller;
 
   CustomInputField({
     Key? key,
-    required this.controller,
+    this.controller,
     this.maxLines = 1,
     required this.onChanged,
     this.maxLength = 1000,
@@ -35,7 +34,7 @@ class CustomInputField extends ConsumerWidget {
   }
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Container(
       width: 325.w,
       padding: EdgeInsets.symmetric(horizontal: 10.w),

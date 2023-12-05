@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/colors.dart';
 import 'package:flymedia_app/constants/textstring.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../authentication/components/roundedbutton.dart';
 
-class CampaignLive extends HookConsumerWidget {
+class CampaignLive extends StatelessWidget {
   const CampaignLive({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: Column(

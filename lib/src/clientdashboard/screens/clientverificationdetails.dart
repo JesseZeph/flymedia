@@ -1,19 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flymedia_app/constants/app_constants.dart';
+import 'package:flymedia_app/services/helpers/verify_company.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/verificationinprogress.dart';
 import 'package:flymedia_app/utils/widgets/headings.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:get/get.dart';
 
 import '../../../constants/colors.dart';
+import '../../../models/requests/verifyCompany/company_verification.dart';
 import '../../authentication/components/animated_button.dart';
 import '../../authentication/components/roundedbutton.dart';
 import '../../authentication/components/text_input_field.dart';
 
-class ClientVerificationDetails extends HookConsumerWidget {
+class ClientVerificationDetails extends StatefulWidget {
   const ClientVerificationDetails({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  State<ClientVerificationDetails> createState() =>
+      _ClientVerificationDetailsState();
+}
+
+class _ClientVerificationDetailsState extends State<ClientVerificationDetails> {
+  final companyName = TextEditingController();
+  final companyHq = TextEditingController();
+  final website = TextEditingController();
+  final companyEmail = TextEditingController();
+  final memberContact = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
@@ -43,6 +58,7 @@ class ClientVerificationDetails extends HookConsumerWidget {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 25.w),
                 child: TextInputField(
+                  controller: companyName,
                   hintText: 'Enter your company name',
                   onChanged: (_) {},
                 ),
@@ -62,6 +78,7 @@ class ClientVerificationDetails extends HookConsumerWidget {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 25.w),
                 child: TextInputField(
+                  controller: companyHq,
                   hintText: 'Where is your company located?',
                   onChanged: (_) {},
                 ),
@@ -81,6 +98,7 @@ class ClientVerificationDetails extends HookConsumerWidget {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 25.w),
                 child: TextInputField(
+                  controller: website,
                   hintText: 'e.g. https://companyname.com',
                   onChanged: (_) {},
                 ),
@@ -100,6 +118,7 @@ class ClientVerificationDetails extends HookConsumerWidget {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 25.w),
                 child: TextInputField(
+                  controller: companyEmail,
                   hintText: 'Please use your official email address',
                   onChanged: (_) {},
                 ),
@@ -119,6 +138,7 @@ class ClientVerificationDetails extends HookConsumerWidget {
               Padding(
                 padding: EdgeInsets.symmetric(horizontal: 25.w),
                 child: TextInputField(
+                  controller: memberContact,
                   hintText: 'Who can we get in touch with?',
                   onChanged: (_) {},
                 ),
@@ -129,9 +149,22 @@ class ClientVerificationDetails extends HookConsumerWidget {
                   left: 25.h,
                 ),
                 child: AnimatedButton(
-                  onTap: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const VerificationInProgress()));
+                  onTap: () async {
+                    VerifyCompanyRequest rawModel = VerifyCompanyRequest(
+                        companyName: companyName.text,
+                        companyHq: companyHq.text,
+                        website: website.text,
+                        companyEmail: companyEmail.text,
+                        memberContact: memberContact.text,
+                        userId: userUid);
+                    var model = verifyCompanyToJson(rawModel);
+                    bool result =
+                        await VerifyCompanyHelper.verifyCompany(model);
+                    if (result) {
+                      Get.to(() => const VerificationInProgress());
+                    } else {
+                      Get.snackbar('Error', 'Verification request failed');
+                    }
                   },
                   child: const RoundedButtonWidget(
                     title: 'Submit',

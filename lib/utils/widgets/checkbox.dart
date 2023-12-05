@@ -1,27 +1,30 @@
-// CheckWidget.dart
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../constants/colors.dart';
-import '../../providers/provider.dart';
 
-class CheckWidget extends HookConsumerWidget {
+class CheckWidget extends StatefulWidget {
   const CheckWidget({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final isChecked = ref.watch(checkBoxStateProvider);
+  _CheckWidgetState createState() => _CheckWidgetState();
+}
 
+class _CheckWidgetState extends State<CheckWidget> {
+  bool isChecked = false;
+
+  @override
+  Widget build(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisSize: MainAxisSize.min,
       children: [
         InkWell(
           onTap: () {
-            ref.read(checkBoxStateProvider.notifier).toggle();
+            setState(() {
+              isChecked = !isChecked;
+            });
           },
           child: Container(
             width: 16,

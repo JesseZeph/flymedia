@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flymedia_app/controllers/login_provider.dart';
+import 'package:flymedia_app/models/requests/auth/influencer_login_model.dart';
 import 'package:flymedia_app/src/authentication/components/text_input_field.dart';
 import 'package:flymedia_app/utils/widgets/divider.dart';
-import 'package:form_validators/form_validators.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../constants/textstring.dart';
 import '../../../../utils/widgets/headings.dart';
@@ -13,71 +13,87 @@ import '../sign_up/social_buttons.dart';
 import 'button.dart';
 import 'forgot_password.dart';
 
-class InfluencerSignIn extends HookConsumerWidget {
+class InfluencerSignIn extends StatefulWidget {
   const InfluencerSignIn({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final email = useTextEditingController();
-    final password = useTextEditingController();
-    final passwordError = useState<PasswordValidationError?>(null);
-    final emailError = useState<EmailValidationError?>(null);
+  State<InfluencerSignIn> createState() => _InfluencerSignInState();
+}
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Container(
-          margin: EdgeInsets.only(bottom: 32.h),
-          child: const HeadingAndSubText(
-            heading: AppTexts.welcomeBackHeader,
-            subText: AppTexts.welcomeBackSubText,
-          ),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 5.w),
-          child: EmailFieldLogin(email: email, emailError: emailError),
-        ),
-        SizedBox(
-          height: 25.h,
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(horizontal: 5.w),
-          child: TextInputField(
-            hintText: 'Enter your password',
-            obscureText: true,
-            controller: password,
-            onChanged: (value) {
-              // Validate the password and update the error state
-              final passwordResult = Password.dirty(value).validator(value);
-              passwordError.value = passwordResult;
-            },
-            // Use the passwordError to display the error text
-            errorText: Password.showErrorPasswordMessage(passwordError.value),
-          ),
-        ),
-        SizedBox(
-          height: 25.h,
-        ),
-        const DividerWidget(),
-        SizedBox(
-          height: 25.h,
-        ),
-        const SocialAuth(),
-        SizedBox(
-          height: 25.h,
-        ),
-        Align(
-          alignment: Alignment.center,
-          child: InfluencerLoginButton(
-            onTap: () {
-              // Navigator.of(context).push(MaterialPageRoute(
-              //     builder: (context) => const ClientVerificationOnboarding()));
-            },
-          ),
-        ),
-        SizedBox(height: 10.h),
-        const Align(alignment: Alignment.center, child: ForgotPasswordWidget()),
-      ],
+class _InfluencerSignInState extends State<InfluencerSignIn> {
+  @override
+  Widget build(BuildContext context) {
+    final email = TextEditingController();
+    final password = TextEditingController();
+    // final passwordError = useState<PasswordValidationError?>(null);
+    // final emailError = useState<EmailValidationError?>(null);
+
+    return Consumer<LoginNotifier>(
+      builder: (context, loginNotifier, child) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              margin: EdgeInsets.only(bottom: 32.h),
+              child: const HeadingAndSubText(
+                heading: AppTexts.welcomeBackHeader,
+                subText: AppTexts.welcomeBackSubText,
+              ),
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5.w),
+              child: EmailFieldLogin(email: email),
+            ),
+            SizedBox(
+              height: 25.h,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 5.w),
+              child: TextInputField(
+                hintText: 'Enter your password',
+                obscureText: true,
+                controller: password,
+                onChanged: (value) {
+                  // Validate the password and update the error state
+                  // final passwordResult = Password.dirty(value).validator(value);
+                  // passwordError.value = passwordResult;
+                },
+                // Use the passwordError to display the error text
+                // errorText: Password.showErrorPasswordMessage(passwordError.value),
+              ),
+            ),
+            SizedBox(
+              height: 25.h,
+            ),
+            const DividerWidget(),
+            SizedBox(
+              height: 25.h,
+            ),
+            const SocialAuth(),
+            SizedBox(
+              height: 25.h,
+            ),
+            Align(
+              alignment: Alignment.center,
+              child: InfluencerLoginButton(
+                onTap: () {
+                  // loader(context);
+                  loginNotifier.loader;
+                  InfluencerLoginModel model = InfluencerLoginModel(
+                      email: email.text, password: password.text);
+                  String newModel = influencerLoginModelToJson(model);
+                  loginNotifier.influencerSignin(newModel);
+                  // Navigator.of(context).push(MaterialPageRoute(
+                  //     builder: (context) => const ClientVerificationOnboarding()));
+                },
+              ),
+            ),
+            SizedBox(height: 10.h),
+            const Align(
+                alignment: Alignment.center, child: ForgotPasswordWidget()),
+          ],
+        );
+      },
     );
   }
 }
@@ -86,11 +102,11 @@ class EmailFieldLogin extends StatelessWidget {
   const EmailFieldLogin({
     super.key,
     required this.email,
-    required this.emailError,
+    // required this.emailError,
   });
 
   final TextEditingController email;
-  final ValueNotifier<EmailValidationError?> emailError;
+  // final ValueNotifier<EmailValidationError?> emailError;
 
   @override
   Widget build(BuildContext context) {
@@ -98,10 +114,10 @@ class EmailFieldLogin extends StatelessWidget {
       hintText: 'e.g. sophielandon@gmail.com',
       controller: email,
       onChanged: (value) {
-        final emailResult = Email.dirty(value).validator(value);
-        emailError.value = emailResult;
+        // final emailResult = Email.dirty(value).validator(value);
+        // emailError.value = emailResult;
       },
-      errorText: Email.showEmailErrorMessage(emailError.value),
+      // errorText: Email.showEmailErrorMessage(emailError.value),
     );
   }
 }

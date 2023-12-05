@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/src/clientdashboard/clientHomepage.dart';
-import 'package:flymedia_app/src/influencerDashboard/influencerHomepage.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
-import '../../../accountoption/state.dart';
 import '../../components/roundedbutton.dart';
 import 'checkemail.dart';
 
-class ResetSuccessful extends HookConsumerWidget {
-  const ResetSuccessful({super.key});
+class ResetSuccessful extends StatelessWidget {
+  final int selectedContainer;
+
+  const ResetSuccessful({Key? key, required this.selectedContainer})
+      : super(key: key);
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final selectedContainer = ref.watch(selectedContainerProvider);
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
@@ -31,19 +30,11 @@ class ResetSuccessful extends HookConsumerWidget {
             ),
             GestureDetector(
               onTap: () {
-                if (selectedContainer == 1) {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const ClientHomePage(),
-                    ),
-                  );
-                } else if (selectedContainer == 2) {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => const InfluencerHomePage(),
-                    ),
-                  );
-                }
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const ClientHomePage(),
+                  ),
+                );
               },
               child: Padding(
                 padding: EdgeInsets.only(top: 30.h),

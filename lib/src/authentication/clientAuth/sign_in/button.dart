@@ -1,19 +1,18 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../../constants/textstring.dart';
 import '../../components/animated_button.dart';
 import '../../components/roundedbutton.dart';
 
-class LoginButton extends ConsumerWidget {
+class LoginButton extends StatelessWidget {
   final VoidCallback onTap;
   const LoginButton({
     super.key,
     required this.onTap,
   });
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     return AnimatedButton(
       onTap: onTap,
       child: const RoundedButtonWidget(

@@ -1,30 +1,40 @@
-import 'dart:typed_data';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/textstring.dart';
+import 'package:flymedia_app/src/clientdashboard/screens/previewListing.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/widgets/appbar.dart';
+import 'package:flymedia_app/src/clientdashboard/screens/widgets/country_dropdown.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/widgets/customTextField.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/widgets/flyButton.dart';
+import 'package:flymedia_app/src/clientdashboard/screens/widgets/salaryInput.dart';
 import 'package:flymedia_app/utils/widgets/headings.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../../constants/colors.dart';
 import '../../../route/route.dart';
 import '../../../utils/widgets/subheadings.dart';
+import '../../authentication/components/text_input_field.dart';
 
-final enteredTextProvider = StateProvider<String?>((ref) => null);
-final companyDescriptionProvider = StateProvider<String>((ref) => '');
-final selectedImageProvider = StateProvider<Uint8List?>((ref) => null);
-final companyDescriptionController = TextEditingController();
-
-class CompanyDetails extends HookConsumerWidget {
+class CompanyDetails extends StatefulWidget {
   const CompanyDetails({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  State<CompanyDetails> createState() => _CompanyDetailsState();
+}
+
+class _CompanyDetailsState extends State<CompanyDetails> {
+  Future<void> _pickImage(ImageSource source) async {
+    final ImagePicker picker = ImagePicker();
+    final XFile? pickedFile = await picker.pickImage(source: source);
+    setState(() {
+      if (pickedFile != null) pickedFile.readAsBytes();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
           preferredSize: Size.fromHeight(50.h), child: const FlyAppBar()),
@@ -56,10 +66,7 @@ class CompanyDetails extends HookConsumerWidget {
                 maxLength: 500,
                 hintText:
                     'Tell us a bit about your company that will show influencers what your company is about',
-                onChanged: (value) {
-                  ref.read(companyDescriptionProvider.notifier).state = value;
-                },
-                controller: companyDescriptionController,
+                onChanged: (_) {},
               ),
             ),
             SizedBox(
@@ -70,7 +77,120 @@ class CompanyDetails extends HookConsumerWidget {
               subText:
                   'Your company logo will appear at the top of your listing and your Flymedia profile',
             ),
-            const FlyImagePicker(),
+            GestureDetector(
+              onTap: () {
+                _pickImage(ImageSource.gallery);
+              },
+              child: Container(
+                width: 325.w,
+                margin: EdgeInsets.only(top: 15.h, left: 18.h, right: 18.h),
+                padding: EdgeInsets.symmetric(vertical: 40.w),
+                decoration: BoxDecoration(
+                  color: AppColors.dialogColor.withOpacity(0.5),
+                  borderRadius: BorderRadius.circular(8.r),
+                ),
+                child: Column(
+                  children: [
+                    const Icon(
+                      FontAwesomeIcons.images,
+                    ),
+                    SizedBox(height: 10.h),
+                    Text(
+                      'Upload Photo',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            fontSize: 12.sp,
+                            color: AppColors.mainColor,
+                            fontWeight: FontWeight.w700,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 20.h),
+              child: const SubHeadings(
+                text: 'Job Title',
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 20.w),
+              child: CustomInputField(
+                maxLines: 2,
+                hintText:
+                    'e.g Influencer for a Skincare brand, UGC Creator for a Shoe collection.',
+                onChanged: (value) {},
+                controller: TextEditingController(),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 20.h),
+              child: const SubHeadings(
+                text: 'Country',
+              ),
+            ),
+            Container(
+                padding: EdgeInsets.symmetric(horizontal: 20.h),
+                child: TextInputField(
+                  hintText: 'Singapore',
+                  onChanged: (_) {},
+                )),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 20.w),
+              child: const CHeadingAndSubText(
+                heading: 'Payment rate',
+                subText:
+                    "Let interested applicants know how much you are willing to pay for this listing",
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const CustomField(text: 'From'),
+                  SizedBox(
+                    width: 45.w,
+                  ),
+                  const CustomField(text: 'To'),
+                ],
+              ),
+            ),
+            Container(
+                margin: EdgeInsets.only(top: 30.h, left: 20.w),
+                width: 325.w,
+                child: Text(
+                  'Number of views required',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Colors.black,
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w400),
+                )),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 20.w),
+              child: const DropDowView(),
+            ),
+            Container(
+                margin: EdgeInsets.only(top: 20.h, left: 20.w),
+                width: 325.w,
+                child: Text(
+                  'Job description',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: Colors.black,
+                      fontSize: 12.sp,
+                      fontWeight: FontWeight.w400),
+                )),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+              child: CustomInputField(
+                maxLines: 7,
+                maxLength: 1000,
+                hintText:
+                    'Give clear expectations about your campaign listing and the deliverables required',
+                onChanged: (_) {},
+                controller: TextEditingController(),
+              ),
+            ),
             Container(
               padding: EdgeInsets.only(left: 10.w, right: 10.w),
               child: FlyButtons(
@@ -78,13 +198,7 @@ class CompanyDetails extends HookConsumerWidget {
                   navigateToPage(context, '/clientHomePage');
                 },
                 onSubmitButtonPressed: () {
-                  // Call the saveCompanyData method to save data to the database
-                  final companyDescription =
-                      ref.read(companyDescriptionProvider);
-                  ref.read(enteredTextProvider.notifier).state =
-                      companyDescription;
-
-                  navigateToPage(context, '/jobSpecification');
+                  Get.to(() => const PreviewListing());
                 },
               ),
             )
@@ -93,95 +207,4 @@ class CompanyDetails extends HookConsumerWidget {
       ),
     );
   }
-}
-
-class FlyImagePicker extends StatefulWidget {
-  const FlyImagePicker({
-    super.key,
-  });
-
-  @override
-  _FlyImagePickerState createState() => _FlyImagePickerState();
-}
-
-class _FlyImagePickerState extends State<FlyImagePicker> {
-  Uint8List? _image;
-
-  void selectImage() async {
-    Uint8List img = await pickImage(ImageSource.gallery);
-    setState(() {
-      _image = img;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        selectImage();
-      },
-      child: _image != null
-          ? Column(
-              children: [
-                Container(
-                  width: 325.w,
-                  margin: EdgeInsets.only(top: 15.h),
-                  padding: EdgeInsets.symmetric(vertical: 5.w),
-                  decoration: BoxDecoration(
-                    color: AppColors.dialogColor.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  child: CircleAvatar(
-                    radius: 50.r,
-                    backgroundImage: MemoryImage(_image!),
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () {},
-                  child: Text(
-                    'Save',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall
-                        ?.copyWith(color: AppColors.mainColor),
-                  ),
-                ),
-              ],
-            )
-          : Container(
-              width: 325.w,
-              margin: EdgeInsets.only(top: 15.h, left: 18.h, right: 18.h),
-              padding: EdgeInsets.symmetric(vertical: 40.w),
-              decoration: BoxDecoration(
-                color: AppColors.dialogColor.withOpacity(0.5),
-                borderRadius: BorderRadius.circular(8.r),
-              ),
-              child: Column(
-                children: [
-                  const Icon(
-                    FontAwesomeIcons.images,
-                  ),
-                  SizedBox(height: 10.h),
-                  Text(
-                    'Upload Photo',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          fontSize: 12.sp,
-                          color: AppColors.mainColor,
-                          fontWeight: FontWeight.w700,
-                        ),
-                  ),
-                ],
-              ),
-            ),
-    );
-  }
-}
-
-pickImage(ImageSource source) async {
-  final ImagePicker _imagePicker = ImagePicker();
-  XFile? _file = await _imagePicker.pickImage(source: source);
-  if (_file != null) {
-    return await _file.readAsBytes();
-  }
-  print('IMAGE NOT PICKED');
 }

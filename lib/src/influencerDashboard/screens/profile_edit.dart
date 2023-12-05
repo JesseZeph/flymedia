@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/colors.dart';
 import 'package:flymedia_app/src/influencerDashboard/widgets/imagepicker.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../../route/route.dart';
 import '../../../utils/widgets/subheadings.dart';
@@ -12,14 +11,14 @@ import '../../clientdashboard/screens/widgets/customTextField.dart';
 import '../../clientdashboard/screens/widgets/flyButton.dart';
 import '../../clientdashboard/screens/widgets/salaryInput.dart';
 
-class EditProfile extends ConsumerStatefulWidget {
+class EditProfile extends StatefulWidget {
   const EditProfile({super.key});
 
   @override
-  ConsumerState createState() => _ProfilePageState();
+  State createState() => _ProfilePageState();
 }
 
-class _ProfilePageState extends ConsumerState<EditProfile> {
+class _ProfilePageState extends State<EditProfile> {
   List<String> selectedOptions = [];
 
   void toggleOption(String option) {
@@ -38,7 +37,7 @@ class _ProfilePageState extends ConsumerState<EditProfile> {
       body: Center(
         child: ListView(
           children: [
-            ProfilePicturePicker(),
+            const ProfilePicturePicker(),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 20.h),
               child: const SubHeadings(

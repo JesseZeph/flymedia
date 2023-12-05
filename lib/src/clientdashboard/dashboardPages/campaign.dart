@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/colors.dart';
 import 'package:flymedia_app/route/route.dart';
+import 'package:flymedia_app/src/clientdashboard/screens/companyDetails.dart';
+import 'package:get/get.dart';
 import 'package:unicons/unicons.dart';
 
 import '../screens/widgets/appbar.dart';
@@ -28,7 +30,7 @@ class Campaign extends StatelessWidget {
             SizedBox(height: 40.h),
             GestureDetector(
               onTap: () {
-                // navigateToPage(context, '/');
+                Get.to(() => const CompanyDetails());
               },
               child: Container(
                 width: 321.w,

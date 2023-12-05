@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/src/authentication/components/animated_button.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/previewListing.dart';
+import 'package:provider/provider.dart';
 
 import '../../../constants/colors.dart';
 import '../../../constants/textstring.dart';
+import '../../../controllers/login_provider.dart';
 import '../../../utils/widgets/divider.dart';
 import '../../../utils/widgets/headings.dart';
 import '../../authentication/components/roundedbutton.dart';
@@ -14,6 +16,8 @@ class ViewCampaignListing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var loginNotifier = Provider.of<LoginNotifier>(context);
+
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(

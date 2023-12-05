@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flymedia_app/route/route.dart';
+import 'package:flymedia_app/src/authentication/forgotpassword/screens/checkemail.dart';
+import 'package:flymedia_app/src/influencerDashboard/influencerHomepage.dart';
+import 'package:get/get.dart';
 
-import '../components/roundedbutton.dart';
-import '../forgotpassword/screens/checkemail.dart';
+import '../../components/roundedbutton.dart';
 
-class VerifyEmailAccount extends StatelessWidget {
-  const VerifyEmailAccount({super.key});
+class InfluencerVerifySuccess extends StatelessWidget {
+  const InfluencerVerifySuccess({
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,24 +20,24 @@ class VerifyEmailAccount extends StatelessWidget {
           children: [
             Container(
               width: 315.w,
-              margin: EdgeInsets.only(top: 140.w),
+              margin: EdgeInsets.only(top: 120.w),
               child: ImageWithTextWidget(
                 assetImage: Image.asset(
-                  'assets/images/openlaptop.png',
+                  'assets/images/tick.png',
                 ),
-                headerText: 'Verify your email address',
+                headerText: 'Account Verified',
                 subText:
-                    'An OTP has been sent to your email address. Please check your inbox (and spam folder, just in case) to complete the verification process.',
+                    'Your account has been successfully set up. Welcome to Flymedia!',
               ),
             ),
             GestureDetector(
               onTap: () {
-                navigateToPage(context, '/userEmailVerification');
+                Get.to(() => const InfluencerHomePage());
               },
               child: Padding(
                 padding: EdgeInsets.only(top: 30.h),
                 child: const RoundedButtonWidget(
-                  title: 'Next',
+                  title: 'Back to homepage',
                 ),
               ),
             )

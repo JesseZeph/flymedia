@@ -1,21 +1,21 @@
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:flymedia_app/providers/nav_notifier.dart';
 import 'package:flymedia_app/src/influencerDashboard/dashboardPages/campaignpage.dart';
 import 'package:flymedia_app/src/influencerDashboard/dashboardPages/messagespage.dart';
 import 'package:flymedia_app/src/influencerDashboard/dashboardPages/profile.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../constants/colors.dart';
 
-class InfluencerHomePage extends ConsumerStatefulWidget {
+class InfluencerHomePage extends StatefulWidget {
   const InfluencerHomePage({super.key});
 
   @override
-  ConsumerState<InfluencerHomePage> createState() => _InfluencerHomePage();
+  State<InfluencerHomePage> createState() => _InfluencerHomePage();
 }
 
-class _InfluencerHomePage extends ConsumerState<InfluencerHomePage> {
+class _InfluencerHomePage extends State<InfluencerHomePage> {
+  int _selectedIndex = 0;
+
   static final List<Widget> _widgetOptions = <Widget>[
     const CampaignPage(),
     const MessagePage(),
@@ -24,15 +24,16 @@ class _InfluencerHomePage extends ConsumerState<InfluencerHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var navIndex = ref.watch(navProvider);
     return Scaffold(
       body: Center(
-        child: _widgetOptions[navIndex.index],
+        child: _widgetOptions[_selectedIndex],
       ),
       bottomNavigationBar: BottomNavigationBar(
-          currentIndex: navIndex.index,
+          currentIndex: _selectedIndex,
           onTap: (value) {
-            ref.read(navProvider.notifier).onIndexChange(value);
+            setState(() {
+              _selectedIndex = value;
+            });
           },
           elevation: 10,
           showSelectedLabels: true,
