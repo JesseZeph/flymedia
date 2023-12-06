@@ -132,9 +132,9 @@ class PreviewListing extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const HeadingAndSubText(
+                  HeadingAndSubText(
                       heading: 'About Company', subText: AppTexts.dummyText1),
-                  const HeadingAndSubText(
+                  HeadingAndSubText(
                       heading: 'Job Description', subText: AppTexts.dummyText2),
                   Container(
                     margin:

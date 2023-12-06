@@ -12,7 +12,6 @@ class VerifyCompanyHelper {
       String? token = prefs.getString('token');
 
       if (token == null) {
-        // Handle the case where the token is missing or empty.
         print("Token is missing or empty");
         return false;
       }
@@ -28,12 +27,9 @@ class VerifyCompanyHelper {
           await client.post(url, headers: requestHeaders, body: model);
 
       if (response.statusCode == 200) {
-        print("Response body: ${response.body}");
-
         return true;
       } else {
         print("Verification failed with status code: ${response.statusCode}");
-        print("Response body: ${response.body}");
         return false;
       }
     } catch (e) {

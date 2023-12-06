@@ -4,10 +4,8 @@ import 'package:flymedia_app/src/authentication/forgotpassword/screens/resetPass
 import 'package:flymedia_app/src/authentication/forgotpassword/screens/verifyEmail.dart';
 import 'package:flymedia_app/src/clientdashboard/clientHomepage.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/applications.dart';
-import 'package:flymedia_app/src/clientdashboard/screens/view_campaign.dart';
 import 'package:flymedia_app/src/influencerDashboard/dashboardPages/profile.dart';
 import 'package:flymedia_app/src/influencerDashboard/influencerHomepage.dart';
-import 'package:flymedia_app/src/influencerDashboard/screens/campaignlisting.dart';
 import 'package:flymedia_app/src/influencerDashboard/screens/profile_edit.dart';
 
 import '../src/accountoption/view.dart';
@@ -56,10 +54,6 @@ Widget _getPage(String routeName) {
     //done
     case '/previewListing':
       return const PreviewListing();
-    case '/viewCampaign':
-      return const ViewCampaign();
-    case '/viewCampaignListing':
-      return const ViewCampaignListing();
     case '/applications':
       return const Applications();
 
