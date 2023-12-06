@@ -11,8 +11,6 @@ import 'package:flymedia_app/src/influencerDashboard/screens/profile_edit.dart';
 import '../src/accountoption/view.dart';
 import '../src/authentication/clientAuth/authenticationview.dart';
 import '../src/authentication/forgotpassword/forgotpassword.dart';
-import '../src/clientdashboard/screens/campaignLive.dart';
-import '../src/clientdashboard/screens/previewListing.dart';
 import '../src/clientdashboard/screens/verificationScreen.dart';
 import '../src/onboardingscreen/onboarding.dart';
 import '../src/onboardingscreen/onboardpages/fourthpage.dart';
@@ -45,18 +43,15 @@ Widget _getPage(String routeName) {
       return const ClientVerificationOnboarding();
     case '/clientHomePage':
       return const ClientHomePage();
-
-    case '/accountOption':
-      return const AccountOption();
-
-    case '/campaignLive':
-      return const CampaignLive();
-    //done
-    case '/previewListing':
-      return const PreviewListing();
+    // Uncomment the lines below if 'PreviewListing' is used.
+    // case '/previewListing':
+    //   return const PreviewListing();
+    case '/viewCampaign':
+    //   return const ViewCampaign(id: '',);
+    // case '/viewCampaignListing':
+    //   return const ViewCampaignListing(id: '',);
     case '/applications':
       return const Applications();
-
     case '/editProfile':
       return const EditProfile();
     case '/influencerProfile':

@@ -126,35 +126,3 @@ class EmailFieldLogin extends StatelessWidget {
 void loader(BuildContext context) {
   LoadingSheet.show(context);
 }
-
-//TODO: place them in proper files sha
-//NOTE: just a simple scaffold for error ui state
-extension SnackbarExtension on BuildContext {
-  void _showSnackBar(
-    String message, {
-    Color? color,
-  }) {
-    ScaffoldMessenger.of(this).showSnackBar(
-      SnackBar(
-        content: Text(
-          message,
-        ),
-        backgroundColor: color,
-      ),
-    );
-  }
-
-  void showError(String message) {
-    _showSnackBar(
-      message,
-      color: Colors.red,
-    );
-  }
-
-  void showSuccess(String message) {
-    _showSnackBar(
-      message,
-      color: Colors.green,
-    );
-  }
-}

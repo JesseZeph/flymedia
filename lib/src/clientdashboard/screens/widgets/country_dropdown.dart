@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DropDowView extends StatefulWidget {
-  const DropDowView({Key? key}) : super(key: key);
+  const DropDowView({Key? key, this.onSelect}) : super(key: key);
+  final Function(String?)? onSelect;
 
   @override
-  _DropDowViewState createState() => _DropDowViewState();
+  State<DropDowView> createState() => _DropDowViewState();
 }
 
 class _DropDowViewState extends State<DropDowView> {
@@ -68,6 +69,9 @@ class _DropDowViewState extends State<DropDowView> {
                               selectedFollowing = value;
                               isMenuOpen = false;
                             });
+                            if (widget.onSelect != null) {
+                              widget.onSelect!(value);
+                            }
                           },
                         );
                       }).toList(),

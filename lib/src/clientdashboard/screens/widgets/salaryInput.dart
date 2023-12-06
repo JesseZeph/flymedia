@@ -54,9 +54,13 @@ class SalaryInput extends StatelessWidget {
 
 class CustomField extends StatelessWidget {
   final String text;
+  final TextEditingController? textController;
+  final TextInputType? inputType;
   const CustomField({
     super.key,
     required this.text,
+    this.textController,
+    this.inputType,
   });
 
   @override
@@ -84,6 +88,8 @@ class CustomField extends StatelessWidget {
                       color: AppColors.lightHintTextColor.withOpacity(0.5)),
                   borderRadius: BorderRadius.circular(8.r)),
               child: TextField(
+                keyboardType: inputType ?? TextInputType.text,
+                controller: textController,
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
