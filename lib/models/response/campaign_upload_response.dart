@@ -37,14 +37,16 @@ class CampaignUploadResponse {
         jobDescription: json["jobDescription"],
       );
 
-  Map<String, dynamic> toJson() => {
-        "imageUrl": imageUrl,
-        "companyDescription": companyDescription,
-        "jobTitle": jobTitle,
-        "country": country,
-        "rateFrom": rateFrom,
-        "rateTo": rateTo,
-        "viewsRequired": viewsRequired,
-        "jobDescription": jobDescription,
-      };
+  Map<String, dynamic> toJson() {
+    return {
+      "imageUrl": imageUrl,
+      "companyDescription": companyDescription,
+      "jobTitle": jobTitle,
+      "country": country,
+      "rateFrom": rateFrom,
+      "rateTo": rateTo,
+      "viewsRequired": viewsRequired,
+      "jobDescription": jobDescription,
+    };
+  }
 }

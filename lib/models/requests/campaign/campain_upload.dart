@@ -36,8 +36,8 @@ class CampaignUploadRequest {
         jobDescription: json["jobDescription"],
       );
 
-  Map<String, dynamic> toJson() => {
-        "imageUrl": imageUrl,
+  Map<String, String> toJson() => {
+        // "imageUrl": imageUrl,
         "companyDescription": companyDescription,
         "jobTitle": jobTitle,
         "country": country,

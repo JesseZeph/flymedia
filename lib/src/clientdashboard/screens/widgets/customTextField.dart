@@ -46,6 +46,7 @@ class CustomInputField extends StatelessWidget {
         borderRadius: BorderRadius.circular(8.r),
       ),
       child: TextField(
+        controller: controller,
         maxLines: maxLines,
         maxLength: maxLength,
         onChanged: onChanged,

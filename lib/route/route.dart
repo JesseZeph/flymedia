@@ -14,7 +14,6 @@ import '../src/accountoption/view.dart';
 import '../src/authentication/clientAuth/authenticationview.dart';
 import '../src/authentication/forgotpassword/forgotpassword.dart';
 import '../src/clientdashboard/screens/campaignLive.dart';
-import '../src/clientdashboard/screens/previewListing.dart';
 import '../src/clientdashboard/screens/verificationScreen.dart';
 import '../src/onboardingscreen/onboarding.dart';
 import '../src/onboardingscreen/onboardpages/fourthpage.dart';
@@ -54,8 +53,8 @@ Widget _getPage(String routeName) {
     case '/campaignLive':
       return const CampaignLive();
     //done
-    case '/previewListing':
-      return const PreviewListing();
+    // case '/previewListing':
+    //   return const PreviewListing();
     case '/viewCampaign':
       return const ViewCampaign();
     case '/viewCampaignListing':
