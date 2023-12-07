@@ -174,7 +174,13 @@ class _CampaignPageState extends State<CampaignPage> {
                       builder: (context, snapshot) {
                         if (snapshot.connectionState ==
                             ConnectionState.waiting) {
-                          return const CircularProgressIndicator();
+                          return Center(
+                            child: SizedBox(
+                                height: 30.h,
+                                width: 30.w,
+                                child:
+                                    const CircularProgressIndicator.adaptive()),
+                          );
                         } else if (snapshot.hasError) {
                           return Text('Error: ${snapshot.error}');
                         } else if (snapshot.data!.isEmpty) {

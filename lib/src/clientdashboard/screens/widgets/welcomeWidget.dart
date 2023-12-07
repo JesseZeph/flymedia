@@ -15,8 +15,8 @@ class ClientTopWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(
-        left: 15.w,
+      margin: EdgeInsets.symmetric(
+        horizontal: 15.w,
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -36,30 +36,34 @@ class ClientTopWidget extends StatelessWidget {
             ),
           ),
           SizedBox(width: 10.w),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Hello Sophie Light,',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.mainTextColor,
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16.sp,
-                    ),
-              ),
-              Container(
-                width: 321,
-                padding: EdgeInsets.only(top: 5.h),
-                child: Text(
-                  subText,
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Hello Sophie Light,',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.lightMainText,
-                        fontWeight: FontWeight.w200,
-                        fontSize: 12.sp,
+                        color: AppColors.mainTextColor,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16.sp,
                       ),
                 ),
-              ),
-            ],
+                Container(
+                  // width: 321,
+                  padding: EdgeInsets.only(top: 5.h),
+
+                  child: Text(
+                    subText,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppColors.lightMainText,
+                          fontWeight: FontWeight.w200,
+                          fontSize: 12.sp,
+                        ),
+                    overflow: TextOverflow.clip,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
