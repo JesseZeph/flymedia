@@ -60,7 +60,6 @@ class _ViewCampaignListingState extends State<ViewCampaignListing> {
                   return Text('Error: ${snapshot.error}');
                 } else {
                   final campaign = snapshot.data;
-                  print(campaign);
                   return Center(
                     child: ListView(
                       children: [
