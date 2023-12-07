@@ -1,6 +1,8 @@
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flymedia_app/controllers/login_provider.dart';
 import 'package:flymedia_app/src/clientdashboard/dashboardPages/campaign.dart';
+import 'package:provider/provider.dart';
 
 import '../../constants/colors.dart';
 import 'dashboardPages/help.dart';
@@ -23,6 +25,12 @@ class _ClientHomePageState extends State<ClientHomePage> {
     const ClientHelp(),
     const Payment(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<LoginNotifier>().getPref();
+  }
 
   @override
   Widget build(BuildContext context) {

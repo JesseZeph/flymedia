@@ -1,142 +1,185 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flymedia_app/route/route.dart';
-import 'package:flymedia_app/src/authentication/clientAuth/authenticationview.dart';
+import 'package:flymedia_app/controllers/campaign_provider.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/previewListing.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants/colors.dart';
-import '../../../constants/textstring.dart';
-import '../../../controllers/login_provider.dart';
+import '../../../models/response/get_campaign_res.dart';
+import '../../../services/helpers/campaign_helper.dart';
 import '../../../utils/widgets/divider.dart';
 import '../../../utils/widgets/headings.dart';
+import 'applications.dart';
 
-class ViewCampaign extends StatelessWidget {
-  const ViewCampaign({super.key});
+class ViewCampaign extends StatefulWidget {
+  final String id;
+  const ViewCampaign({super.key, required this.id});
+
+  @override
+  State<ViewCampaign> createState() => _ViewCampaignState();
+}
+
+class _ViewCampaignState extends State<ViewCampaign> {
+  late Future<GetCampaignRes> campaign;
+  @override
+  void initState() {
+    getCampaign();
+    super.initState();
+  }
+
+  getCampaign() {
+    campaign = CampaignHelper.getCampaign(widget.id);
+  }
 
   @override
   Widget build(BuildContext context) {
-    var loginNotifier = Provider.of<LoginNotifier>(context);
-    return loginNotifier.loggedIn == false
-        ? const AuthenticationView()
-        : Scaffold(
-            appBar: AppBar(
-              leading: IconButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                icon: const Icon(Icons.arrow_back_ios),
-              ),
+    return Consumer<CampaignsNotifier>(
+      builder: (context, campaignNotifier, child) {
+        campaignNotifier.getCampaign(widget.id);
+        return Scaffold(
+          appBar: AppBar(
+            leading: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(Icons.arrow_back_ios),
             ),
-            body: Center(
-              child: ListView(
-                children: [
-                  Center(
-                    child: Padding(
-                      padding: EdgeInsets.only(top: 15.h),
-                      child: CircleAvatar(
-                        radius: 37.5.w,
-                        backgroundColor: AppColors.mainColor,
-                        child: ClipOval(
-                          child: Image.asset(
-                            'assets/images/secondOnboard.png',
-                            width: 75.w,
-                            height: 75.w,
-                            fit: BoxFit.cover,
-                          ),
-                        ),
-                      ),
+          ),
+          body: FutureBuilder<GetCampaignRes>(
+              future: campaign,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(
+                    child: Container(
+                      padding: EdgeInsets.all(20.r),
+                      child: const CircularProgressIndicator.adaptive(),
                     ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 15.h),
-                    child: Text(
-                      'Tiktok Influencer for a Skincare Brand',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: AppColors.mainTextColor,
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w600,
-                          ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 12.h),
-                    child: Text(
-                      'SkinCeuticals, Singapore',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: AppColors.mainTextColor,
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w400,
-                          ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(top: 12.h),
-                    child: Text(
-                      '10k - 50k USD',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: AppColors.mainTextColor,
-                            fontSize: 16.sp,
-                            fontWeight: FontWeight.w600,
-                          ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  SizedBox(height: 15.h),
-                  TextButton(
-                      onPressed: () {
-                        navigateToPage(context, '/applications');
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(10.r),
-                        decoration: BoxDecoration(
-                            border: Border.all(
-                              width: 1,
-                              color: AppColors.mainColor,
+                  );
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else {
+                  final campaign = snapshot.data;
+                  return Center(
+                    child: ListView(
+                      children: [
+                        Center(
+                          child: Padding(
+                            padding: EdgeInsets.only(top: 15.h),
+                            child: CircleAvatar(
+                              radius: 37.5.w,
+                              backgroundColor: AppColors.mainColor,
+                              backgroundImage: NetworkImage(campaign!.imageUrl),
                             ),
-                            borderRadius: BorderRadius.circular(25.r)),
-                        child: Text(
-                          'View Applications',
-                          style:
-                              Theme.of(context).textTheme.bodyMedium?.copyWith(
-                                    color: AppColors.mainColor,
-                                    fontSize: 12.sp,
-                                    fontWeight: FontWeight.w400,
-                                  ),
+                          ),
                         ),
-                      )),
-                  Padding(
-                    padding: EdgeInsets.only(top: 12.h),
-                    child: const FullDivider(),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      CustomPreviewField(
-                        icon: Icons.location_on_outlined,
-                        text: 'Location',
-                        headerText: 'Singapore',
-                        iconColor: AppColors.dialogBlue,
-                        containerColor: AppColors.dialogBlue.withOpacity(0.2),
-                      ),
-                      CustomPreviewField(
-                        icon: Icons.group,
-                        text: 'Engagements Required',
-                        headerText: '50,000 - 200,000',
-                        iconColor: Colors.orange,
-                        containerColor: Colors.orange.withOpacity(0.2),
-                      ),
-                    ],
-                  ),
-                  const HeadingAndSubText(
-                      heading: 'About Company', subText: AppTexts.dummyText1),
-                  const HeadingAndSubText(
-                      heading: 'Job Description', subText: AppTexts.dummyText2),
-                ],
-              ),
-            ),
-          );
+                        Container(
+                          margin: EdgeInsets.only(top: 15.h),
+                          child: Text(
+                            campaign.jobTitle,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  color: AppColors.mainTextColor,
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 12.h),
+                          child: Text(
+                            campaign.companyDescription,
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  color: AppColors.mainTextColor,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w400,
+                                ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        Container(
+                          margin: EdgeInsets.only(top: 12.h),
+                          child: Text(
+                            '${campaign.rateFrom} - ${campaign.rateTo}',
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  color: AppColors.mainTextColor,
+                                  fontSize: 16.sp,
+                                  fontWeight: FontWeight.w600,
+                                ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                        SizedBox(height: 15.h),
+                        TextButton(
+                            onPressed: () {
+                              Get.to(() => const Applications());
+                            },
+                            child: Container(
+                              padding: EdgeInsets.all(10.r),
+                              decoration: BoxDecoration(
+                                  border: Border.all(
+                                    width: 1,
+                                    color: AppColors.mainColor,
+                                  ),
+                                  borderRadius: BorderRadius.circular(25.r)),
+                              child: Text(
+                                'View Applications',
+                                style: Theme.of(context)
+                                    .textTheme
+                                    .bodyMedium
+                                    ?.copyWith(
+                                      color: AppColors.mainColor,
+                                      fontSize: 12.sp,
+                                      fontWeight: FontWeight.w400,
+                                    ),
+                              ),
+                            )),
+                        Padding(
+                          padding: EdgeInsets.only(top: 12.h),
+                          child: const FullDivider(),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            CustomPreviewField(
+                              icon: Icons.location_on_outlined,
+                              text: 'Location',
+                              headerText: campaign.country,
+                              iconColor: AppColors.dialogBlue,
+                              containerColor:
+                                  AppColors.dialogBlue.withOpacity(0.2),
+                            ),
+                            CustomPreviewField(
+                              icon: Icons.group,
+                              text: 'Engagements Required',
+                              headerText: campaign.viewsRequired,
+                              iconColor: Colors.orange,
+                              containerColor: Colors.orange.withOpacity(0.2),
+                            ),
+                          ],
+                        ),
+                        HeadingAndSubText(
+                            heading: 'About Company',
+                            subText: campaign.companyDescription),
+                        HeadingAndSubText(
+                            heading: 'Job Description',
+                            subText: campaign.jobDescription),
+                      ],
+                    ),
+                  );
+                }
+              }),
+        );
+      },
+    );
   }
 }

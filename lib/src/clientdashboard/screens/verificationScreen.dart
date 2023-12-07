@@ -23,7 +23,7 @@ class ClientVerificationOnboarding extends StatelessWidget {
             subText: 'Welcome to Flymedia!',
           ),
           SizedBox(height: 20.h),
-          const HeadingAndSubText(
+          HeadingAndSubText(
             heading: AppTexts.verificationHeader,
             subText: AppTexts.verificationSubText,
           ),

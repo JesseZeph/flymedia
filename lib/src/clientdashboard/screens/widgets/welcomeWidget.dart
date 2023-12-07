@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flymedia_app/controllers/login_provider.dart';
+import 'package:provider/provider.dart';
 import 'package:unicons/unicons.dart';
 
 import '../../../../constants/colors.dart';
@@ -14,6 +16,7 @@ class ClientTopWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var name = context.watch<LoginNotifier>().fullName;
     return Container(
       margin: EdgeInsets.symmetric(
         horizontal: 15.w,
@@ -41,12 +44,13 @@ class ClientTopWidget extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Hello Sophie Light,',
+                  'Hello ${name.split(' ').first},',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: AppColors.mainTextColor,
                         fontWeight: FontWeight.w700,
                         fontSize: 16.sp,
                       ),
+                  overflow: TextOverflow.ellipsis,
                 ),
                 Container(
                   // width: 321,

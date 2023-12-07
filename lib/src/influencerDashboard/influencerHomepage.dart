@@ -1,8 +1,11 @@
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flymedia_app/controllers/login_provider.dart';
+import 'package:flymedia_app/controllers/profile_provider.dart';
 import 'package:flymedia_app/src/influencerDashboard/dashboardPages/campaignpage.dart';
 import 'package:flymedia_app/src/influencerDashboard/dashboardPages/messagespage.dart';
 import 'package:flymedia_app/src/influencerDashboard/dashboardPages/profile.dart';
+import 'package:provider/provider.dart';
 
 import '../../constants/colors.dart';
 
@@ -21,6 +24,18 @@ class _InfluencerHomePage extends State<InfluencerHomePage> {
     const MessagePage(),
     const ProfilePage(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    loadInfo();
+  }
+
+  loadInfo() async {
+    await context.read<LoginNotifier>().getPref().then((_) => context
+        .read<ProfileProvider>()
+        .getProfile(context.read<LoginNotifier>().userId));
+  }
 
   @override
   Widget build(BuildContext context) {

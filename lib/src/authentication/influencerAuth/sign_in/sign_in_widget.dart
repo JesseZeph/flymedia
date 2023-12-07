@@ -35,7 +35,7 @@ class _InfluencerSignInState extends State<InfluencerSignIn> {
           children: [
             Container(
               margin: EdgeInsets.only(bottom: 32.h),
-              child: const HeadingAndSubText(
+              child: HeadingAndSubText(
                 heading: AppTexts.welcomeBackHeader,
                 subText: AppTexts.welcomeBackSubText,
               ),

@@ -22,14 +22,14 @@ class ModalWidget extends StatelessWidget {
         padding: EdgeInsets.only(top: 140.h),
         child: Container(
           width: 270.w,
-          height: 170.h,
+          // height: 170.h,
           decoration: BoxDecoration(
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withOpacity(0.2),
                 spreadRadius: 20,
                 blurRadius: 40,
-                offset: Offset(0, 3),
+                offset: const Offset(0, 3),
               ),
             ],
             borderRadius: BorderRadius.circular(10),
@@ -37,6 +37,7 @@ class ModalWidget extends StatelessWidget {
           ),
           padding: EdgeInsets.all(20.r),
           child: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
               Text(
                 'Log In to Continue',

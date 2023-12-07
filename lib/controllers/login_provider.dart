@@ -17,6 +17,10 @@ class LoginNotifier extends ChangeNotifier {
 
   bool get obscureText => _obscureText;
   bool get loader => _loader;
+  String _fullName = '';
+  String get fullName => _fullName;
+  String _userId = '';
+  String get userId => _userId;
   bool get entrypoint => _entrypoint;
   bool get loggedIn => _loggedIn ?? false;
   // int get selectedContainer => _selectedContainer ?? 0;
@@ -91,20 +95,24 @@ class LoginNotifier extends ChangeNotifier {
     );
   }
 
-  getPref() async {
+  Future<void> getPref() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     // selectedContainer = prefs.getInt('selectedContainer') ?? 0;
     // entrypoint = prefs.getBool('entrypoint') ?? false;
-    loggedIn = prefs.getBool('loggedIn') ?? false;
-    fullname = prefs.getString('firstname') ?? '';
+    _loggedIn = prefs.getBool('loggedIn') ?? false;
+    _fullName = prefs.getString('fullname') ?? '';
+    _userId = prefs.getString('userId') ?? '';
+    notifyListeners();
+    fullname = prefs.getString('fullname') ?? '';
     userUid = prefs.getString('uid') ?? '';
     profile = prefs.getString('profile') ?? '';
   }
 
   logout() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
     await prefs.setBool('loggedIn', false);
-    await prefs.remove('token');
+    // await prefs.remove('token');
   }
 }

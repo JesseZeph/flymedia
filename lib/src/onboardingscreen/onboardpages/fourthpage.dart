@@ -116,7 +116,7 @@ class FourthOnboard extends StatelessWidget {
               child: Container(
                 width: 325.w,
                 margin: EdgeInsets.only(top: 470.h, left: 15.w),
-                child: const HeadingAndSubText(
+                child: HeadingAndSubText(
                   heading: AppTexts.connectHeader,
                   subText: AppTexts.connectSubText,
                 ),

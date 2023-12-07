@@ -21,7 +21,7 @@ class ForgotPassword extends StatelessWidget {
           children: [
             Container(
               margin: EdgeInsets.only(top: 60.h),
-              child: const HeadingAndSubText(
+              child: HeadingAndSubText(
                 heading: AppTexts.forgotPasswordHeader,
                 subText: AppTexts.forgotPasswordSubText,
               ),

@@ -33,7 +33,7 @@ class _AccountOptionState extends State<AccountOption> {
             Container(
               width: 300.w,
               margin: EdgeInsets.only(top: 50.h, bottom: 20.h),
-              child: const HeadingAndSubText(
+              child: HeadingAndSubText(
                 heading: AppTexts.pathText,
                 subText: AppTexts.pathSubText,
               ),

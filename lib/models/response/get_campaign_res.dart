@@ -1,10 +1,11 @@
 import 'dart:convert';
 
-List<CampaignUploadResponse> campaignResponseFromJson(String str) =>
-    List<CampaignUploadResponse>.from(
-        json.decode(str).map((x) => CampaignUploadResponse.fromJson(x)));
+GetCampaignRes getCampaignResFromJson(String str) =>
+    GetCampaignRes.fromJson(json.decode(str));
 
-class CampaignUploadResponse {
+String getCampaignResToJson(GetCampaignRes data) => json.encode(data.toJson());
+
+class GetCampaignRes {
   final String id;
   final String imageUrl;
   final String companyDescription;
@@ -15,7 +16,7 @@ class CampaignUploadResponse {
   final String viewsRequired;
   final String jobDescription;
 
-  CampaignUploadResponse({
+  GetCampaignRes({
     required this.id,
     required this.imageUrl,
     required this.companyDescription,
@@ -27,9 +28,8 @@ class CampaignUploadResponse {
     required this.jobDescription,
   });
 
-  factory CampaignUploadResponse.fromJson(Map<String, dynamic> json) =>
-      CampaignUploadResponse(
-        id: json['_id'],
+  factory GetCampaignRes.fromJson(Map<String, dynamic> json) => GetCampaignRes(
+        id: json["_id"],
         imageUrl: json["imageUrl"],
         companyDescription: json["companyDescription"],
         jobTitle: json["jobTitle"],

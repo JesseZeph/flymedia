@@ -36,7 +36,7 @@ class _SignInWidgetState extends State<SignInWidget> {
           children: [
             Container(
               margin: EdgeInsets.only(top: 50.h, bottom: 32.h),
-              child: const HeadingAndSubText(
+              child: HeadingAndSubText(
                 heading: AppTexts.welcomeBackHeader,
                 subText: AppTexts.welcomeBackSubText,
               ),

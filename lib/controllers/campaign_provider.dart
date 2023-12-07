@@ -3,29 +3,37 @@ import 'package:flymedia_app/models/requests/campaign/campain_upload.dart';
 import 'package:flymedia_app/models/response/campaign_upload_response.dart';
 import 'package:flymedia_app/services/helpers/campaign_helper.dart';
 
+import '../models/response/get_campaign_res.dart';
+
 class CampaignsNotifier extends ChangeNotifier {
-  late Future<List<CampaignUploadResponse>> campaignList;
+  List<CampaignUploadResponse> campaignList = [];
   bool _isUploading = false;
   bool get isUploading => _isUploading;
-  // late Future<GetJobRes> job;
+  bool _isFetching = false;
+  bool get isFetching => _isFetching;
+  late Future<GetCampaignRes> campaign;
 
-  Future<List<CampaignUploadResponse>> getCampaigns() {
-    campaignList = CampaignHelper.getCampaigns();
-    return campaignList;
+  Future<void> getCampaigns() async {
+    _isFetching = !_isFetching;
+    campaignList = await CampaignHelper.getCampaigns();
+    _isFetching = !_isFetching;
+    notifyListeners();
+    // return campaignList;
   }
 
   Future<List<Object>> postCampaign(CampaignUploadRequest details) async {
     _isUploading = !_isUploading;
     notifyListeners();
     List<Object> response = await CampaignHelper.uploadCampaign(details);
+    getCampaigns();
     _isUploading = !_isUploading;
     notifyListeners();
 
     return response;
   }
 
-  // Future<GetJobRes> getJob(String jobId) {
-  //   job = JobsHelper.getJob(jobId);
-  //   return job;
-  // }
+  Future<GetCampaignRes> getCampaign(String campaignId) {
+    campaign = CampaignHelper.getCampaign(campaignId);
+    return campaign;
+  }
 }

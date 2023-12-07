@@ -14,7 +14,6 @@ import 'package:provider/provider.dart';
 import '../../../constants/colors.dart';
 import '../../../route/route.dart';
 import '../../../utils/widgets/headings.dart';
-// import 'companyDetails.dart';
 
 class PreviewListing extends StatelessWidget {
   const PreviewListing({super.key, required this.campaignDetails});
@@ -22,7 +21,6 @@ class PreviewListing extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final enteredText = ref.watch(enteredTextProvider.notifier).state;
     bool isLoading = context.watch<CampaignsNotifier>().isUploading;
 
     return PopScope(
