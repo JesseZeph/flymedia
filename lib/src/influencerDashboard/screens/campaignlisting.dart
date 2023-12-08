@@ -24,8 +24,8 @@ class _ViewCampaignListingState extends State<ViewCampaignListing> {
   late Future<GetCampaignRes> campaign;
   @override
   void initState() {
-    getCampaign();
     super.initState();
+    getCampaign();
   }
 
   getCampaign() {

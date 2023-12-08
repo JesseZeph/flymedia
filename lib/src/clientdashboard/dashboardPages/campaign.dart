@@ -22,6 +22,12 @@ class Campaign extends StatefulWidget {
 
 class _CampaignState extends State<Campaign> {
   @override
+  void initState() {
+    super.initState();
+    context.read<CampaignsNotifier>().getCampaigns();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Consumer<CampaignsNotifier>(
       builder: (context, campaignNotifier, child) {

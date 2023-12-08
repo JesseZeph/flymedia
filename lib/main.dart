@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/controllers/campaign_provider.dart';
+import 'package:flymedia_app/controllers/profile_provider.dart';
 import 'package:flymedia_app/src/clientdashboard/clientHomepage.dart';
 import 'package:flymedia_app/src/influencerDashboard/influencerHomepage.dart';
 import 'package:flymedia_app/src/onboardingscreen/onboarding.dart';
@@ -33,6 +34,7 @@ void main() async {
       ChangeNotifierProvider(create: (context) => OnBoardNotifier()),
       ChangeNotifierProvider(create: (context) => LoginNotifier()),
       ChangeNotifierProvider(create: (context) => SignUpNotifier()),
+      ChangeNotifierProvider(create: (context) => ProfileProvider()),
       ChangeNotifierProvider(create: (context) => CampaignsNotifier()),
     ],
     child: ScreenUtilInit(

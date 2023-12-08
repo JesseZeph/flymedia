@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/colors.dart';
 import 'package:flymedia_app/constants/textstring.dart';
+import 'package:flymedia_app/route/route.dart';
+import 'package:flymedia_app/src/clientdashboard/clientHomepage.dart';
 
 import '../../authentication/components/roundedbutton.dart';
 
@@ -51,7 +53,7 @@ class CampaignLive extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                print("Tapped");
+                pushToAndClearStack(context, const ClientHomePage());
               },
               child: const RoundedButtonWidget(
                 title: 'Go to Homepage',

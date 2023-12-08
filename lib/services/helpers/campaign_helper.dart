@@ -100,11 +100,16 @@ class CampaignHelper {
       File fileToUpload = File(requestDetails.imageUrl);
       var request = https.MultipartRequest(
           'POST', Uri.https(Config.apiUrl, Config.campaignUpload))
-        ..fields.addAll(requestDetails.toJson())
+        ..fields.addAll({
+          "user_id": "${prefs.getString("userId")}",
+          ...requestDetails.toJson()
+        })
         ..headers
             .addAll({'Authorization': 'Bearer ${prefs.getString("token")}'})
         ..files.add(https.MultipartFile.fromBytes(
-            'image', fileToUpload.readAsBytesSync()));
+            'image', fileToUpload.readAsBytesSync(),
+            filename: fileToUpload.path.split(Platform.pathSeparator).last));
+
       var response = await request.send().timeout(
             const Duration(seconds: 20),
             onTimeout: () =>
@@ -115,6 +120,8 @@ class CampaignHelper {
       final decodedResponse = jsonDecode(finalResponse.body);
       if (response.statusCode == 200 || response.statusCode == 201) {
         return [decodedResponse['success'], 'Campaign posted successfully'];
+      } else if (response.statusCode == 504) {
+        return [false, 'Network Timeout'];
       }
       return [decodedResponse['success'], decodedResponse['message']];
     } catch (e, s) {

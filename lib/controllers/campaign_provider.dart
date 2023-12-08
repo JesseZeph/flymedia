@@ -7,27 +7,29 @@ import '../models/response/get_campaign_res.dart';
 import '../models/response/get_specific_campaign.dart';
 
 class CampaignsNotifier extends ChangeNotifier {
-  late Future<List<CampaignUploadResponse>> campaignList;
-  late Future<List<GetSpecificClientCampaignRes>> userCampaignList;
-
+  List<CampaignUploadResponse> campaignList = [];
   bool _isUploading = false;
   bool get isUploading => _isUploading;
+  bool _isFetching = false;
+  bool get isFetching => _isFetching;
   late Future<GetCampaignRes> campaign;
 
-  Future<List<CampaignUploadResponse>> getCampaigns() {
-    campaignList = CampaignHelper.getCampaigns();
-    return campaignList;
+  Future<void> getCampaigns() async {
+    _isFetching = !_isFetching;
+    campaignList = await CampaignHelper.getCampaigns();
+    _isFetching = !_isFetching;
+    notifyListeners();
   }
 
   Future<List<GetSpecificClientCampaignRes>> getUserCampaigns(String userId) {
-    userCampaignList = CampaignHelper.getUserCampaigns(userId);
-    return userCampaignList;
+    return CampaignHelper.getUserCampaigns(userId);
   }
 
   Future<List<Object>> postCampaign(CampaignUploadRequest details) async {
     _isUploading = !_isUploading;
     notifyListeners();
     List<Object> response = await CampaignHelper.uploadCampaign(details);
+    await getCampaigns();
     _isUploading = !_isUploading;
     notifyListeners();
 
