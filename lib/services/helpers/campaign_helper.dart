@@ -8,6 +8,7 @@ import 'package:http/http.dart' as https;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/response/get_campaign_res.dart';
+import '../../models/response/get_specific_campaign.dart';
 import '../config.dart';
 
 class CampaignHelper {
@@ -25,6 +26,35 @@ class CampaignHelper {
     if (response.statusCode == 200) {
       var jobList = campaignResponseFromJson(response.body);
       return jobList;
+    } else {
+      throw Exception('Failed to load campaign');
+    }
+  }
+
+  static Future<List<GetSpecificClientCampaignRes>> getUserCampaigns(
+      String userId) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('token');
+
+    if (token == null) {
+      throw Exception('Failed to load campaign');
+    }
+
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+      'authorization': 'Bearer $token',
+    };
+
+    var url =
+        Uri.https(Config.apiUrl, "${Config.specificUserCampaign}/$userId");
+    print(url);
+
+    var response = await client.get(url, headers: requestHeaders);
+
+    if (response.statusCode == 200) {
+      var specificClientCampaign =
+          getSpecificClientCampaignResFromJson(response.body);
+      return specificClientCampaign;
     } else {
       throw Exception('Failed to load campaign');
     }

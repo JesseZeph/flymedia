@@ -2,18 +2,19 @@ import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/colors.dart';
-import 'package:flymedia_app/models/response/campaign_upload_response.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/companyDetails.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../../../controllers/campaign_provider.dart';
+import '../../../models/response/get_specific_campaign.dart';
 import '../screens/view_campaign.dart';
 import '../screens/widgets/appbar.dart';
 import '../screens/widgets/welcomeWidget.dart';
 
 class Campaign extends StatefulWidget {
-  const Campaign({super.key});
+  final String id;
+  const Campaign({super.key, required this.id});
 
   @override
   State<Campaign> createState() => _CampaignState();
@@ -24,7 +25,7 @@ class _CampaignState extends State<Campaign> {
   Widget build(BuildContext context) {
     return Consumer<CampaignsNotifier>(
       builder: (context, campaignNotifier, child) {
-        campaignNotifier.getCampaigns();
+        campaignNotifier.getUserCampaigns(widget.id);
         return Scaffold(
           appBar: PreferredSize(
             preferredSize: Size.fromHeight(40.h),
@@ -94,8 +95,8 @@ class _CampaignState extends State<Campaign> {
                   ),
                 ),
                 Expanded(
-                  child: FutureBuilder<List<CampaignUploadResponse>>(
-                    future: campaignNotifier.campaignList,
+                  child: FutureBuilder<List<GetSpecificClientCampaignRes>>(
+                    future: campaignNotifier.userCampaignList,
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(
@@ -109,17 +110,17 @@ class _CampaignState extends State<Campaign> {
                       } else if (snapshot.data!.isEmpty) {
                         return const Text('No Campaign Available');
                       } else {
-                        final campaigns = snapshot.data;
+                        final userCampaigns = snapshot.data;
                         return ListView.builder(
-                            itemCount: campaigns!.length,
+                            itemCount: userCampaigns!.length,
                             scrollDirection: Axis.vertical,
                             physics: const AlwaysScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
-                              var campaign = campaigns[index];
+                              var userCampaign = userCampaigns[index];
                               return Container(
                                 padding: EdgeInsets.symmetric(horizontal: 22.w),
                                 child: ClientCampaignListing(
-                                  campaign: campaign,
+                                  userCampaign: userCampaign,
                                 ),
                               );
                             });
@@ -137,10 +138,10 @@ class _CampaignState extends State<Campaign> {
 }
 
 class ClientCampaignListing extends StatelessWidget {
-  final CampaignUploadResponse campaign;
+  final GetSpecificClientCampaignRes userCampaign;
   const ClientCampaignListing({
     super.key,
-    required this.campaign,
+    required this.userCampaign,
   });
 
   @override
@@ -149,7 +150,7 @@ class ClientCampaignListing extends StatelessWidget {
       child: GestureDetector(
           onTap: () {
             Get.to(() => ViewCampaign(
-                  id: campaign.id,
+                  id: userCampaign.id,
                 ));
           },
           child: Container(
@@ -168,7 +169,7 @@ class ClientCampaignListing extends StatelessWidget {
                   child: CircleAvatar(
                     backgroundColor: AppColors.dialogColor,
                     radius: 50.w,
-                    backgroundImage: NetworkImage(campaign.imageUrl),
+                    backgroundImage: NetworkImage(userCampaign.imageUrl),
                   ),
                 ),
                 SizedBox(width: 10.w),
@@ -176,7 +177,7 @@ class ClientCampaignListing extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      campaign.jobTitle,
+                      userCampaign.jobTitle,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: AppColors.mainTextColor,
                             fontWeight: FontWeight.w700,
@@ -184,7 +185,7 @@ class ClientCampaignListing extends StatelessWidget {
                           ),
                     ),
                     Text(
-                      campaign.companyDescription,
+                      userCampaign.companyDescription,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: AppColors.lightMainText,
                             fontWeight: FontWeight.w200,
@@ -192,7 +193,7 @@ class ClientCampaignListing extends StatelessWidget {
                           ),
                     ),
                     Text(
-                      campaign.country,
+                      userCampaign.country,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: AppColors.lightMainText,
                             fontWeight: FontWeight.w200,

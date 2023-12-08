@@ -1,5 +1,6 @@
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flymedia_app/constants/app_constants.dart';
 import 'package:flymedia_app/src/clientdashboard/dashboardPages/campaign.dart';
 
 import '../../constants/colors.dart';
@@ -8,7 +9,9 @@ import 'dashboardPages/messages.dart';
 import 'dashboardPages/payment.dart';
 
 class ClientHomePage extends StatefulWidget {
-  const ClientHomePage({super.key});
+  const ClientHomePage({
+    super.key,
+  });
 
   @override
   State<ClientHomePage> createState() => _ClientHomePageState();
@@ -18,7 +21,9 @@ class _ClientHomePageState extends State<ClientHomePage> {
   int _selectedIndex = 0;
 
   static final List<Widget> _widgetOptions = <Widget>[
-    const Campaign(),
+    Campaign(
+      id: userUid,
+    ),
     const Messages(),
     const ClientHelp(),
     const Payment(),
