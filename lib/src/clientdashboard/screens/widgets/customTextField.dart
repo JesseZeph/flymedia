@@ -10,8 +10,9 @@ class CustomInputField extends StatelessWidget {
   final int maxLength;
   final String hintText;
   final Function(String) onChanged;
-  late final List<TextInputFormatter> inputFormatters;
+  final List<TextInputFormatter>? inputFormatters;
   final TextEditingController? controller;
+  final String? Function(String?)? validate;
 
   CustomInputField({
     Key? key,
@@ -20,7 +21,8 @@ class CustomInputField extends StatelessWidget {
     required this.onChanged,
     this.maxLength = 1000,
     required this.hintText,
-    List<TextInputFormatter>? inputFormatters, // Change the type to nullable
+    this.inputFormatters,
+    this.validate, // Change the type to nullable
   }) : super(key: key) {
     // Create a new list with the default formatter
     final defaultFormatters = <TextInputFormatter>[
@@ -28,10 +30,12 @@ class CustomInputField extends StatelessWidget {
     ];
 
     // Combine the default formatter with any additional formatters
-    this.inputFormatters = inputFormatters != null
-        ? defaultFormatters + inputFormatters
+    inputFormat = inputFormatters != null
+        ? [...defaultFormatters, ...inputFormatters!]
         : defaultFormatters;
   }
+
+  List<TextInputFormatter> inputFormat = [];
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +49,7 @@ class CustomInputField extends StatelessWidget {
         ),
         borderRadius: BorderRadius.circular(8.r),
       ),
-      child: TextField(
+      child: TextFormField(
         controller: controller,
         maxLines: maxLines,
         maxLength: maxLength,
@@ -60,6 +64,7 @@ class CustomInputField extends StatelessWidget {
                 fontWeight: FontWeight.w400,
               ),
         ),
+        validator: validate,
       ),
     );
   }

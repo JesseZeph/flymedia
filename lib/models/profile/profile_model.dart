@@ -10,6 +10,8 @@ class ProfileModel {
   String? noOfTikTokFollowers;
   String? noOfTikTokLikes;
   String? postsViews;
+  String? email;
+  String? profileLink;
   List<String>? niches;
   String? bio;
   ProfileModel({
@@ -20,6 +22,8 @@ class ProfileModel {
     this.noOfTikTokFollowers,
     this.noOfTikTokLikes,
     this.postsViews,
+    this.email,
+    this.profileLink,
     this.niches,
     this.bio,
   });
@@ -32,6 +36,8 @@ class ProfileModel {
     ValueGetter<String?>? noOfTikTokFollowers,
     ValueGetter<String?>? noOfTikTokLikes,
     ValueGetter<String?>? postsViews,
+    ValueGetter<String?>? email,
+    ValueGetter<String?>? profileLink,
     ValueGetter<List<String>?>? niches,
     ValueGetter<String?>? bio,
   }) {
@@ -44,35 +50,42 @@ class ProfileModel {
           noOfTikTokFollowers?.call() ?? this.noOfTikTokFollowers,
       noOfTikTokLikes: noOfTikTokLikes?.call() ?? this.noOfTikTokLikes,
       postsViews: postsViews?.call() ?? this.postsViews,
+      email: email?.call() ?? this.email,
+      profileLink: profileLink?.call() ?? this.profileLink,
       niches: niches?.call() ?? this.niches,
       bio: bio?.call() ?? this.bio,
     );
   }
 
-  Map<String, dynamic> toMap() {
+  Map<String, String> toMap() {
     return {
       'id': id,
-      'imageUrl': imageUrl,
-      'firstAndLastName': firstAndLastName,
-      'location': location,
-      'noOfTikTokFollowers': noOfTikTokFollowers,
-      'noOfTikTokLikes': noOfTikTokLikes,
-      'postsViews': postsViews,
-      'niches': niches,
-      'bio': bio,
+      'imageUrl': imageUrl ?? '',
+      'firstAndLastName': firstAndLastName ?? '',
+      'location': location ?? '',
+      'noOfTikTokFollowers': noOfTikTokFollowers ?? '',
+      'noOfTikTokLikes': noOfTikTokLikes ?? '',
+      'postsViews': postsViews ?? '',
+      'email': email ?? '',
+      'tikTokLink': profileLink ?? '',
+      'bio': bio ?? '',
+      ...{for (var element in niches ?? []) 'niches[]': element}
     };
   }
 
   factory ProfileModel.fromMap(Map<String, dynamic> map) {
     return ProfileModel(
-      id: map['id'] ?? '',
-      imageUrl: map['imageUrl'],
+      id: map['_id'] ?? '',
+      imageUrl: map['imageURL'],
       firstAndLastName: map['firstAndLastName'],
       location: map['location'],
       noOfTikTokFollowers: map['noOfTikTokFollowers'],
       noOfTikTokLikes: map['noOfTikTokLikes'],
       postsViews: map['postsViews'],
-      niches: List<String>.from(map['niches']),
+      email: map['email'],
+      profileLink: map.containsKey('tikTokLink') ? map['tikTokLink'] : null,
+      niches: List<String>.from(
+          (map['niches'] as List<dynamic>).map((niche) => niche['name'])),
       bio: map['bio'],
     );
   }
@@ -82,8 +95,21 @@ class ProfileModel {
   factory ProfileModel.fromJson(String source) =>
       ProfileModel.fromMap(json.decode(source));
 
+  String formatFigures(String figure) {
+    int fig = int.tryParse(figure) ?? 0;
+    if (fig < 1000) {
+      return fig.toString();
+    } else if (fig < 1000000) {
+      double result = fig / 1000.0;
+      return '${result.toStringAsFixed(result.truncateToDouble() == result ? 0 : 1)}k';
+    } else {
+      double result = fig / 1000000.0;
+      return '${result.toStringAsFixed(result.truncateToDouble() == result ? 0 : 1)}M';
+    }
+  }
+
   @override
   String toString() {
-    return 'ProfileModel(id: $id, imageUrl: $imageUrl, firstAndLastName: $firstAndLastName, location: $location, noOfTikTokFollowers: $noOfTikTokFollowers, noOfTikTokLikes: $noOfTikTokLikes, postsViews: $postsViews, niches: $niches, bio: $bio)';
+    return 'ProfileModel(id: $id, imageUrl: $imageUrl, firstAndLastName: $firstAndLastName, location: $location, email: $email, noOfTikTokFollowers: $noOfTikTokFollowers, noOfTikTokLikes: $noOfTikTokLikes, postsViews: $postsViews, profileLink: $profileLink, niches: $niches, bio: $bio)';
   }
 }

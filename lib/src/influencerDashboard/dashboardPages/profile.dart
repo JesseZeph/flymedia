@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flymedia_app/route/route.dart';
+import 'package:flymedia_app/src/influencerDashboard/screens/profile_edit.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants/colors.dart';
@@ -24,6 +24,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     var isLoggedIn = context.watch<LoginNotifier>().loggedIn;
     var profileComplete = context.watch<ProfileProvider>().userProfile != null;
+    var profile = context.watch<ProfileProvider>().userProfile;
     return !isLoggedIn
         ? ModalWidget(context: context)
         : Scaffold(
@@ -39,7 +40,12 @@ class _ProfilePageState extends State<ProfilePage> {
                   ? [
                       TextButton(
                         onPressed: () {
-                          navigateToPage(context, '/editProfile');
+                          // navigateToPage(context, '/editProfile');
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => EditProfile(
+                              profile: profile,
+                            ),
+                          ));
                         },
                         child: Text(
                           'Edit',
@@ -108,7 +114,13 @@ class _ProfilePageState extends State<ProfilePage> {
                                 SizedBox(height: 10.h),
                                 TextButton(
                                   onPressed: () {
-                                    navigateToPage(context, '/editProfile');
+                                    // navigateToPage(context, '/editProfile');
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
+                                      builder: (context) => EditProfile(
+                                        profile: profile,
+                                      ),
+                                    ));
                                   },
                                   child: Container(
                                     padding: EdgeInsets.all(10.r),
@@ -162,8 +174,9 @@ class _ProfilePageState extends State<ProfilePage> {
                               radius: 37.5.w,
                               backgroundColor: AppColors.mainColor,
                               child: ClipOval(
-                                child: Image.asset(
-                                  'assets/images/secondOnboard.png',
+                                child: Image.network(
+                                  // 'assets/images/secondOnboard.png',
+                                  profile?.imageUrl ?? '',
                                   width: 75.w,
                                   height: 75.w,
                                   fit: BoxFit.cover,
@@ -175,7 +188,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         Container(
                           margin: EdgeInsets.only(top: 15.h),
                           child: Text(
-                            'Sophie Light',
+                            // 'Sophie Light',
+                            profile?.firstAndLastName ?? 'Nil',
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyMedium
@@ -190,7 +204,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         Container(
                           margin: EdgeInsets.only(top: 12.h),
                           child: Text(
-                            ' Singapore',
+                            // 'Singapore',
+                            profile?.location ?? 'Nil',
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyMedium
@@ -205,7 +220,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         Container(
                           margin: EdgeInsets.only(top: 12.h),
                           child: Text(
-                            'https://www.tiktok.com/@sophielight',
+                            // 'https://www.tiktok.com/@sophielight',
+                            profile?.profileLink ?? 'Nil',
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyMedium
@@ -222,19 +238,23 @@ class _ProfilePageState extends State<ProfilePage> {
                           padding: EdgeInsets.only(top: 12.h),
                           child: const FullDivider(),
                         ),
-                        const Row(
+                        Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             CustomPreview(
-                              headerText: '401.7k',
+                              headerText: profile?.formatFigures(
+                                      profile.noOfTikTokFollowers ?? '') ??
+                                  '',
                               text: 'Followers',
                             ),
                             CustomPreview(
-                              headerText: '600k',
-                              text: 'Avg No. of Views',
+                              headerText: profile?.postsViews ?? 'Nil',
+                              text: 'Avg Views',
                             ),
                             CustomPreview(
-                              headerText: '27.1m',
+                              headerText: profile?.formatFigures(
+                                      profile.noOfTikTokLikes ?? '') ??
+                                  '',
                               text: 'Likes',
                             ),
                           ],
@@ -249,12 +269,11 @@ class _ProfilePageState extends State<ProfilePage> {
                             text: 'Niche',
                           ),
                         ),
-                        const Row(
-                          children: [
-                            NichesWidget(text: 'Beauty'),
-                            NichesWidget(text: 'Business & Fashion'),
-                          ],
-                        ),
+                        Wrap(
+                            children: profile?.niches
+                                    ?.map((niche) => NichesWidget(text: niche))
+                                    .toList() ??
+                                []),
                         Padding(
                           padding: EdgeInsets.only(top: 14.h),
                           child: const FullDivider(),
@@ -269,7 +288,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           width: 321.w,
                           padding: EdgeInsets.symmetric(horizontal: 22.w),
                           child: Text(
-                            "Experienced makeup artist and skincare expert with a passion for creating captivating beauty content. My journey is a testament to my dedication, from stunning transformations to in-depth skincare reviews, I've left no beauty stone unturned. Join forces with me to bring your brand to the forefront of beauty on TikTok. Let's collaborate and elevate the world of beauty together.",
+                            // "Experienced makeup artist and skincare expert with a passion for creating captivating beauty content. My journey is a testament to my dedication, from stunning transformations to in-depth skincare reviews, I've left no beauty stone unturned. Join forces with me to bring your brand to the forefront of beauty on TikTok. Let's collaborate and elevate the world of beauty together.",
+                            profile?.bio ?? '',
                             style: Theme.of(context)
                                 .textTheme
                                 .bodyMedium

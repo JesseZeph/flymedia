@@ -5,34 +5,39 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../constants/colors.dart';
 
 class AlertLoader extends StatelessWidget {
-  const AlertLoader({super.key});
+  const AlertLoader({super.key, required this.message});
+  final String message;
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog.adaptive(
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(
-            height: 30.h,
-            width: 30.h,
-            child: LoadingAnimationWidget.inkDrop(
-                color: AppColors.mainColor, size: 30),
-          ),
-          SizedBox(
-            height: 20.h,
-          ),
-          Text(
-            'Posting Campaign...',
-            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                  color: AppColors.mainTextColor,
-                  fontSize: 14.sp,
-                  fontWeight: FontWeight.w600,
-                ),
-            textAlign: TextAlign.center,
-          ),
-        ],
+      content: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            SizedBox(
+              height: 30.h,
+              width: 30.h,
+              child: LoadingAnimationWidget.inkDrop(
+                  color: AppColors.mainColor, size: 30),
+            ),
+            SizedBox(
+              height: 20.h,
+            ),
+            Text(
+              '$message...',
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.mainTextColor,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+              textAlign: TextAlign.center,
+              overflow: TextOverflow.clip,
+            ),
+          ],
+        ),
       ),
     );
   }

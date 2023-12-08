@@ -9,6 +9,7 @@ class TextInputField extends StatelessWidget {
   final String? errorText;
   final bool obscureText;
   final TextEditingController? controller;
+  final String? Function(String?)? validator;
   const TextInputField({
     super.key,
     required this.hintText,
@@ -16,6 +17,7 @@ class TextInputField extends StatelessWidget {
     this.errorText,
     this.controller,
     this.obscureText = false,
+    this.validator,
   });
 
   @override
@@ -32,7 +34,7 @@ class TextInputField extends StatelessWidget {
                   width: 1,
                   color: AppColors.lightHintTextColor.withOpacity(0.5)),
               borderRadius: BorderRadius.circular(8.r)),
-          child: TextField(
+          child: TextFormField(
             onChanged: onChanged,
             obscureText: obscureText,
             controller: controller,
@@ -43,6 +45,8 @@ class TextInputField extends StatelessWidget {
                     fontSize: 14.sp,
                     color: AppColors.lightHintTextColor.withOpacity(0.5),
                     fontWeight: FontWeight.w400)),
+            validator: validator,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
           ),
         ),
         SizeFadeSwitcher(

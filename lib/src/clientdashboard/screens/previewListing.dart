@@ -224,7 +224,10 @@ class PreviewListing extends StatelessWidget {
                 ],
               ),
             ),
-            if (isLoading) const AlertLoader()
+            if (isLoading)
+              const AlertLoader(
+                message: 'Posting campaign',
+              )
           ],
         ),
       ),

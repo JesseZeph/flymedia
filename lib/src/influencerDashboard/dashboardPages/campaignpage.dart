@@ -262,7 +262,7 @@ class CampaignListTile extends StatelessWidget {
     return FittedBox(
         child: GestureDetector(
       onTap: () {
-        Get.to(() => ViewCampaignListing(id: campaign.id));
+        Get.to(() => ViewCampaignListing(id: campaign));
       },
       child: Container(
         width: 321.w,

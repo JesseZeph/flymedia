@@ -7,7 +7,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/app_constants.dart';
 import '../src/clientdashboard/clientHomepage.dart';
-import '../src/clientdashboard/dashboardPages/campaign.dart';
 
 class LoginNotifier extends ChangeNotifier {
   bool _obscureText = true;

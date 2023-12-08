@@ -17,9 +17,12 @@ class ProfileProvider extends ChangeNotifier with ProfileHelper {
 
   Future<List<dynamic>> updateUserProfile(
       String userId, ProfileModel details, hasFile, isUpdate) async {
+    print("======> request body : \n ${details.toJson()} \n ========>");
+
     _isFetchingProfile = !_isFetchingProfile;
     notifyListeners();
-    var resp = await updateProfile(userId, {}, hasFile, isPutRequest: isUpdate);
+    var resp = await updateProfile(userId, details.toMap(), hasFile,
+        isPutRequest: isUpdate);
     _isFetchingProfile = !_isFetchingProfile;
     notifyListeners();
     return resp;

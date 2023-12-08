@@ -102,7 +102,7 @@ class _CampaignState extends State<Campaign> {
                 ),
                 Expanded(
                   child: FutureBuilder<List<GetSpecificClientCampaignRes>>(
-                    future: campaignNotifier.userCampaignList,
+                    future: campaignNotifier.getUserCampaigns(widget.id),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return Center(

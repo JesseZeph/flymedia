@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class DropDowView extends StatefulWidget {
-  const DropDowView({Key? key, this.onSelect}) : super(key: key);
+  const DropDowView({Key? key, this.onSelect, this.initialValue})
+      : super(key: key);
   final Function(String?)? onSelect;
+  final String? initialValue;
 
   @override
   State<DropDowView> createState() => _DropDowViewState();
@@ -13,6 +15,12 @@ class _DropDowViewState extends State<DropDowView> {
   String? selectedFollowing;
   TextEditingController searchController = TextEditingController();
   bool isMenuOpen = false;
+
+  @override
+  void initState() {
+    super.initState();
+    selectedFollowing = widget.initialValue;
+  }
 
   @override
   Widget build(BuildContext context) {

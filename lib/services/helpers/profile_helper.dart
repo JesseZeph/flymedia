@@ -35,14 +35,14 @@ class ProfileHelper {
   }
 
   Future<List<dynamic>> updateProfile(
-      String userId, Map<String, dynamic> details, bool hasFile,
+      String userId, Map<String, String> details, bool hasFile,
       {bool isPutRequest = false}) async {
     try {
       if (hasFile) {
-        File file = File(details['imageUrl']);
+        File file = File(details['imageUrl'] ?? '');
         var request = http.MultipartRequest(isPutRequest ? 'PUT' : "POST",
             Uri.https(Config.apiUrl, Config.influencerProfile + userId))
-          ..fields.addAll(details as Map<String, String>)
+          ..fields.addAll(details)
           ..headers.addAll(await getHeaders())
           ..files.add(http.MultipartFile.fromBytes(
               'influencerImage', file.readAsBytesSync(),
@@ -59,22 +59,23 @@ class ProfileHelper {
         }
         var finalResponse = await http.Response.fromStream(response);
         var decodedResponse = jsonDecode(finalResponse.body);
+        getUserProfile(userId);
         return [decodedResponse['success'], decodedResponse['message']];
+      } else {
+        final response = await http
+            .put(
+                Uri.https(Config.apiUrl,
+                    '${Config.influencerProfile}${details['id'] ?? ''}'),
+                headers: await getHeaders(),
+                body: details)
+            .timeout(
+              const Duration(seconds: 15),
+              onTimeout: () => http.Response('Network Timeout', 504),
+            );
+        print("======> test response : \n ${response.body} \n ========>");
+        print("======> test status : \n ${response.statusCode} \n ========>");
+        if (response.statusCode == 200) {}
       }
-      // final response = await http
-      //     .get(Uri.https(Config.apiUrl, Config.influencerProfile + userId),
-      //         headers: await getHeaders())
-      //     .timeout(
-      //       const Duration(seconds: 15),
-      //       onTimeout: () => http.Response('Network Timeout', 504),
-      //     );
-      // if (response.statusCode == 200) {
-      //   final decodedResponse = jsonDecode(response.body);
-      //   if ((decodedResponse as Map).containsKey('_id')) {
-      //     profile =
-      //         ProfileModel.fromMap(decodedResponse as Map<String, dynamic>);
-      //   }
-      // }
     } catch (e, s) {
       debugPrint("====> error in getting profile : ${e.toString()}");
       debugPrintStack(stackTrace: s);

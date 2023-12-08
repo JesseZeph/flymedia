@@ -1,4 +1,4 @@
-import 'dart:typed_data';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,20 +11,39 @@ import '../../../constants/colors.dart';
 class ProfilePicturePicker extends StatefulWidget {
   const ProfilePicturePicker({
     Key? key,
+    required this.onselect,
+    this.isEdit = true,
+    this.imageUrl,
   }) : super(key: key);
+
+  final Function(String) onselect;
+  final bool isEdit;
+  final String? imageUrl;
 
   @override
   _ProfilePicturePickerState createState() => _ProfilePicturePickerState();
 }
 
 class _ProfilePicturePickerState extends State<ProfilePicturePicker> {
-  Uint8List? _image;
+  String? _image;
+  late bool isEdits;
 
   void selectImage() async {
-    Uint8List img = await pickImage(ImageSource.gallery);
-    setState(() {
-      _image = img;
-    });
+    String? img = await pickImage(ImageSource.gallery);
+    if (img != null) {
+      widget.onselect(img);
+      isEdits = false;
+      setState(() {
+        _image = img;
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _image = widget.imageUrl;
+    isEdits = widget.isEdit;
   }
 
   @override
@@ -34,22 +53,49 @@ class _ProfilePicturePickerState extends State<ProfilePicturePicker> {
         selectImage();
       },
       child: _image != null
-          ? Column(
-              children: [
-                Container(
-                  width: 325.w,
-                  padding: EdgeInsets.symmetric(vertical: 5.w),
-                  decoration: BoxDecoration(
-                    color: AppColors.dialogColor.withOpacity(0.5),
-                    borderRadius: BorderRadius.circular(8.r),
-                  ),
-                  child: CircleAvatar(
-                    radius: 50.r,
-                    backgroundImage: MemoryImage(_image!),
-                  ),
+          ? SizedBox(
+              height: 80.h,
+              width: 80.w,
+              child: FittedBox(
+                fit: BoxFit.contain,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(100).r,
+                  child: isEdits
+                      ? Image.network(
+                          _image ?? '',
+                          fit: BoxFit.contain,
+                        )
+                      : Image.file(
+                          File(_image ?? ''),
+                          fit: BoxFit.contain,
+                        ),
                 ),
-              ],
-            )
+              ))
+          // Column(
+          //     children: [
+          //       Container(
+          //         width: 325.w,
+          //         padding: EdgeInsets.symmetric(vertical: 5.w),
+          //         decoration: BoxDecoration(
+          //           color: AppColors.dialogColor.withOpacity(0.5),
+          //           borderRadius: BorderRadius.circular(8.r),
+          //         ),
+          //         child: SizedBox(
+          //           height: 100.h,
+          //           width: 100.w,
+          //           child: widget.isEdit
+          //               ? Image.network(
+          //                   _image ?? '',
+          //                   fit: BoxFit.contain,
+          //                 )
+          //               : Image.file(
+          //                   File(_image ?? ''),
+          //                   fit: BoxFit.contain,
+          //                 ),
+          //         ),
+          //       ),
+          //     ],
+          //   )
           : Container(
               width: 325.w,
               margin: EdgeInsets.only(top: 15.h, left: 18.h, right: 18.h),
@@ -96,11 +142,11 @@ class _ProfilePicturePickerState extends State<ProfilePicturePicker> {
   }
 }
 
-pickImage(ImageSource source) async {
-  final ImagePicker _imagePicker = ImagePicker();
-  XFile? _file = await _imagePicker.pickImage(source: source);
-  if (_file != null) {
-    return await _file.readAsBytes();
+Future<String?> pickImage(ImageSource source) async {
+  final ImagePicker imagePicker = ImagePicker();
+  XFile? file = await imagePicker.pickImage(source: source);
+  if (file != null) {
+    return file.path;
   }
-  print('IMAGE NOT PICKED');
+  return null;
 }

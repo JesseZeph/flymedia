@@ -56,11 +56,13 @@ class CustomField extends StatelessWidget {
   final String text;
   final TextEditingController? textController;
   final TextInputType? inputType;
+  final String? Function(String?)? validator;
   const CustomField({
     super.key,
     required this.text,
     this.textController,
     this.inputType,
+    this.validator,
   });
 
   @override
@@ -87,7 +89,7 @@ class CustomField extends StatelessWidget {
                       width: 1,
                       color: AppColors.lightHintTextColor.withOpacity(0.5)),
                   borderRadius: BorderRadius.circular(8.r)),
-              child: TextField(
+              child: TextFormField(
                 keyboardType: inputType ?? TextInputType.text,
                 controller: textController,
                 decoration: InputDecoration(
@@ -98,6 +100,7 @@ class CustomField extends StatelessWidget {
                         fontWeight: FontWeight.w400,
                       ),
                 ),
+                validator: validator,
               ),
             ),
           ],

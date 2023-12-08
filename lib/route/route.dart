@@ -6,7 +6,6 @@ import 'package:flymedia_app/src/clientdashboard/clientHomepage.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/applications.dart';
 import 'package:flymedia_app/src/influencerDashboard/dashboardPages/profile.dart';
 import 'package:flymedia_app/src/influencerDashboard/influencerHomepage.dart';
-import 'package:flymedia_app/src/influencerDashboard/screens/profile_edit.dart';
 
 import '../src/accountoption/view.dart';
 import '../src/authentication/clientAuth/authenticationview.dart';
@@ -52,8 +51,8 @@ Widget _getPage(String routeName) {
     //   return const ViewCampaignListing(id: '',);
     case '/applications':
       return const Applications();
-    case '/editProfile':
-      return const EditProfile();
+    // case '/editProfile':
+    //   return const EditProfile();
     case '/influencerProfile':
       return const ProfilePage();
     case '/influencerHomepage':
