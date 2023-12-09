@@ -4,7 +4,6 @@ import 'package:flymedia_app/models/response/campaign_upload_response.dart';
 import 'package:flymedia_app/services/helpers/campaign_helper.dart';
 
 import '../models/response/get_campaign_res.dart';
-import '../models/response/get_specific_campaign.dart';
 
 class CampaignsNotifier extends ChangeNotifier {
   List<CampaignUploadResponse> campaignList = [];
@@ -21,9 +20,9 @@ class CampaignsNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<List<GetSpecificClientCampaignRes>> getUserCampaigns(String userId) {
-    return CampaignHelper.getUserCampaigns(userId);
-  }
+  // Future<List<GetSpecificClientCampaignRes>> getUserCampaigns(String userId) {
+  //   return CampaignHelper.getUserCampaigns(userId);
+  // }
 
   Future<List<Object>> postCampaign(CampaignUploadRequest details) async {
     _isUploading = !_isUploading;

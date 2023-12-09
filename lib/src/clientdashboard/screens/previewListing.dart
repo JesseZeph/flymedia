@@ -9,11 +9,12 @@ import 'package:flymedia_app/src/clientdashboard/screens/widgets/flyButton.dart'
 import 'package:flymedia_app/utils/extensions/context_extension.dart';
 import 'package:flymedia_app/utils/widgets/alert_loader.dart';
 import 'package:flymedia_app/utils/widgets/divider.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants/colors.dart';
-import '../../../route/route.dart';
 import '../../../utils/widgets/headings.dart';
+import 'campaignLive.dart';
 
 class PreviewListing extends StatelessWidget {
   const PreviewListing({super.key, required this.campaignDetails});
@@ -206,7 +207,7 @@ class PreviewListing extends StatelessWidget {
                                     .then((resp) {
                                   if (resp.first as bool) {
                                     // context.showSuccess(resp.last as String);
-                                    navigateToPage(context, '/campaignLive');
+                                    Get.to(() => const CampaignLive());
                                   } else {
                                     context.showError(resp.last as String);
                                   }

@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/controllers/campaign_provider.dart';
+import 'package:flymedia_app/models/response/campaign_upload_response.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/previewListing.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants/colors.dart';
-import '../../../models/response/get_campaign_res.dart';
-import '../../../services/helpers/campaign_helper.dart';
 import '../../../utils/widgets/divider.dart';
 import '../../../utils/widgets/headings.dart';
 import 'applications.dart';
 
 class ViewCampaign extends StatefulWidget {
-  final String id;
+  final CampaignUploadResponse id;
   const ViewCampaign({super.key, required this.id});
 
   @override
@@ -21,23 +20,22 @@ class ViewCampaign extends StatefulWidget {
 }
 
 class _ViewCampaignState extends State<ViewCampaign> {
-  late Future<GetCampaignRes> campaign;
+  late CampaignUploadResponse campaign;
   @override
   void initState() {
-    getCampaign();
     super.initState();
+    campaign = widget.id;
   }
 
-  getCampaign() {
-    campaign = CampaignHelper.getCampaign(widget.id);
-  }
+  // getCampaign() {
+  //   campaign = CampaignHelper.getCampaign(widget.id);
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Consumer<CampaignsNotifier>(
-      builder: (context, campaignNotifier, child) {
-        campaignNotifier.getCampaign(widget.id);
-        return Scaffold(
+        builder: (context, campaignNotifier, child) {
+      return Scaffold(
           appBar: AppBar(
             leading: IconButton(
               onPressed: () {
@@ -46,140 +44,109 @@ class _ViewCampaignState extends State<ViewCampaign> {
               icon: const Icon(Icons.arrow_back_ios),
             ),
           ),
-          body: FutureBuilder<GetCampaignRes>(
-              future: campaign,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(
+          body: Center(
+            child: ListView(
+              children: [
+                Center(
+                  child: Padding(
+                    padding: EdgeInsets.only(top: 15.h),
+                    child: CircleAvatar(
+                      radius: 37.5.w,
+                      backgroundColor: AppColors.mainColor,
+                      backgroundImage: NetworkImage(campaign.imageUrl),
+                    ),
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 15.h),
+                  child: Text(
+                    campaign.jobTitle,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: AppColors.mainTextColor,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 12.h),
+                  child: Text(
+                    campaign.companyDescription,
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: AppColors.mainTextColor,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w400,
+                        ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.only(top: 12.h),
+                  child: Text(
+                    '${campaign.rateFrom} - ${campaign.rateTo}',
+                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: AppColors.mainTextColor,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w600,
+                        ),
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                SizedBox(height: 15.h),
+                TextButton(
+                    onPressed: () {
+                      Get.to(() => const Applications());
+                    },
                     child: Container(
-                      padding: EdgeInsets.all(20.r),
-                      child: const CircularProgressIndicator.adaptive(),
+                      padding: EdgeInsets.all(10.r),
+                      decoration: BoxDecoration(
+                          border: Border.all(
+                            width: 1,
+                            color: AppColors.mainColor,
+                          ),
+                          borderRadius: BorderRadius.circular(25.r)),
+                      child: Text(
+                        'View Applications',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: AppColors.mainColor,
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w400,
+                            ),
+                      ),
+                    )),
+                Padding(
+                  padding: EdgeInsets.only(top: 12.h),
+                  child: const FullDivider(),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    CustomPreviewField(
+                      icon: Icons.location_on_outlined,
+                      text: 'Location',
+                      headerText: campaign.country,
+                      iconColor: AppColors.dialogBlue,
+                      containerColor: AppColors.dialogBlue.withOpacity(0.2),
                     ),
-                  );
-                } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                } else {
-                  final campaign = snapshot.data;
-                  return Center(
-                    child: ListView(
-                      children: [
-                        Center(
-                          child: Padding(
-                            padding: EdgeInsets.only(top: 15.h),
-                            child: CircleAvatar(
-                              radius: 37.5.w,
-                              backgroundColor: AppColors.mainColor,
-                              backgroundImage: NetworkImage(campaign!.imageUrl),
-                            ),
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 15.h),
-                          child: Text(
-                            campaign.jobTitle,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(
-                                  color: AppColors.mainTextColor,
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 12.h),
-                          child: Text(
-                            campaign.companyDescription,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(
-                                  color: AppColors.mainTextColor,
-                                  fontSize: 14.sp,
-                                  fontWeight: FontWeight.w400,
-                                ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(top: 12.h),
-                          child: Text(
-                            '${campaign.rateFrom} - ${campaign.rateTo}',
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(
-                                  color: AppColors.mainTextColor,
-                                  fontSize: 16.sp,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                        SizedBox(height: 15.h),
-                        TextButton(
-                            onPressed: () {
-                              Get.to(() => const Applications());
-                            },
-                            child: Container(
-                              padding: EdgeInsets.all(10.r),
-                              decoration: BoxDecoration(
-                                  border: Border.all(
-                                    width: 1,
-                                    color: AppColors.mainColor,
-                                  ),
-                                  borderRadius: BorderRadius.circular(25.r)),
-                              child: Text(
-                                'View Applications',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(
-                                      color: AppColors.mainColor,
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w400,
-                                    ),
-                              ),
-                            )),
-                        Padding(
-                          padding: EdgeInsets.only(top: 12.h),
-                          child: const FullDivider(),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceAround,
-                          children: [
-                            CustomPreviewField(
-                              icon: Icons.location_on_outlined,
-                              text: 'Location',
-                              headerText: campaign.country,
-                              iconColor: AppColors.dialogBlue,
-                              containerColor:
-                                  AppColors.dialogBlue.withOpacity(0.2),
-                            ),
-                            CustomPreviewField(
-                              icon: Icons.group,
-                              text: 'Engagements Required',
-                              headerText: campaign.viewsRequired,
-                              iconColor: Colors.orange,
-                              containerColor: Colors.orange.withOpacity(0.2),
-                            ),
-                          ],
-                        ),
-                        HeadingAndSubText(
-                            heading: 'About Company',
-                            subText: campaign.companyDescription),
-                        HeadingAndSubText(
-                            heading: 'Job Description',
-                            subText: campaign.jobDescription),
-                      ],
+                    CustomPreviewField(
+                      icon: Icons.group,
+                      text: 'Engagements Required',
+                      headerText: campaign.viewsRequired,
+                      iconColor: Colors.orange,
+                      containerColor: Colors.orange.withOpacity(0.2),
                     ),
-                  );
-                }
-              }),
-        );
-      },
-    );
+                  ],
+                ),
+                HeadingAndSubText(
+                    heading: 'About Company',
+                    subText: campaign.companyDescription),
+                HeadingAndSubText(
+                    heading: 'Job Description',
+                    subText: campaign.jobDescription),
+              ],
+            ),
+          ));
+    });
   }
 }

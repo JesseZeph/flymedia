@@ -6,7 +6,7 @@ import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/app_constants.dart';
-import '../src/clientdashboard/clientHomepage.dart';
+import '../src/clientdashboard/screens/verificationScreen.dart';
 
 class LoginNotifier extends ChangeNotifier {
   bool _obscureText = true;
@@ -55,7 +55,7 @@ class LoginNotifier extends ChangeNotifier {
       (response) {
         if (response == true) {
           loader = false;
-          Get.to(() => const ClientHomePage());
+          Get.to(() => const ClientVerificationOnboarding());
         } else {
           Get.snackbar(
             'Sign in failed',
