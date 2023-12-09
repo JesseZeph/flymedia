@@ -72,9 +72,13 @@ class ProfileHelper {
               const Duration(seconds: 15),
               onTimeout: () => http.Response('Network Timeout', 504),
             );
-        print("======> test response : \n ${response.body} \n ========>");
-        print("======> test status : \n ${response.statusCode} \n ========>");
-        if (response.statusCode == 200) {}
+        if (response.statusCode == 504) {
+          return [false, 'Network Timeout'];
+        }
+
+        var decodedResponse = jsonDecode(response.body);
+        getUserProfile(userId);
+        return [decodedResponse['success'], decodedResponse['message']];
       }
     } catch (e, s) {
       debugPrint("====> error in getting profile : ${e.toString()}");
