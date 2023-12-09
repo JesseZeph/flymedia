@@ -1,6 +1,5 @@
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:flymedia_app/constants/app_constants.dart';
 import 'package:flymedia_app/controllers/login_provider.dart';
 import 'package:flymedia_app/src/clientdashboard/dashboardPages/campaign.dart';
 import 'package:provider/provider.dart';
@@ -23,9 +22,7 @@ class _ClientHomePageState extends State<ClientHomePage> {
   int _selectedIndex = 0;
 
   static final List<Widget> _widgetOptions = <Widget>[
-    Campaign(
-      id: userUid,
-    ),
+    const Campaign(),
     const Messages(),
     const ClientHelp(),
     const Payment(),

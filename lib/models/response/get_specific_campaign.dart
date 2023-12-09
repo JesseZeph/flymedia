@@ -1,16 +1,38 @@
+// To parse this JSON data, do
+//
+//     final getSpecificClientCampaignRes = getSpecificClientCampaignResFromJson(jsonString);
+
 import 'dart:convert';
 
-List<GetSpecificClientCampaignRes> getSpecificClientCampaignResFromJson(
-        String str) =>
-    List<GetSpecificClientCampaignRes>.from(
-        json.decode(str).map((x) => GetSpecificClientCampaignRes.fromJson(x)));
+GetSpecificClientCampaignRes getSpecificClientCampaignResFromJson(String str) =>
+    GetSpecificClientCampaignRes.fromJson(json.decode(str));
 
-// GetSpecificClientCampaignRes getSpecificClientCampaignResFromJson(String str) =>
-//     GetSpecificClientCampaignRes.fromJson(json.decode(str));
-//
-// String getSpecificClientCampaignResToJson(GetSpecificClientCampaignRes data) => json.encode(data.toJson());
+String getSpecificClientCampaignResToJson(GetSpecificClientCampaignRes data) =>
+    json.encode(data.toJson());
 
 class GetSpecificClientCampaignRes {
+  final bool success;
+  final List<Campaign> campaign;
+
+  GetSpecificClientCampaignRes({
+    required this.success,
+    required this.campaign,
+  });
+
+  factory GetSpecificClientCampaignRes.fromJson(Map<String, dynamic> json) =>
+      GetSpecificClientCampaignRes(
+        success: json["success"],
+        campaign: List<Campaign>.from(
+            json["campaign"].map((x) => Campaign.fromJson(x))),
+      );
+
+  Map<String, dynamic> toJson() => {
+        "success": success,
+        "campaign": List<dynamic>.from(campaign.map((x) => x.toJson())),
+      };
+}
+
+class Campaign {
   final String id;
   final String company;
   final String user;
@@ -22,8 +44,9 @@ class GetSpecificClientCampaignRes {
   final String rateTo;
   final String viewsRequired;
   final String jobDescription;
+  final int v;
 
-  GetSpecificClientCampaignRes({
+  Campaign({
     required this.id,
     required this.company,
     required this.user,
@@ -35,10 +58,10 @@ class GetSpecificClientCampaignRes {
     required this.rateTo,
     required this.viewsRequired,
     required this.jobDescription,
+    required this.v,
   });
 
-  factory GetSpecificClientCampaignRes.fromJson(Map<String, dynamic> json) =>
-      GetSpecificClientCampaignRes(
+  factory Campaign.fromJson(Map<String, dynamic> json) => Campaign(
         id: json["_id"],
         company: json["company"],
         user: json["user"],
@@ -50,6 +73,7 @@ class GetSpecificClientCampaignRes {
         rateTo: json["rateTo"],
         viewsRequired: json["viewsRequired"],
         jobDescription: json["jobDescription"],
+        v: json["__v"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -64,5 +88,6 @@ class GetSpecificClientCampaignRes {
         "rateTo": rateTo,
         "viewsRequired": viewsRequired,
         "jobDescription": jobDescription,
+        "__v": v,
       };
 }

@@ -9,7 +9,7 @@ class Config {
   static const String influencerLogin = "/api/influencer/login";
   static const String companyVerification = "/api/verifyCompany";
   static const String campaignUpload = "/api/uploadCampaign";
-  static const String specificUserCampaign = "/api/uploadCampaign";
+  static const String specificUserCampaign = "/api/uploadCampaign/";
   static const String searchCampaign = "/api/uploadCampaign/search";
   static const String influencerProfile = "/api/influencerProfile/";
 }

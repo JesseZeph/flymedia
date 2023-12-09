@@ -7,14 +7,14 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../../../controllers/campaign_provider.dart';
-import '../../../models/response/get_specific_campaign.dart';
+import '../../../controllers/profile_provider.dart';
+import '../../../models/response/campaign_upload_response.dart';
 import '../screens/view_campaign.dart';
 import '../screens/widgets/appbar.dart';
 import '../screens/widgets/welcomeWidget.dart';
 
 class Campaign extends StatefulWidget {
-  final String id;
-  const Campaign({super.key, required this.id});
+  const Campaign({super.key});
 
   @override
   State<Campaign> createState() => _CampaignState();
@@ -29,125 +29,151 @@ class _CampaignState extends State<Campaign> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<CampaignsNotifier>(
-      builder: (context, campaignNotifier, child) {
-        campaignNotifier.getUserCampaigns(widget.id);
-        return Scaffold(
-          appBar: PreferredSize(
-            preferredSize: Size.fromHeight(40.h),
-            child: const FlyAppBar(),
-          ),
-          backgroundColor: AppColors.lightHintTextColor.withOpacity(0.02),
-          body: Center(
-            child: Column(
-              children: [
-                const ClientTopWidget(
-                  subText: "Let's find the best talent for you.",
-                ),
-                SizedBox(height: 40.h),
-                GestureDetector(
-                  onTap: () {
-                    Get.to(() => const CompanyDetails());
-                  },
-                  child: Container(
-                    width: 321.w,
-                    padding:
-                        EdgeInsets.symmetric(vertical: 25.h, horizontal: 25.r),
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                            width: 1,
-                            color:
-                                AppColors.lightHintTextColor.withOpacity(0.3)),
-                        borderRadius: BorderRadius.circular(10.r)),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 30.w,
-                          padding: EdgeInsets.symmetric(
-                              vertical: 4.r, horizontal: 2.r),
-                          decoration: BoxDecoration(
-                              color: AppColors.mainColor.withOpacity(0.2)),
-                          child: const Icon(
-                            FluentSystemIcons.ic_fluent_add_filled,
-                            color: AppColors.mainColor,
-                          ),
-                        ),
-                        SizedBox(
-                          width: 10.w,
-                        ),
-                        Text(
-                          'Post a campaign',
-                          style:
-                              Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: AppColors.mainTextColor,
-                                    fontSize: 12.sp,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                Container(
-                  width: 321.w,
-                  margin: EdgeInsets.only(top: 20.h),
-                  child: Text(
-                    'Posted Campaigns',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: AppColors.mainTextColor,
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
-                  ),
-                ),
-                Expanded(
-                  child: FutureBuilder<List<GetSpecificClientCampaignRes>>(
-                    future: campaignNotifier.getUserCampaigns(widget.id),
-                    builder: (context, snapshot) {
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Center(
-                          child: Container(
-                            padding: EdgeInsets.all(20.r),
-                            child: const CircularProgressIndicator.adaptive(),
-                          ),
-                        );
-                      } else if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
-                      } else if (snapshot.data!.isEmpty) {
-                        return const Text('No Campaign Available');
-                      } else {
-                        final userCampaigns = snapshot.data;
-                        return ListView.builder(
-                            itemCount: userCampaigns!.length,
-                            scrollDirection: Axis.vertical,
-                            physics: const AlwaysScrollableScrollPhysics(),
-                            itemBuilder: (context, index) {
-                              var userCampaign = userCampaigns[index];
-                              return Container(
-                                padding: EdgeInsets.symmetric(horizontal: 22.w),
-                                child: ClientCampaignListing(
-                                  userCampaign: userCampaign,
-                                ),
-                              );
-                            });
-                      }
-                    },
-                  ),
-                )
-              ],
+    var loadingProfile = context.watch<ProfileProvider>().isFetchingProfile;
+    var userProfile = context.watch<ProfileProvider>().userProfile;
+    return Scaffold(
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(40.h),
+        child: const FlyAppBar(),
+      ),
+      backgroundColor: AppColors.lightHintTextColor.withOpacity(0.02),
+      body: Center(
+        child: Column(
+          children: [
+            const ClientTopWidget(
+              subText: "Let's find the best talent for you.",
             ),
-          ),
-        );
-      },
+            SizedBox(height: 40.h),
+            GestureDetector(
+              onTap: () {
+                Get.to(() => const CompanyDetails());
+              },
+              child: Container(
+                width: 321.w,
+                padding: EdgeInsets.symmetric(vertical: 25.h, horizontal: 25.r),
+                decoration: BoxDecoration(
+                    border: Border.all(
+                        width: 1,
+                        color: AppColors.lightHintTextColor.withOpacity(0.3)),
+                    borderRadius: BorderRadius.circular(10.r)),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 30.w,
+                      padding:
+                          EdgeInsets.symmetric(vertical: 4.r, horizontal: 2.r),
+                      decoration: BoxDecoration(
+                          color: AppColors.mainColor.withOpacity(0.2)),
+                      child: const Icon(
+                        FluentSystemIcons.ic_fluent_add_filled,
+                        color: AppColors.mainColor,
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10.w,
+                    ),
+                    Text(
+                      'Post a campaign',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: AppColors.mainTextColor,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w600,
+                          ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Container(
+              width: 321.w,
+              margin: EdgeInsets.only(top: 20.h),
+              child: Text(
+                'Posted Campaigns',
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      color: AppColors.mainTextColor,
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600,
+                    ),
+              ),
+            ),
+            Expanded(
+              child: Consumer<CampaignsNotifier>(
+                builder: (context, campaignNotifier, child) {
+                  // campaignNotifier.getCampaigns();
+                  return Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 25.w),
+                      child: campaignNotifier.isFetching
+                          ? Center(
+                              child: Container(
+                                padding: EdgeInsets.all(20.r),
+                                child:
+                                    const CircularProgressIndicator.adaptive(),
+                              ),
+                            )
+                          : campaignNotifier.campaignList.isNotEmpty
+                              ? ListView.builder(
+                                  itemCount:
+                                      campaignNotifier.campaignList.length,
+                                  scrollDirection: Axis.vertical,
+                                  physics:
+                                      const AlwaysScrollableScrollPhysics(),
+                                  itemBuilder: (context, index) {
+                                    var campaign =
+                                        campaignNotifier.campaignList[index];
+                                    return ClientCampaignListing(
+                                      campaign: campaign,
+                                    );
+                                  })
+                              : const Center(
+                                  child: Text('No campaign available'))
+                      // FutureBuilder<List<CampaignUploadResponse>>(
+                      //   future: campaignNotifier.campaignList,
+                      //   builder: (context, snapshot) {
+                      //     if (snapshot.connectionState ==
+                      //         ConnectionState.waiting) {
+                      //       return Center(
+                      //         child: SizedBox(
+                      //             height: 30.h,
+                      //             width: 30.w,
+                      //             child:
+                      //                 const CircularProgressIndicator.adaptive()),
+                      //       );
+                      //     } else if (snapshot.hasError) {
+                      //       return Text('Error: ${snapshot.error}');
+                      //     } else if (snapshot.data!.isEmpty) {
+                      //       return const Text('No campaign available');
+                      //     } else {
+                      //       final campaigns = snapshot.data;
+
+                      //       return ListView.builder(
+                      //           itemCount: campaigns!.length,
+                      //           scrollDirection: Axis.vertical,
+                      //           physics: const AlwaysScrollableScrollPhysics(),
+                      //           itemBuilder: (context, index) {
+                      //             var campaign = campaigns[index];
+                      //             return CampaignListTile(
+                      //               campaign: campaign,
+                      //             );
+                      //           });
+                      //     }
+                      //   },
+                      // ),
+                      );
+                },
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
 
 class ClientCampaignListing extends StatelessWidget {
-  final GetSpecificClientCampaignRes userCampaign;
+  final CampaignUploadResponse campaign;
   const ClientCampaignListing({
     super.key,
-    required this.userCampaign,
+    required this.campaign,
   });
 
   @override
@@ -156,7 +182,7 @@ class ClientCampaignListing extends StatelessWidget {
       child: GestureDetector(
           onTap: () {
             Get.to(() => ViewCampaign(
-                  id: userCampaign.id,
+                  id: campaign,
                 ));
           },
           child: Container(
@@ -175,7 +201,7 @@ class ClientCampaignListing extends StatelessWidget {
                   child: CircleAvatar(
                     backgroundColor: AppColors.dialogColor,
                     radius: 50.w,
-                    backgroundImage: NetworkImage(userCampaign.imageUrl),
+                    backgroundImage: NetworkImage(campaign.imageUrl),
                   ),
                 ),
                 SizedBox(width: 10.w),
@@ -183,7 +209,7 @@ class ClientCampaignListing extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      userCampaign.jobTitle,
+                      campaign.jobTitle,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: AppColors.mainTextColor,
                             fontWeight: FontWeight.w700,
@@ -191,7 +217,7 @@ class ClientCampaignListing extends StatelessWidget {
                           ),
                     ),
                     Text(
-                      userCampaign.companyDescription,
+                      campaign.companyDescription,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: AppColors.lightMainText,
                             fontWeight: FontWeight.w200,
@@ -199,7 +225,7 @@ class ClientCampaignListing extends StatelessWidget {
                           ),
                     ),
                     Text(
-                      userCampaign.country,
+                      campaign.country,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: AppColors.lightMainText,
                             fontWeight: FontWeight.w200,
