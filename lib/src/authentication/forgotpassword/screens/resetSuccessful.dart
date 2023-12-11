@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flymedia_app/route/route.dart';
 import 'package:flymedia_app/src/clientdashboard/clientHomepage.dart';
+import 'package:flymedia_app/src/influencerDashboard/influencerHomepage.dart';
 
 import '../../components/roundedbutton.dart';
 import 'checkemail.dart';
 
 class ResetSuccessful extends StatelessWidget {
-  final int selectedContainer;
+  final bool isInfluencer;
 
-  const ResetSuccessful({Key? key, required this.selectedContainer})
+  const ResetSuccessful({Key? key, required this.isInfluencer})
       : super(key: key);
 
   @override
@@ -30,16 +32,21 @@ class ResetSuccessful extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const ClientHomePage(),
-                  ),
-                );
+                if (isInfluencer) {
+                  pushToAndClearStack(context, const InfluencerHomePage());
+                } else {
+                  pushToAndClearStack(context, const ClientHomePage());
+                }
+                // Navigator.of(context).push(
+                //   MaterialPageRoute(
+                //     builder: (context) => const ClientHomePage(),
+                //   ),
+                // );
               },
               child: Padding(
                 padding: EdgeInsets.only(top: 30.h),
                 child: const RoundedButtonWidget(
-                  title: 'Back to homepage',
+                  title: 'Continue',
                 ),
               ),
             )

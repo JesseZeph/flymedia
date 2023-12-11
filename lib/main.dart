@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/controllers/campaign_provider.dart';
 import 'package:flymedia_app/controllers/profile_provider.dart';
+import 'package:flymedia_app/services/helpers/forgot_password_helper.dart';
+import 'package:flymedia_app/src/accountoption/view.dart';
 import 'package:flymedia_app/src/clientdashboard/clientHomepage.dart';
 import 'package:flymedia_app/src/influencerDashboard/influencerHomepage.dart';
 import 'package:flymedia_app/src/onboardingscreen/onboarding.dart';
@@ -25,6 +27,8 @@ void main() async {
     defaultHome = const ClientHomePage();
   } else if (selectedContainer == 2) {
     defaultHome = const InfluencerHomePage();
+  } else if (selectedContainer == 3) {
+    defaultHome = const AccountOption();
   } else {
     defaultHome = const SplashScreen();
   }
@@ -32,6 +36,7 @@ void main() async {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context) => OnBoardNotifier()),
+      ChangeNotifierProvider(create: (context) => ForgotPasswordHelper()),
       ChangeNotifierProvider(create: (context) => LoginNotifier()),
       ChangeNotifierProvider(create: (context) => SignUpNotifier()),
       ChangeNotifierProvider(create: (context) => ProfileProvider()),

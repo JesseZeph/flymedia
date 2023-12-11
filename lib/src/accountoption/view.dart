@@ -21,7 +21,7 @@ class _AccountOptionState extends State<AccountOption> {
 
   void saveSelectedContainer() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setInt('selectedContainer', selectedContainer);
+    prefs.setInt('selectedContainer', 3);
   }
 
   @override

@@ -122,12 +122,13 @@ class SecondOnboard extends StatelessWidget {
               ),
             ),
             Positioned(
-              left: 210.w,
+              // left: 210.w,
+              right: 0.w,
               top: 150.h,
               child: Container(
-                width: 130.w,
-                height: 40.h,
-                padding: EdgeInsets.only(left: 7.w, top: 5.h),
+                // width: 130.w,
+                // height: 40.h,
+                padding: EdgeInsets.only(left: 7.w, top: 5.h, right: 5.w),
                 decoration: ShapeDecoration(
                   color: AppColors.dialogColor,
                   shape: RoundedRectangleBorder(

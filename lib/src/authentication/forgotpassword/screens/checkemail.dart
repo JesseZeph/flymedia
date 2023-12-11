@@ -74,7 +74,7 @@ class ImageWithTextWidget extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(top: 10.h),
+            padding: EdgeInsets.symmetric(vertical: 10.h, horizontal: 10.w),
             child: Text(
               subText,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(

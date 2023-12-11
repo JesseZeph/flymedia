@@ -121,8 +121,8 @@ class AuthHelper {
       await prefs.setString('uid', user.uid);
       await prefs.setString('profile', user.profile);
       await prefs.setString('fullname', user.fullname);
+      await prefs.setInt('selectedContainer', 1);
       await prefs.setBool('loggedIn', true);
-      print('success');
       return true;
     } else {
       return false;
@@ -145,8 +145,8 @@ class AuthHelper {
       await prefs.setString('uid', user.uid);
       await prefs.setString('profile', user.profile);
       await prefs.setString('fullname', user.fullname);
+      await prefs.setInt('selectedContainer', 2);
       await prefs.setBool('loggedIn', true);
-      print('success');
       return true;
     } else {
       return false;

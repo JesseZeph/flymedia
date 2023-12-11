@@ -97,9 +97,6 @@ class LoginNotifier extends ChangeNotifier {
 
   Future<void> getPref() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    // selectedContainer = prefs.getInt('selectedContainer') ?? 0;
-    // entrypoint = prefs.getBool('entrypoint') ?? false;
     _loggedIn = prefs.getBool('loggedIn') ?? false;
     _fullName = prefs.getString('fullname') ?? '';
     _userId = prefs.getString('userId') ?? '';
@@ -113,6 +110,6 @@ class LoginNotifier extends ChangeNotifier {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.clear();
     await prefs.setBool('loggedIn', false);
-    // await prefs.remove('token');
+    await prefs.setInt('selectedContainer', 3);
   }
 }
