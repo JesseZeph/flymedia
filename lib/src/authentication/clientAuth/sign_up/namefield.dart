@@ -28,7 +28,7 @@ class NameField extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 5.w),
           child: TextInputField(
             controller: fullname,
-            hintText: 'First name and Last name',
+            hintText: 'John Doe',
             onChanged: (value) {
               // Validate the password and update the error state
               // final nameResult = Name.dirty(value).validator(value);

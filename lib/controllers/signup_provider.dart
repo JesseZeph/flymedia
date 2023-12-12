@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flymedia_app/models/requests/auth/verification_code.dart';
 import 'package:flymedia_app/src/authentication/clientAuth/clientverification/userverificationsuccess.dart';
-import 'package:flymedia_app/src/authentication/clientAuth/clientverification/verifyemailaddress.dart';
 import 'package:flymedia_app/src/authentication/influencerAuth/influencerverification/userverificationsuccess.dart';
-import 'package:flymedia_app/src/authentication/influencerAuth/influencerverification/verifyemailaddress.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -45,33 +43,38 @@ class SignUpNotifier extends ChangeNotifier {
     }
   }
 
-  signUp(String model) {
-    AuthHelper.signUp(model).then((response) {
-      if (response == true) {
-        // Set loggedIn to true after successful signup
-        Get.offAll(const VerifyEmailAccount());
-      } else {
-        loader = false;
-        Get.snackbar('Sign up failed', 'Please check your details',
-            colorText: Colors.white,
-            backgroundColor: AppColors.errorColor,
-            icon: const Icon(Icons.add_alert));
-      }
+  Future<bool> signUp(String model) async {
+    _loader = !_loader;
+    notifyListeners();
+    bool wasSuccessful = false;
+    await AuthHelper.signUp(model).then((response) {
+      wasSuccessful = response;
     });
+    _loader = !_loader;
+    notifyListeners();
+    return wasSuccessful;
   }
 
-  influencerSignup(String model) {
-    AuthHelper.influenerRegister(model).then((response) {
-      if (response == true) {
-        Get.offAll(const InfluencerVerifyEmail());
-      } else {
-        loader = false;
-        Get.snackbar('Sign up failed', 'Please check your details',
-            colorText: Colors.white,
-            backgroundColor: AppColors.errorColor,
-            icon: const Icon(Icons.add_alert));
-      }
+  Future<bool> influencerSignup(String model) async {
+    _loader = !_loader;
+    notifyListeners();
+    bool wasSuccessful = false;
+    await AuthHelper.influenerRegister(model).then((response) {
+      wasSuccessful = response;
+
+      // if (response == true) {
+      //   Get.offAll(const InfluencerVerifyEmail());
+      // } else {
+      //   loader = false;
+      //   Get.snackbar('Sign up failed', 'Please check your details',
+      //       colorText: Colors.white,
+      //       backgroundColor: AppColors.errorColor,
+      //       icon: const Icon(Icons.add_alert));
+      // }
     });
+    _loader = !_loader;
+    notifyListeners();
+    return wasSuccessful;
   }
 
   userEmailVerification(VerificationCode model) {

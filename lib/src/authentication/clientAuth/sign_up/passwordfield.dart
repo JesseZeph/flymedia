@@ -27,7 +27,7 @@ class PasswordField extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 5.w),
           child: TextInputField(
             controller: password,
-            hintText: 'Enter your password',
+            hintText: '*******',
             obscureText: true,
             onChanged: (_) {
               // Validate the password and update the error state

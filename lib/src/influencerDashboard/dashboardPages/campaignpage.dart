@@ -3,12 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/controllers/campaign_provider.dart';
 import 'package:flymedia_app/controllers/profile_provider.dart';
 import 'package:flymedia_app/models/response/campaign_upload_response.dart';
+import 'package:flymedia_app/src/influencerDashboard/screens/profile_edit.dart';
 import 'package:flymedia_app/src/search/search.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants/colors.dart';
-import '../../../route/route.dart';
 import '../../clientdashboard/screens/widgets/appbar.dart';
 import '../../clientdashboard/screens/widgets/welcomeWidget.dart';
 import '../screens/campaignlisting.dart';
@@ -128,7 +128,12 @@ class _CampaignPageState extends State<CampaignPage> {
                             SizedBox(height: 10.h),
                             TextButton(
                               onPressed: () {
-                                navigateToPage(context, '/editProfile');
+                                // navigateToPage(context, '/editProfile');
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => EditProfile(
+                                    profile: userProfile,
+                                  ),
+                                ));
                               },
                               child: Container(
                                 padding: EdgeInsets.all(10.r),

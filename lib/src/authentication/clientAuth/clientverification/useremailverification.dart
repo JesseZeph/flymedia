@@ -47,7 +47,7 @@ class _UserEmailVerificationState extends State<UserEmailVerification> {
       builder: (context, signUpNotifier, child) {
         return Scaffold(
           backgroundColor: Colors.white,
-          body: Center(
+          body: SingleChildScrollView(
             child: Column(
               children: [
                 Container(

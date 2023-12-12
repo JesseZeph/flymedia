@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flymedia_app/constants/colors.dart';
 import 'package:flymedia_app/services/helpers/auth_helper.dart';
-import 'package:flymedia_app/src/influencerDashboard/influencerHomepage.dart';
-import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/app_constants.dart';
-import '../src/clientdashboard/screens/verificationScreen.dart';
 
 class LoginNotifier extends ChangeNotifier {
   bool _obscureText = true;
@@ -52,49 +48,63 @@ class LoginNotifier extends ChangeNotifier {
   //   notifyListeners();
   // }
 
-  login(String model) {
-    AuthHelper.login(model).then(
+  Future<bool> login(String model) async {
+    _loader = !_loader;
+    notifyListeners();
+    bool wasSuccessful = false;
+    await AuthHelper.login(model).then(
       (response) {
-        if (response == true) {
-          loader = false;
-          Get.to(() => const ClientVerificationOnboarding());
-        } else {
-          Get.snackbar(
-            'Sign in failed',
-            'Please check your details',
-            colorText: Colors.white,
-            backgroundColor: AppColors.errorColor,
-            icon: const Icon(
-              Icons.add_alert,
-              color: Colors.white,
-            ),
-          );
-        }
+        wasSuccessful = response;
+        // if (response == true) {
+        //   loader = false;
+        //   Get.to(() => const ClientVerificationOnboarding());
+        // } else {
+        //   Get.snackbar(
+        //     'Sign in failed',
+        //     'Please check your details',
+        //     colorText: Colors.white,
+        //     backgroundColor: AppColors.errorColor,
+        //     icon: const Icon(
+        //       Icons.add_alert,
+        //       color: Colors.white,
+        //     ),
+        //   );
+        // }
       },
     );
+    _loader = !_loader;
+    notifyListeners();
+    return wasSuccessful;
   }
 
-  influencerSignin(String model) {
-    AuthHelper.influencersLogin(model).then(
+  Future<bool> influencerSignin(String model) async {
+    _loader = !_loader;
+    notifyListeners();
+    bool wasSuccessful = false;
+    await AuthHelper.influencersLogin(model).then(
       (response) {
-        if (response == true) {
-          loader = false;
-          loggedIn = true;
-          Get.to(() => const InfluencerHomePage());
-        } else {
-          Get.snackbar(
-            'Sign in failed',
-            'Please check your details',
-            colorText: Colors.white,
-            backgroundColor: AppColors.errorColor,
-            icon: const Icon(
-              Icons.add_alert,
-              color: Colors.white,
-            ),
-          );
-        }
+        wasSuccessful = response;
+        // if (response == true) {
+        //   loader = false;
+        //   loggedIn = true;
+        //   Get.to(() => const InfluencerHomePage());
+        // } else {
+        //   Get.snackbar(
+        //     'Sign in failed',
+        //     'Please check your details',
+        //     colorText: Colors.white,
+        //     backgroundColor: AppColors.errorColor,
+        //     icon: const Icon(
+        //       Icons.add_alert,
+        //       color: Colors.white,
+        //     ),
+        //   );
+        // }
       },
     );
+    _loader = !_loader;
+    notifyListeners();
+    return wasSuccessful;
   }
 
   Future<void> getPref() async {

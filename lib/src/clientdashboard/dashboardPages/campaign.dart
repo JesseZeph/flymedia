@@ -7,7 +7,6 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../../../controllers/campaign_provider.dart';
-import '../../../controllers/profile_provider.dart';
 import '../../../models/response/campaign_upload_response.dart';
 import '../screens/view_campaign.dart';
 import '../screens/widgets/appbar.dart';
@@ -33,8 +32,6 @@ class _CampaignState extends State<Campaign> {
 
   @override
   Widget build(BuildContext context) {
-    var loadingProfile = context.watch<ProfileProvider>().isFetchingProfile;
-    var userProfile = context.watch<ProfileProvider>().userProfile;
     return Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(40.h),

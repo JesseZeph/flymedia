@@ -3,7 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/controllers/login_provider.dart';
 import 'package:flymedia_app/models/requests/auth/login_model.dart';
 import 'package:flymedia_app/src/authentication/components/text_input_field.dart';
+import 'package:flymedia_app/src/clientdashboard/clientHomepage.dart';
+import 'package:flymedia_app/utils/extensions/context_extension.dart';
 import 'package:flymedia_app/utils/widgets/divider.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants/textstring.dart';
@@ -33,12 +36,9 @@ class _SignInWidgetState extends State<SignInWidget> {
 
   @override
   Widget build(BuildContext context) {
-    // final passwordError = useState<PasswordValidationError?>(null);
-    // final emailError = useState<EmailValidationError?>(null);
-
     return Consumer<LoginNotifier>(
       builder: (context, loginNotifier, child) {
-        loginNotifier.getPref();
+        // loginNotifier.getPref();
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -51,7 +51,6 @@ class _SignInWidgetState extends State<SignInWidget> {
             ),
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 5.w),
-              // child: EmailFieldLogin(email: email, emailError: emailError),
               child: EmailFieldLogin(email: email),
             ),
             SizedBox(
@@ -86,13 +85,22 @@ class _SignInWidgetState extends State<SignInWidget> {
             Align(
               alignment: Alignment.center,
               child: LoginButton(
-                onTap: () {
-                  loginNotifier.loader;
+                onTap: () async {
+                  if (email.text.isEmpty || password.text.isEmpty) {
+                    context.showError('One or more fields are empty.');
+                    return;
+                  }
                   LoginModel model =
                       LoginModel(email: email.text, password: password.text);
                   String newModel = loginModelToJson(model);
-                  loginNotifier.login(newModel);
-                  // Get.to(() => const ClientHomePage());
+                  await loginNotifier.login(newModel).then((success) {
+                    if (success) {
+                      Get.offAll(() => const ClientHomePage());
+                      // Get.to(() => const ClientVerificationOnboarding());
+                    } else {
+                      context.showError("Sign up failed. Try again later.");
+                    }
+                  });
                 },
               ),
             ),

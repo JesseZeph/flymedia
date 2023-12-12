@@ -47,6 +47,7 @@ class AuthHelper {
       var url = Uri.https(Config.apiUrl, Config.influencerSignup);
       var response =
           await client.post(url, headers: requestHeaders, body: model);
+
       if (response.statusCode == 201) {
         SignupResponse signupResponse =
             SignupResponse.fromJson(jsonDecode(response.body));
@@ -64,8 +65,6 @@ class AuthHelper {
   }
 
   static Future<bool> verifyUserEmail(VerificationCode model) async {
-    log('Verifying User ${model.email}');
-    log('Verifying User ${model.verificationCode}');
     try {
       Map<String, String> requestHeaders = {
         'Content-Type': 'application/json',
@@ -73,7 +72,6 @@ class AuthHelper {
       var url = Uri.https(Config.apiUrl, Config.verifyEmail);
       var response = await client.patch(url,
           headers: requestHeaders, body: jsonEncode(model.toJson()));
-      print({jsonDecode(response.body).toString()});
       if (response.statusCode == 200) {
         return true;
       } else {
@@ -94,7 +92,6 @@ class AuthHelper {
       var url = Uri.https(Config.apiUrl, Config.verifyEmail);
       var response = await client.patch(url,
           headers: requestHeaders, body: jsonEncode(model.toJson()));
-      print({jsonDecode(response.body).toString()});
       if (response.statusCode == 200) {
         return true;
       } else {
@@ -112,6 +109,7 @@ class AuthHelper {
 
     var url = Uri.https(Config.apiUrl, Config.login);
     var response = await client.post(url, headers: requestHeaders, body: model);
+
     if (response.statusCode == 200) {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
 
@@ -137,6 +135,7 @@ class AuthHelper {
 
     var url = Uri.https(Config.apiUrl, Config.influencerLogin);
     var response = await client.post(url, headers: requestHeaders, body: model);
+
     if (response.statusCode == 200) {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
 

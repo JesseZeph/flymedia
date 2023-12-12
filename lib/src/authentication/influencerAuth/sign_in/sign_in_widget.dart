@@ -4,10 +4,12 @@ import 'package:flymedia_app/controllers/login_provider.dart';
 import 'package:flymedia_app/models/requests/auth/influencer_login_model.dart';
 import 'package:flymedia_app/src/authentication/components/text_input_field.dart';
 import 'package:flymedia_app/utils/widgets/divider.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants/textstring.dart';
 import '../../../../utils/widgets/headings.dart';
+import '../../../influencerDashboard/influencerHomepage.dart';
 import '../../components/loadingerror.dart';
 import '../sign_up/social_buttons.dart';
 import 'button.dart';
@@ -21,20 +23,25 @@ class InfluencerSignIn extends StatefulWidget {
 }
 
 class _InfluencerSignInState extends State<InfluencerSignIn> {
+  final email = TextEditingController();
+  final password = TextEditingController();
+
+  @override
+  void dispose() {
+    email.dispose();
+    password.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
-    final email = TextEditingController();
-    final password = TextEditingController();
-    // final passwordError = useState<PasswordValidationError?>(null);
-    // final emailError = useState<EmailValidationError?>(null);
-
     return Consumer<LoginNotifier>(
       builder: (context, loginNotifier, child) {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              margin: EdgeInsets.only(bottom: 32.h),
+              margin: EdgeInsets.only(top: 50.h, bottom: 32.h),
               child: HeadingAndSubText(
                 heading: AppTexts.welcomeBackHeader,
                 subText: AppTexts.welcomeBackSubText,
@@ -76,15 +83,23 @@ class _InfluencerSignInState extends State<InfluencerSignIn> {
             Align(
               alignment: Alignment.center,
               child: InfluencerLoginButton(
-                onTap: () {
-                  // loader(context);
-                  loginNotifier.loader;
+                onTap: () async {
+                  if (email.text.isEmpty || password.text.isEmpty) {
+                    context.showError('One or more fields are empty.');
+                    return;
+                  }
                   InfluencerLoginModel model = InfluencerLoginModel(
                       email: email.text, password: password.text);
                   String newModel = influencerLoginModelToJson(model);
-                  loginNotifier.influencerSignin(newModel);
-                  // Navigator.of(context).push(MaterialPageRoute(
-                  //     builder: (context) => const ClientVerificationOnboarding()));
+                  await loginNotifier
+                      .influencerSignin(newModel)
+                      .then((success) {
+                    if (success) {
+                      Get.to(() => const InfluencerHomePage());
+                    } else {
+                      context.showError("Sign up failed. Try again later.");
+                    }
+                  });
                 },
               ),
             ),

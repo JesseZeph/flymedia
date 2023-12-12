@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flymedia_app/controllers/login_provider.dart';
+import 'package:flymedia_app/controllers/signup_provider.dart';
+import 'package:flymedia_app/utils/widgets/alert_loader.dart';
+import 'package:loading_overlay/loading_overlay.dart';
+import 'package:provider/provider.dart';
 
 import '../components/auth_switch_button.dart';
 import '../components/slidefadeswitcher.dart';
@@ -17,13 +22,19 @@ class _AuthenticationViewState extends State<AuthenticationView> {
   bool _showSignin = true;
   @override
   Widget build(BuildContext context) {
+    var loading = context.watch<SignUpNotifier>().loader ||
+        context.watch<LoginNotifier>().loader;
+
     return GestureDetector(
       onTap: FocusScope.of(context).unfocus,
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        backgroundColor: Colors.white,
-        body: Center(
-          child: SingleChildScrollView(
+      child: LoadingOverlay(
+        isLoading: loading,
+        progressIndicator: AlertLoader(
+            message: _showSignin ? "Signing you in" : "Signing you up"),
+        child: Scaffold(
+          // resizeToAvoidBottomInset: false,
+          backgroundColor: Colors.white,
+          body: SingleChildScrollView(
             child: Column(
               children: [
                 Padding(

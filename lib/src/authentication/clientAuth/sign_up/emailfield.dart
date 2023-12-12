@@ -27,7 +27,7 @@ class EmailField extends StatelessWidget {
           padding: EdgeInsets.symmetric(horizontal: 5.w),
           child: TextInputField(
             controller: email,
-            hintText: 'First name and Last name',
+            hintText: 'johndoe@gmail.com',
             onChanged: (value) {
               // Validate the password and update the error state
               // final emailResult = Email.dirty(value).validator(value);
