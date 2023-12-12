@@ -8,6 +8,7 @@ import 'package:http/http.dart' as https;
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../models/response/get_campaign_res.dart';
+import '../../models/response/get_specific_campaign.dart';
 import '../config.dart';
 
 class CampaignHelper {
@@ -128,6 +129,55 @@ class CampaignHelper {
       debugPrint("===> error uploading campaign : ${e.toString()}");
       debugPrintStack(stackTrace: s);
       return [false, 'Error occurred, try again later.'];
+    }
+  }
+
+  static Future<bool> deleteCampaign(String campaignId) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    try {
+      Map<String, String> requestHeaders = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${prefs.getString("token")}',
+      };
+
+      var url =
+          Uri.https(Config.apiUrl, "${Config.deleteCampaign}/$campaignId");
+      var response = await client.delete(url, headers: requestHeaders);
+
+      if (response.statusCode == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e, s) {
+      debugPrint("===> error deleting campaign : ${e.toString()}");
+      debugPrintStack(stackTrace: s);
+      return false;
+    }
+  }
+
+  static Future<GetSpecificClientCampaignRes> getSpecificClientCampaigns(
+      String userId) async {
+    try {
+      Map<String, String> requestHeaders = {
+        'Content-Type': 'application/json',
+      };
+
+      var url =
+          Uri.https(Config.apiUrl, "${Config.specificUserCampaign}/$userId");
+      var response = await client.get(url, headers: requestHeaders);
+
+      if (response.statusCode == 200) {
+        var clientCampaigns =
+            GetSpecificClientCampaignRes.fromJson(json.decode(response.body));
+        return clientCampaigns;
+      } else {
+        throw Exception('Failed to load client campaigns');
+      }
+    } catch (e, s) {
+      debugPrint("===> error fetching client campaigns : ${e.toString()}");
+      debugPrintStack(stackTrace: s);
+      throw Exception('Error occurred, try again later.');
     }
   }
 }

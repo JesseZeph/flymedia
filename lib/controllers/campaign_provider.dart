@@ -1,12 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flymedia_app/models/requests/campaign/campain_upload.dart';
 import 'package:flymedia_app/models/response/campaign_upload_response.dart';
+import 'package:flymedia_app/models/response/get_specific_campaign.dart';
 import 'package:flymedia_app/services/helpers/campaign_helper.dart';
 
 import '../models/response/get_campaign_res.dart';
 
 class CampaignsNotifier extends ChangeNotifier {
   List<CampaignUploadResponse> campaignList = [];
+  List<GetSpecificClientCampaignRes> specificCampaign =
+      []; // Change the type to List<Campaign>
+
   bool _isUploading = false;
   bool get isUploading => _isUploading;
   bool _isFetching = false;
@@ -19,10 +23,6 @@ class CampaignsNotifier extends ChangeNotifier {
     _isFetching = !_isFetching;
     notifyListeners();
   }
-
-  // Future<List<GetSpecificClientCampaignRes>> getUserCampaigns(String userId) {
-  //   return CampaignHelper.getUserCampaigns(userId);
-  // }
 
   Future<List<Object>> postCampaign(CampaignUploadRequest details) async {
     _isUploading = !_isUploading;

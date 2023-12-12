@@ -44,7 +44,7 @@ class Campaign {
   final String rateTo;
   final String viewsRequired;
   final String jobDescription;
-  final int v;
+  // final int v;
 
   Campaign({
     required this.id,
@@ -58,7 +58,7 @@ class Campaign {
     required this.rateTo,
     required this.viewsRequired,
     required this.jobDescription,
-    required this.v,
+    // required this.v,
   });
 
   factory Campaign.fromJson(Map<String, dynamic> json) => Campaign(
@@ -73,7 +73,7 @@ class Campaign {
         rateTo: json["rateTo"],
         viewsRequired: json["viewsRequired"],
         jobDescription: json["jobDescription"],
-        v: json["__v"],
+        // v: json["__v"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -88,6 +88,6 @@ class Campaign {
         "rateTo": rateTo,
         "viewsRequired": viewsRequired,
         "jobDescription": jobDescription,
-        "__v": v,
+        // "__v": v,
       };
 }

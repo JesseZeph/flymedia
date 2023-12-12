@@ -14,7 +14,7 @@ import '../screens/widgets/appbar.dart';
 import '../screens/widgets/welcomeWidget.dart';
 
 class Campaign extends StatefulWidget {
-  const Campaign({super.key});
+  const Campaign({Key? key}) : super(key: key);
 
   @override
   State<Campaign> createState() => _CampaignState();
@@ -27,6 +27,10 @@ class _CampaignState extends State<Campaign> {
     context.read<CampaignsNotifier>().getCampaigns();
   }
 
+  Future<void> _refreshCampaigns() async {
+    await context.read<CampaignsNotifier>().getCampaigns();
+  }
+
   @override
   Widget build(BuildContext context) {
     var loadingProfile = context.watch<ProfileProvider>().isFetchingProfile;
@@ -37,70 +41,75 @@ class _CampaignState extends State<Campaign> {
         child: const FlyAppBar(),
       ),
       backgroundColor: AppColors.lightHintTextColor.withOpacity(0.02),
-      body: Center(
-        child: Column(
-          children: [
-            const ClientTopWidget(
-              subText: "Let's find the best talent for you.",
-            ),
-            SizedBox(height: 40.h),
-            GestureDetector(
-              onTap: () {
-                Get.to(() => const CompanyDetails());
-              },
-              child: Container(
-                width: 321.w,
-                padding: EdgeInsets.symmetric(vertical: 25.h, horizontal: 25.r),
-                decoration: BoxDecoration(
+      body: RefreshIndicator(
+        onRefresh: _refreshCampaigns,
+        child: Center(
+          child: Column(
+            children: [
+              const ClientTopWidget(
+                subText: "Let's find the best talent for you.",
+              ),
+              SizedBox(height: 40.h),
+              GestureDetector(
+                onTap: () {
+                  Get.to(() => const CompanyDetails());
+                },
+                child: Container(
+                  width: 321.w,
+                  padding:
+                      EdgeInsets.symmetric(vertical: 25.h, horizontal: 25.r),
+                  decoration: BoxDecoration(
                     border: Border.all(
-                        width: 1,
-                        color: AppColors.lightHintTextColor.withOpacity(0.3)),
-                    borderRadius: BorderRadius.circular(10.r)),
-                child: Row(
-                  children: [
-                    Container(
-                      width: 30.w,
-                      padding:
-                          EdgeInsets.symmetric(vertical: 4.r, horizontal: 2.r),
-                      decoration: BoxDecoration(
-                          color: AppColors.mainColor.withOpacity(0.2)),
-                      child: const Icon(
-                        FluentSystemIcons.ic_fluent_add_filled,
-                        color: AppColors.mainColor,
+                      width: 1,
+                      color: AppColors.lightHintTextColor.withOpacity(0.3),
+                    ),
+                    borderRadius: BorderRadius.circular(10.r),
+                  ),
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 30.w,
+                        padding: EdgeInsets.symmetric(
+                            vertical: 4.r, horizontal: 2.r),
+                        decoration: BoxDecoration(
+                          color: AppColors.mainColor.withOpacity(0.2),
+                        ),
+                        child: const Icon(
+                          FluentSystemIcons.ic_fluent_add_filled,
+                          color: AppColors.mainColor,
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      width: 10.w,
-                    ),
-                    Text(
-                      'Post a campaign',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.mainTextColor,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w600,
-                          ),
-                    ),
-                  ],
+                      SizedBox(
+                        width: 10.w,
+                      ),
+                      Text(
+                        'Post a campaign',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: AppColors.mainTextColor,
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Container(
-              width: 321.w,
-              margin: EdgeInsets.only(top: 20.h),
-              child: Text(
-                'Posted Campaigns',
-                style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      color: AppColors.mainTextColor,
-                      fontSize: 14.sp,
-                      fontWeight: FontWeight.w600,
-                    ),
+              Container(
+                width: 321.w,
+                margin: EdgeInsets.only(top: 20.h),
+                child: Text(
+                  'Posted Campaigns',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppColors.mainTextColor,
+                        fontSize: 14.sp,
+                        fontWeight: FontWeight.w600,
+                      ),
+                ),
               ),
-            ),
-            Expanded(
-              child: Consumer<CampaignsNotifier>(
-                builder: (context, campaignNotifier, child) {
-                  // campaignNotifier.getCampaigns();
-                  return Padding(
+              Expanded(
+                child: Consumer<CampaignsNotifier>(
+                  builder: (context, campaignNotifier, child) {
+                    return Padding(
                       padding: EdgeInsets.symmetric(horizontal: 25.w),
                       child: campaignNotifier.isFetching
                           ? Center(
@@ -123,46 +132,17 @@ class _CampaignState extends State<Campaign> {
                                     return ClientCampaignListing(
                                       campaign: campaign,
                                     );
-                                  })
+                                  },
+                                )
                               : const Center(
-                                  child: Text('No campaign available'))
-                      // FutureBuilder<List<CampaignUploadResponse>>(
-                      //   future: campaignNotifier.campaignList,
-                      //   builder: (context, snapshot) {
-                      //     if (snapshot.connectionState ==
-                      //         ConnectionState.waiting) {
-                      //       return Center(
-                      //         child: SizedBox(
-                      //             height: 30.h,
-                      //             width: 30.w,
-                      //             child:
-                      //                 const CircularProgressIndicator.adaptive()),
-                      //       );
-                      //     } else if (snapshot.hasError) {
-                      //       return Text('Error: ${snapshot.error}');
-                      //     } else if (snapshot.data!.isEmpty) {
-                      //       return const Text('No campaign available');
-                      //     } else {
-                      //       final campaigns = snapshot.data;
-
-                      //       return ListView.builder(
-                      //           itemCount: campaigns!.length,
-                      //           scrollDirection: Axis.vertical,
-                      //           physics: const AlwaysScrollableScrollPhysics(),
-                      //           itemBuilder: (context, index) {
-                      //             var campaign = campaigns[index];
-                      //             return CampaignListTile(
-                      //               campaign: campaign,
-                      //             );
-                      //           });
-                      //     }
-                      //   },
-                      // ),
-                      );
-                },
-              ),
-            )
-          ],
+                                  child: Text('No campaign available'),
+                                ),
+                    );
+                  },
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
@@ -172,71 +152,74 @@ class _CampaignState extends State<Campaign> {
 class ClientCampaignListing extends StatelessWidget {
   final CampaignUploadResponse campaign;
   const ClientCampaignListing({
-    super.key,
+    Key? key,
     required this.campaign,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FittedBox(
       child: GestureDetector(
-          onTap: () {
-            Get.to(() => ViewCampaign(
-                  id: campaign,
-                ));
-          },
-          child: Container(
-            width: 321.w,
-            margin: EdgeInsets.only(top: 15.h),
-            padding: EdgeInsets.symmetric(vertical: 10.w, horizontal: 10.w),
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(10.r)),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  width: 50.w,
-                  height: 50.h,
-                  padding: EdgeInsets.all(5.w),
-                  child: CircleAvatar(
-                    backgroundColor: AppColors.dialogColor,
-                    radius: 50.w,
-                    backgroundImage: NetworkImage(campaign.imageUrl),
+        onTap: () {
+          Get.to(() => ViewCampaign(
+                id: campaign,
+              ));
+        },
+        child: Container(
+          width: 321.w,
+          margin: EdgeInsets.only(top: 15.h),
+          padding: EdgeInsets.symmetric(vertical: 10.w, horizontal: 10.w),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10.r),
+          ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                width: 50.w,
+                height: 50.h,
+                padding: EdgeInsets.all(5.w),
+                child: CircleAvatar(
+                  backgroundColor: AppColors.dialogColor,
+                  radius: 50.w,
+                  backgroundImage: NetworkImage(campaign.imageUrl),
+                ),
+              ),
+              SizedBox(width: 10.w),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    campaign.jobTitle,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppColors.mainTextColor,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 14.sp,
+                        ),
                   ),
-                ),
-                SizedBox(width: 10.w),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      campaign.jobTitle,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.mainTextColor,
-                            fontWeight: FontWeight.w700,
-                            fontSize: 14.sp,
-                          ),
-                    ),
-                    Text(
-                      campaign.companyDescription,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.lightMainText,
-                            fontWeight: FontWeight.w200,
-                            fontSize: 12.sp,
-                          ),
-                    ),
-                    Text(
-                      campaign.country,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.lightMainText,
-                            fontWeight: FontWeight.w200,
-                            fontSize: 12.sp,
-                          ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          )),
+                  Text(
+                    campaign.companyDescription,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppColors.lightMainText,
+                          fontWeight: FontWeight.w200,
+                          fontSize: 12.sp,
+                        ),
+                  ),
+                  Text(
+                    campaign.country,
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: AppColors.lightMainText,
+                          fontWeight: FontWeight.w200,
+                          fontSize: 12.sp,
+                        ),
+                  ),
+                ],
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
