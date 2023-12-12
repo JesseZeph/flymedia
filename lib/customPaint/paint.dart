@@ -2,15 +2,14 @@ import 'package:flutter/cupertino.dart';
 
 import '../constants/colors.dart';
 
-
 class SemiArcPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = AppColors.mainColor // Set your desired color here
+      ..color = AppColors.mainColor
       ..style = PaintingStyle.stroke
       ..strokeWidth = 5
-      ..strokeCap = StrokeCap.round; // Set the line cap to round
+      ..strokeCap = StrokeCap.round;
 
     final rect = Rect.fromCircle(
       center: Offset(size.width / 2, size.height / 2),
@@ -19,9 +18,9 @@ class SemiArcPainter extends CustomPainter {
 
     canvas.drawArc(
       rect,
-      -2.9, // Adjust the starting angle to rotate the arc
-      -1.84, // Adjust the angle to create the desired semi arc shape
-      false, // Set to false to draw only the outline
+      -2.9,
+      -1.84,
+      false,
       paint,
     );
   }
@@ -65,10 +64,10 @@ class FullCircle extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = AppColors.mainColor // Set your desired color here
+      ..color = AppColors.mainColor
       ..style = PaintingStyle.stroke
       ..strokeWidth = 5
-      ..strokeCap = StrokeCap.round; // Set the line cap to round
+      ..strokeCap = StrokeCap.round;
 
     final rect = Rect.fromCircle(
       center: Offset(size.width / 2, size.height / 2),
@@ -77,9 +76,9 @@ class FullCircle extends CustomPainter {
 
     canvas.drawArc(
       rect,
-      -1.7, // Adjust the starting angle to rotate the arc
-      -6.84, // Adjust the angle to create the desired semi arc shape
-      false, // Set to false to draw only the outline
+      -1.7,
+      -6.84,
+      false,
       paint,
     );
   }

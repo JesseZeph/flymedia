@@ -11,6 +11,7 @@ PODS:
   - FMDB/standard (2.7.5)
   - google_sign_in_ios (0.0.1):
     - Flutter
+    - FlutterMacOS
     - GoogleSignIn (~> 7.0)
   - GoogleSignIn (7.0.0):
     - AppAuth (~> 1.5)
@@ -42,7 +43,7 @@ PODS:
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
-  - google_sign_in_ios (from `.symlinks/plugins/google_sign_in_ios/ios`)
+  - google_sign_in_ios (from `.symlinks/plugins/google_sign_in_ios/darwin`)
   - image_cropper (from `.symlinks/plugins/image_cropper/ios`)
   - image_picker_ios (from `.symlinks/plugins/image_picker_ios/ios`)
   - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
@@ -64,7 +65,7 @@ EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
   google_sign_in_ios:
-    :path: ".symlinks/plugins/google_sign_in_ios/ios"
+    :path: ".symlinks/plugins/google_sign_in_ios/darwin"
   image_cropper:
     :path: ".symlinks/plugins/image_cropper/ios"
   image_picker_ios:
@@ -84,7 +85,7 @@ SPEC CHECKSUMS:
   AppAuth: 3bb1d1cd9340bd09f5ed189fb00b1cc28e1e8570
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  google_sign_in_ios: 8115e3fbe097e6509beb819ed602d47369d9011f
+  google_sign_in_ios: ede92ec558c3a73ec07cb180f31820152fb8ca89
   GoogleSignIn: b232380cf495a429b8095d3178a8d5855b42e842
   GTMAppAuth: 99fb010047ba3973b7026e45393f51f27ab965ae
   GTMSessionFetcher: e8647203b65cee28c5f73d0f473d096653945e72
@@ -95,7 +96,7 @@ SPEC CHECKSUMS:
   smart_auth: 4bedbc118723912d0e45a07e8ab34039c19e04f2
   sqflite: 31f7eba61e3074736dff8807a9b41581e4f7f15a
   TOCropViewController: edfd4f25713d56905ad1e0b9f5be3fbe0f59c863
-  webview_flutter_wkwebview: 2e2d318f21a5e036e2c3f26171342e95908bd60a
+  webview_flutter_wkwebview: b7e70ef1ddded7e69c796c7390ee74180182971f
 
 PODFILE CHECKSUM: 9c46fd01abff66081b39f5fa5767b3f1d0b11d76
 

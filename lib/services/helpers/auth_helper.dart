@@ -120,6 +120,7 @@ class AuthHelper {
       await prefs.setString('userId', user.id);
       await prefs.setString('uid', user.uid);
       await prefs.setString('profile', user.profile);
+      await prefs.setString('email', user.email);
       await prefs.setString('fullname', user.fullname);
       await prefs.setInt('selectedContainer', 1);
       await prefs.setBool('loggedIn', true);

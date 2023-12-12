@@ -3,10 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/controllers/campaign_provider.dart';
 import 'package:flymedia_app/models/response/campaign_upload_response.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/previewListing.dart';
+import 'package:flymedia_app/src/search/widget/custom_field.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants/colors.dart';
+import '../../../services/helpers/campaign_helper.dart';
 import '../../../utils/widgets/divider.dart';
 import '../../../utils/widgets/headings.dart';
 import 'applications.dart';
@@ -144,6 +146,31 @@ class _ViewCampaignState extends State<ViewCampaign> {
                 HeadingAndSubText(
                     heading: 'Job Description',
                     subText: campaign.jobDescription),
+                Padding(
+                  padding: EdgeInsets.all(50.w),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.errorColor,
+                    ),
+                    onPressed: () async {
+                      bool success =
+                          await CampaignHelper.deleteCampaign(campaign.id);
+                      if (success) {
+                        Get.back();
+                      } else {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Failed to delete campaign'),
+                          ),
+                        );
+                      }
+                    },
+                    child: Text(
+                      'Delete Campaign',
+                      style: appStyle(12, Colors.white, FontWeight.w400),
+                    ),
+                  ),
+                )
               ],
             ),
           ));

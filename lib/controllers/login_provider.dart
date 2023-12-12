@@ -23,6 +23,8 @@ class LoginNotifier extends ChangeNotifier {
   String get userId => _userId;
   bool get entrypoint => _entrypoint;
   bool get loggedIn => _loggedIn ?? false;
+  String get email => _email;
+  String _email = '';
   // int get selectedContainer => _selectedContainer ?? 0;
 
   set obscureText(bool newState) {
@@ -100,6 +102,7 @@ class LoginNotifier extends ChangeNotifier {
     _loggedIn = prefs.getBool('loggedIn') ?? false;
     _fullName = prefs.getString('fullname') ?? '';
     _userId = prefs.getString('userId') ?? '';
+    _email = prefs.getString('email') ?? '';
     notifyListeners();
     fullname = prefs.getString('fullname') ?? '';
     userUid = prefs.getString('uid') ?? '';
