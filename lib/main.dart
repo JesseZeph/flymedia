@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/controllers/campaign_provider.dart';
 import 'package:flymedia_app/controllers/profile_provider.dart';
+import 'package:flymedia_app/services/helpers/applications_helper.dart';
 import 'package:flymedia_app/services/helpers/forgot_password_helper.dart';
 import 'package:flymedia_app/src/accountoption/view.dart';
 import 'package:flymedia_app/src/clientdashboard/clientHomepage.dart';
@@ -36,6 +37,7 @@ void main() async {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (context) => OnBoardNotifier()),
+      ChangeNotifierProvider(create: (context) => ApplicationsHelper()),
       ChangeNotifierProvider(create: (context) => ForgotPasswordHelper()),
       ChangeNotifierProvider(create: (context) => LoginNotifier()),
       ChangeNotifierProvider(create: (context) => SignUpNotifier()),

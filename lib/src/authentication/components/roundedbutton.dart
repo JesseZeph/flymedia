@@ -41,19 +41,21 @@ class MiniRoundedButton extends StatelessWidget {
     return Container(
       width: 100.w,
       height: 36,
-      padding: EdgeInsets.only(top: 8.w),
+      padding: EdgeInsets.all(8.w),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(21.r),
         color: AppColors.mainColor,
       ),
-      child: Text(
-        title,
-        textAlign: TextAlign.center,
-        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-              color: Colors.white,
-              fontWeight: FontWeight.w500,
-              fontSize: 10.sp,
-            ),
+      child: Center(
+        child: Text(
+          title,
+          textAlign: TextAlign.center,
+          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                color: Colors.white,
+                fontWeight: FontWeight.w500,
+                fontSize: 10.sp,
+              ),
+        ),
       ),
     );
   }

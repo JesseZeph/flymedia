@@ -9,6 +9,7 @@ class TextInputField extends StatelessWidget {
   final String? errorText;
   final bool obscureText;
   final TextEditingController? controller;
+  final TextInputType? inputType;
   final String? Function(String?)? validator;
   const TextInputField({
     super.key,
@@ -18,6 +19,7 @@ class TextInputField extends StatelessWidget {
     this.controller,
     this.obscureText = false,
     this.validator,
+    this.inputType,
   });
 
   @override
@@ -47,6 +49,7 @@ class TextInputField extends StatelessWidget {
                     fontWeight: FontWeight.w400)),
             validator: validator,
             autovalidateMode: AutovalidateMode.onUserInteraction,
+            keyboardType: inputType,
           ),
         ),
         SizeFadeSwitcher(

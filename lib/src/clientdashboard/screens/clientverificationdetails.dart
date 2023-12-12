@@ -31,7 +31,7 @@ class _ClientVerificationDetailsState extends State<ClientVerificationDetails> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
+      body: SingleChildScrollView(
           child: Column(
         children: [
           Container(
@@ -139,6 +139,7 @@ class _ClientVerificationDetailsState extends State<ClientVerificationDetails> {
                 padding: EdgeInsets.symmetric(horizontal: 25.w),
                 child: TextInputField(
                   controller: memberContact,
+                  inputType: const TextInputType.numberWithOptions(),
                   hintText: 'Who can we get in touch with?',
                   onChanged: (_) {},
                 ),
@@ -176,7 +177,9 @@ class _ClientVerificationDetailsState extends State<ClientVerificationDetails> {
                   top: 20.h,
                 ),
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Get.back();
+                  },
                   child: Align(
                     alignment: Alignment.center,
                     child: Text(
