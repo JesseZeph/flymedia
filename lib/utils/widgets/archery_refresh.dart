@@ -32,11 +32,8 @@ class ArcheryHeader extends Header {
 }
 
 class _ArcheryIndicator extends StatefulWidget {
-  /// Indicator properties and state.
   final IndicatorState state;
 
-  /// True for up and left.
-  /// False for down and right.
   final bool reverse;
 
   const _ArcheryIndicator({
@@ -67,9 +64,8 @@ class _ArcheryIndicatorState extends State<_ArcheryIndicator> {
 
   RiveFile? _riveFile;
   void _loadRiveFile() {
-    rootBundle.load('assets/rive_assets/pull_to_refresh_use_case.riv').then(
+    rootBundle.load('assets/rive_assets/pullToRefresh.riv').then(
       (data) async {
-        // Load the RiveFile from the binary data.
         setState(() {
           _riveFile = RiveFile.import(data);
         });
@@ -85,7 +81,6 @@ class _ArcheryIndicatorState extends State<_ArcheryIndicator> {
     super.dispose();
   }
 
-  /// Mode change listener.
   void _onModeChange(IndicatorMode mode, double offset) {
     // print(mode);
     switch (mode) {
