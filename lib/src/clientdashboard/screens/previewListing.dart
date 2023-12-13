@@ -13,6 +13,7 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants/colors.dart';
+import '../../../controllers/login_provider.dart';
 import '../../../utils/widgets/headings.dart';
 import 'campaignLive.dart';
 
@@ -206,6 +207,11 @@ class PreviewListing extends StatelessWidget {
                                     .postCampaign(campaignDetails)
                                     .then((resp) {
                                   if (resp.first as bool) {
+                                    context
+                                        .read<CampaignsNotifier>()
+                                        .getClientCampaigns(context
+                                            .read<LoginNotifier>()
+                                            .userId);
                                     // context.showSuccess(resp.last as String);
                                     Get.to(() => const CampaignLive());
                                   } else {

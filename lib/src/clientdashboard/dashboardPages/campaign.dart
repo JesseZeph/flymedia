@@ -2,6 +2,7 @@ import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/colors.dart';
+import 'package:flymedia_app/controllers/login_provider.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/companyDetails.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -26,8 +27,12 @@ class _CampaignState extends State<Campaign> {
     context.read<CampaignsNotifier>().getCampaigns();
   }
 
+  fetchCampaigns() async {}
+
   Future<void> _refreshCampaigns() async {
-    await context.read<CampaignsNotifier>().getCampaigns();
+    await context
+        .read<CampaignsNotifier>()
+        .getClientCampaigns(context.read<LoginNotifier>().userId);
   }
 
   @override
@@ -108,7 +113,7 @@ class _CampaignState extends State<Campaign> {
                   builder: (context, campaignNotifier, child) {
                     return Padding(
                       padding: EdgeInsets.symmetric(horizontal: 25.w),
-                      child: campaignNotifier.isFetching
+                      child: !campaignNotifier.fetchedCampaigns
                           ? Center(
                               child: Container(
                                 padding: EdgeInsets.all(20.r),
@@ -116,23 +121,23 @@ class _CampaignState extends State<Campaign> {
                                     const CircularProgressIndicator.adaptive(),
                               ),
                             )
-                          : campaignNotifier.campaignList.isNotEmpty
+                          : campaignNotifier.clientCampaigns.isNotEmpty
                               ? ListView.builder(
                                   itemCount:
-                                      campaignNotifier.campaignList.length,
+                                      campaignNotifier.clientCampaigns.length,
                                   scrollDirection: Axis.vertical,
                                   physics:
                                       const AlwaysScrollableScrollPhysics(),
                                   itemBuilder: (context, index) {
                                     var campaign =
-                                        campaignNotifier.campaignList[index];
+                                        campaignNotifier.clientCampaigns[index];
                                     return ClientCampaignListing(
                                       campaign: campaign,
                                     );
                                   },
                                 )
                               : const Center(
-                                  child: Text('No campaign available'),
+                                  child: Text('No campaigns available'),
                                 ),
                     );
                   },

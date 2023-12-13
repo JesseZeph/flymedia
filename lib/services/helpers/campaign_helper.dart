@@ -7,7 +7,6 @@ import 'package:flymedia_app/models/response/campaign_upload_response.dart';
 import 'package:http/http.dart' as https;
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../models/response/get_campaign_res.dart';
 import '../../models/response/get_specific_campaign.dart';
 import '../config.dart';
 
@@ -19,7 +18,7 @@ class CampaignHelper {
       'Content-Type': 'application/json',
     };
 
-    var url = Uri.https(Config.apiUrl, Config.campaignUpload);
+    var url = Uri.https(Config.apiUrl, Config.getAllCampaigns);
 
     var response = await client.get(url, headers: requestHeaders);
 
@@ -60,22 +59,22 @@ class CampaignHelper {
   //   }
   // }
 
-  static Future<GetCampaignRes> getCampaign(String campaignId) async {
-    Map<String, String> requestHeaders = {
-      'Content-Type': 'application/json',
-    };
+  // static Future<GetCampaignRes> getCampaign(String campaignId) async {
+  //   Map<String, String> requestHeaders = {
+  //     'Content-Type': 'application/json',
+  //   };
 
-    var url = Uri.https(Config.apiUrl, "${Config.campaignUpload}/$campaignId");
-    var response = await client.get(url, headers: requestHeaders);
-    print(response.body);
+  //   var url = Uri.https(Config.apiUrl, "${Config.campaignUpload}/$campaignId");
+  //   var response = await client.get(url, headers: requestHeaders);
+  //   print(response.body);
 
-    if (response.statusCode == 200) {
-      var campaign = getCampaignResFromJson(response.body);
-      return campaign;
-    } else {
-      throw Exception('Failed to load campaign');
-    }
-  }
+  //   if (response.statusCode == 200) {
+  //     var campaign = getCampaignResFromJson(response.body);
+  //     return campaign;
+  //   } else {
+  //     throw Exception('Failed to load campaign');
+  //   }
+  // }
 
   static Future<List<CampaignUploadResponse>> searchCampaign(
       String query) async {
@@ -156,15 +155,18 @@ class CampaignHelper {
     }
   }
 
-  static Future<GetSpecificClientCampaignRes> getSpecificClientCampaigns(
+  static Future<GetSpecificClientCampaignRes?> getSpecificClientCampaigns(
       String userId) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
     try {
       Map<String, String> requestHeaders = {
         'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${prefs.getString("token")}'
       };
 
       var url =
-          Uri.https(Config.apiUrl, "${Config.specificUserCampaign}/$userId");
+          Uri.https(Config.apiUrl, "${Config.specificUserCampaign}$userId");
       var response = await client.get(url, headers: requestHeaders);
 
       if (response.statusCode == 200) {
@@ -172,12 +174,13 @@ class CampaignHelper {
             GetSpecificClientCampaignRes.fromJson(json.decode(response.body));
         return clientCampaigns;
       } else {
-        throw Exception('Failed to load client campaigns');
+        return null;
       }
     } catch (e, s) {
       debugPrint("===> error fetching client campaigns : ${e.toString()}");
       debugPrintStack(stackTrace: s);
-      throw Exception('Error occurred, try again later.');
+      // throw Exception('Error occurred, try again later.');
     }
+    return null;
   }
 }

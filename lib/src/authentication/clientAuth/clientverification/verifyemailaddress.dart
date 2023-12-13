@@ -32,7 +32,7 @@ class VerifyEmailAccount extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                Get.to(UserEmailVerification());
+                Get.to(() => const UserEmailVerification());
               },
               child: Padding(
                 padding: EdgeInsets.only(top: 30.h),

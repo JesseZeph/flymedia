@@ -4,6 +4,8 @@
 
 import 'dart:convert';
 
+import 'campaign_upload_response.dart';
+
 GetSpecificClientCampaignRes getSpecificClientCampaignResFromJson(String str) =>
     GetSpecificClientCampaignRes.fromJson(json.decode(str));
 
@@ -12,7 +14,7 @@ String getSpecificClientCampaignResToJson(GetSpecificClientCampaignRes data) =>
 
 class GetSpecificClientCampaignRes {
   final bool success;
-  final List<Campaign> campaign;
+  final List<CampaignUploadResponse> campaign;
 
   GetSpecificClientCampaignRes({
     required this.success,
@@ -22,8 +24,8 @@ class GetSpecificClientCampaignRes {
   factory GetSpecificClientCampaignRes.fromJson(Map<String, dynamic> json) =>
       GetSpecificClientCampaignRes(
         success: json["success"],
-        campaign: List<Campaign>.from(
-            json["campaign"].map((x) => Campaign.fromJson(x))),
+        campaign: List<CampaignUploadResponse>.from(
+            json["campaigns"].map((x) => Campaign.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
