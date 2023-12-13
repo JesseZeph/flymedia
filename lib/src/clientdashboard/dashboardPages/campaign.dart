@@ -1,9 +1,11 @@
+import 'package:easy_refresh/easy_refresh.dart';
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/colors.dart';
 import 'package:flymedia_app/controllers/login_provider.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/companyDetails.dart';
+import 'package:flymedia_app/utils/widgets/archery_refresh.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
@@ -47,7 +49,8 @@ class _CampaignState extends State<Campaign> {
         child: const FlyAppBar(),
       ),
       backgroundColor: AppColors.lightHintTextColor.withOpacity(0.02),
-      body: RefreshIndicator(
+      body: EasyRefresh(
+        header: const ArcheryHeader(),
         onRefresh: _refreshCampaigns,
         child: Center(
           child: Column(

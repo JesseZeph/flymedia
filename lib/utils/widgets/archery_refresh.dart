@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:rive/rive.dart';
 
-const kDefaultArcheryTriggerOffset = 200.0;
+const kDefaultArcheryTriggerOffset = 135.0;
 
 class ArcheryHeader extends Header {
   const ArcheryHeader({
@@ -13,7 +13,7 @@ class ArcheryHeader extends Header {
     super.processedDuration = Duration.zero,
     super.springRebound = false,
     super.hapticFeedback = false,
-    super.safeArea = true,
+    super.safeArea = false,
     super.spring,
     super.readySpringBuilder,
     super.frictionFactor,
