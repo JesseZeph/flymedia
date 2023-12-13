@@ -1,3 +1,4 @@
+import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/controllers/campaign_provider.dart';
@@ -5,6 +6,7 @@ import 'package:flymedia_app/controllers/profile_provider.dart';
 import 'package:flymedia_app/models/response/campaign_upload_response.dart';
 import 'package:flymedia_app/src/influencerDashboard/screens/profile_edit.dart';
 import 'package:flymedia_app/src/search/search.dart';
+import 'package:flymedia_app/utils/widgets/archery_refresh.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
@@ -35,7 +37,8 @@ class _CampaignPageState extends State<CampaignPage> {
   Widget build(BuildContext context) {
     var loadingProfile = context.watch<ProfileProvider>().isFetchingProfile;
     var userProfile = context.watch<ProfileProvider>().userProfile;
-    return RefreshIndicator(
+    return EasyRefresh(
+      header: const ArcheryHeader(),
       onRefresh: _refreshCampaigns,
       child: Scaffold(
         appBar: PreferredSize(
