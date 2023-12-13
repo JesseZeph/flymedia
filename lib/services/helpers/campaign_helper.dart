@@ -158,8 +158,7 @@ class CampaignHelper {
   static Future<GetSpecificClientCampaignRes?> getSpecificClientCampaigns(
       String userId) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    print("====> user id : \n $userId\n =======>");
-    print("====> tokenn : \n ${prefs.getString("token")} \n =======>");
+
     try {
       Map<String, String> requestHeaders = {
         HttpHeaders.authorizationHeader: 'Bearer ${prefs.getString("token")}',
@@ -169,10 +168,6 @@ class CampaignHelper {
       var url =
           Uri.https(Config.apiUrl, Config.specificUserCampaign, {"id": userId});
       var response = await client.get(url, headers: requestHeaders);
-
-      print("====> test response : \n ${response.body} \n =======>");
-      print("====> test status : \n ${response.statusCode} \n =======>");
-
       if (response.statusCode == 200) {
         var clientCampaigns =
             GetSpecificClientCampaignRes.fromJson(json.decode(response.body));
