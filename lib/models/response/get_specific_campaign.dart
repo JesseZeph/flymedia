@@ -25,7 +25,7 @@ class GetSpecificClientCampaignRes {
       GetSpecificClientCampaignRes(
         success: json["success"],
         campaign: List<CampaignUploadResponse>.from(
-            json["campaigns"].map((x) => Campaign.fromJson(x))),
+            json["campaigns"].map((x) => CampaignUploadResponse.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {

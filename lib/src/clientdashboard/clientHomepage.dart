@@ -5,6 +5,7 @@ import 'package:flymedia_app/src/clientdashboard/dashboardPages/campaign.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/colors.dart';
+import '../../controllers/campaign_provider.dart';
 import 'dashboardPages/help.dart';
 import 'dashboardPages/messages.dart';
 import 'dashboardPages/payment.dart';
@@ -31,7 +32,15 @@ class _ClientHomePageState extends State<ClientHomePage> {
   @override
   void initState() {
     super.initState();
-    context.read<LoginNotifier>().getPref();
+    fetchData();
+  }
+
+  fetchData() async {
+    await context.read<LoginNotifier>().getPref().then((_) {
+      context
+          .read<CampaignsNotifier>()
+          .getClientCampaigns(context.read<LoginNotifier>().userId);
+    });
   }
 
   @override

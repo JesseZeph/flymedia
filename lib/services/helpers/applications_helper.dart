@@ -13,8 +13,6 @@ class ApplicationsHelper extends ChangeNotifier {
 
   Future<List> applyToCampaign(
       {String userId = '', String campaignId = ''}) async {
-    print("=====> influencer id : $userId ==========>");
-    print("=====> campaign id : $campaignId ==========>");
     _isLoading = !_isLoading;
     notifyListeners();
     try {

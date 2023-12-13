@@ -24,13 +24,6 @@ class _CampaignState extends State<Campaign> {
   @override
   void initState() {
     super.initState();
-    fetchCampaigns();
-  }
-
-  fetchCampaigns() async {
-    context
-        .read<CampaignsNotifier>()
-        .getClientCampaigns(context.read<LoginNotifier>().userId);
   }
 
   Future<void> _refreshCampaigns() async {
