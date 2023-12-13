@@ -44,6 +44,10 @@ dependencies:
   zoom_tap_animation: ^1.1.0
   animated_text_kit: ^4.2.2
   webview_flutter_wkwebview: ^2.9.5
+  rive: ^0.12.3
+  pull_to_refresh: ^2.0.0
+  easy_refresh: ^3.3.2+1
+
 
 dev_dependencies:
   flutter_lints: ^2.0.0
@@ -56,6 +60,7 @@ flutter:
 
   assets:
     - assets/images/
+    - assets/rive_assets/
     - assets/images/cell.svg
     - assets/images/Ellipse16.svg
     - assets/images/firstOnboardEllipes.svg

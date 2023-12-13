@@ -34,7 +34,7 @@ class ApplicationsHelper extends ChangeNotifier {
     }
     _isLoading = !_isLoading;
     notifyListeners();
-    return [false, 'An error occured.'];
+    return [false, 'An error occurred.'];
   }
 
   Future<Map<String, String>> getHeaders() async {
