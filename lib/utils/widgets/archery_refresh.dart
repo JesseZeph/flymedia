@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:rive/rive.dart';
 
-const kDefaultArcheryTriggerOffset = 200.0;
+const kDefaultArcheryTriggerOffset = 135.0;
 
 class ArcheryHeader extends Header {
   const ArcheryHeader({
@@ -67,7 +67,7 @@ class _ArcheryIndicatorState extends State<_ArcheryIndicator> {
 
   RiveFile? _riveFile;
   void _loadRiveFile() {
-    rootBundle.load('assets/pull_to_refresh_use_case.riv').then(
+    rootBundle.load('assets/rive_assets/pull_to_refresh_use_case.riv').then(
       (data) async {
         // Load the RiveFile from the binary data.
         setState(() {
