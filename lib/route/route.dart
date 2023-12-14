@@ -3,7 +3,6 @@ import 'package:flymedia_app/src/authentication/forgotpassword/screens/checkemai
 import 'package:flymedia_app/src/authentication/forgotpassword/screens/resetPassword.dart';
 import 'package:flymedia_app/src/authentication/forgotpassword/screens/verifyEmail.dart';
 import 'package:flymedia_app/src/clientdashboard/clientHomepage.dart';
-import 'package:flymedia_app/src/clientdashboard/screens/applications.dart';
 import 'package:flymedia_app/src/influencerDashboard/dashboardPages/profile.dart';
 import 'package:flymedia_app/src/influencerDashboard/influencerHomepage.dart';
 
@@ -37,7 +36,7 @@ Widget _getPage(String routeName) {
     case '/checkEmail':
       return const CheckEmail();
     case '/verifyEmail':
-      return VerifyEmail();
+      return const VerifyEmail();
     case '/clientDashboard':
       return const ClientVerificationOnboarding();
     case '/clientHomePage':
@@ -49,8 +48,8 @@ Widget _getPage(String routeName) {
     //   return const ViewCampaign(id: '',);
     // case '/viewCampaignListing':
     //   return const ViewCampaignListing(id: '',);
-    case '/applications':
-      return const Applications();
+    // case '/applications':
+    //   return const Applications();
     // case '/editProfile':
     //   return const EditProfile();
     case '/influencerProfile':

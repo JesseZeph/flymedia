@@ -11,6 +11,7 @@ import '../../../utils/widgets/divider.dart';
 import '../../../utils/widgets/subheadings.dart';
 import '../widgets/custom_field.dart';
 import '../widgets/nichescontainer.dart';
+import '../../../utils/extensions/string_extensions.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -242,8 +243,8 @@ class _ProfilePageState extends State<ProfilePage> {
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
                             CustomPreview(
-                              headerText: profile?.formatFigures(
-                                      profile.noOfTikTokFollowers ?? '') ??
+                              headerText: profile?.noOfTikTokFollowers
+                                      ?.formatFigures() ??
                                   '',
                               text: 'Followers',
                             ),
@@ -252,9 +253,9 @@ class _ProfilePageState extends State<ProfilePage> {
                               text: 'Avg Views',
                             ),
                             CustomPreview(
-                              headerText: profile?.formatFigures(
-                                      profile.noOfTikTokLikes ?? '') ??
-                                  '',
+                              headerText:
+                                  profile?.noOfTikTokLikes?.formatFigures() ??
+                                      '',
                               text: 'Likes',
                             ),
                           ],

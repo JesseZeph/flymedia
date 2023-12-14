@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flymedia_app/models/profile/profile_model.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -33,6 +34,28 @@ class ApplicationsHelper extends ChangeNotifier {
     _isLoading = !_isLoading;
     notifyListeners();
     return [false, 'An error occurred.'];
+  }
+
+  Future<List<ProfileModel>> campaignApplicants(
+      {String campaignId = ''}) async {
+    List<ProfileModel> returnList = [];
+    try {
+      final response = await http.get(
+        Uri.https(Config.apiUrl, Config.campaignApplicants, {"id": campaignId}),
+        // headers: await getHeaders(),
+      );
+
+      var decodedResponse = jsonDecode(response.body);
+      if (response.statusCode == 200) {
+        List initList = decodedResponse['influencerApplications'];
+        returnList =
+            initList.map((profile) => ProfileModel.fromMap(profile)).toList();
+      }
+    } catch (e, s) {
+      debugPrint("error with fetching campaign applicants : ${e.toString()}");
+      debugPrintStack(stackTrace: s);
+    }
+    return returnList;
   }
 
   Future<Map<String, String>> getHeaders() async {

@@ -133,6 +133,7 @@ class _CampaignState extends State<Campaign> {
                                         campaignNotifier.clientCampaigns[index];
                                     return ClientCampaignListing(
                                       campaign: campaign,
+                                      campaignIndex: index,
                                     );
                                   },
                                 )
@@ -153,9 +154,11 @@ class _CampaignState extends State<Campaign> {
 
 class ClientCampaignListing extends StatelessWidget {
   final CampaignUploadResponse campaign;
+  final int campaignIndex;
   const ClientCampaignListing({
     Key? key,
     required this.campaign,
+    required this.campaignIndex,
   }) : super(key: key);
 
   @override
@@ -165,6 +168,7 @@ class ClientCampaignListing extends StatelessWidget {
         onTap: () {
           Get.to(() => ViewCampaign(
                 id: campaign,
+                index: campaignIndex,
               ));
         },
         child: Container(

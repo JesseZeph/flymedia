@@ -25,10 +25,12 @@ class CampaignsNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<List<Object>> postCampaign(CampaignUploadRequest details) async {
+  Future<List<Object>> postCampaign(
+      CampaignUploadRequest details, String userId) async {
     _isUploading = !_isUploading;
     notifyListeners();
     List<Object> response = await CampaignHelper.uploadCampaign(details);
+    getClientCampaigns(userId);
     _isUploading = !_isUploading;
     notifyListeners();
 
@@ -44,8 +46,8 @@ class CampaignsNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
-  // Future<GetCampaignRes> getCampaign(String campaignId) {
-  //   campaign = CampaignHelper.getCampaign(campaignId);
-  //   return campaign;
-  // }
+  deleteCampaign(int index) {
+    clientCampaigns.removeAt(index);
+    notifyListeners();
+  }
 }

@@ -19,4 +19,5 @@ class Config {
   static const String resendOtp = "/api/resendVerification";
   static const String resetPassword = "/api/resetPassword";
   static const String campaignApplication = "/api/applications/";
+  static const String campaignApplicants = "/api/applications/campaign";
 }

@@ -96,7 +96,7 @@ class _DropDowViewState extends State<DropDowView> {
 
 List<String> viewsList = <String>[
   "10k - 50k",
-  "20k - 200k",
+  "50k - 200k",
   "200k - 500k",
   "500k - 1m",
   "1m and above"

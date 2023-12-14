@@ -95,19 +95,6 @@ class ProfileModel {
   factory ProfileModel.fromJson(String source) =>
       ProfileModel.fromMap(json.decode(source));
 
-  String formatFigures(String figure) {
-    int fig = int.tryParse(figure) ?? 0;
-    if (fig < 1000) {
-      return fig.toString();
-    } else if (fig < 1000000) {
-      double result = fig / 1000.0;
-      return '${result.toStringAsFixed(result.truncateToDouble() == result ? 0 : 1)}k';
-    } else {
-      double result = fig / 1000000.0;
-      return '${result.toStringAsFixed(result.truncateToDouble() == result ? 0 : 1)}M';
-    }
-  }
-
   @override
   String toString() {
     return 'ProfileModel(id: $id, imageUrl: $imageUrl, firstAndLastName: $firstAndLastName, location: $location, email: $email, noOfTikTokFollowers: $noOfTikTokFollowers, noOfTikTokLikes: $noOfTikTokLikes, postsViews: $postsViews, profileLink: $profileLink, niches: $niches, bio: $bio)';

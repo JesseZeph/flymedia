@@ -7,6 +7,7 @@ import 'package:flymedia_app/models/requests/campaign/campain_upload.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/widgets/appbar.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/widgets/flyButton.dart';
 import 'package:flymedia_app/utils/extensions/context_extension.dart';
+import 'package:flymedia_app/utils/extensions/string_extensions.dart';
 import 'package:flymedia_app/utils/widgets/alert_loader.dart';
 import 'package:flymedia_app/utils/widgets/divider.dart';
 import 'package:get/get.dart';
@@ -138,7 +139,7 @@ class PreviewListing extends StatelessWidget {
                             child: Text(
                               // '10k - 50k USD',
 
-                              '${campaignDetails.rateFrom} - ${campaignDetails.rateTo} USD',
+                              '${campaignDetails.rateFrom.formatComma()} - ${campaignDetails.rateTo.formatComma()} USD',
                               style: Theme.of(context)
                                   .textTheme
                                   .bodyMedium
@@ -204,7 +205,8 @@ class PreviewListing extends StatelessWidget {
                                 }
                                 await context
                                     .read<CampaignsNotifier>()
-                                    .postCampaign(campaignDetails)
+                                    .postCampaign(campaignDetails,
+                                        context.read<LoginNotifier>().userId)
                                     .then((resp) {
                                   if (resp.first as bool) {
                                     context

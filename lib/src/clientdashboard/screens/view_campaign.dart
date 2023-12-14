@@ -4,7 +4,11 @@ import 'package:flymedia_app/controllers/campaign_provider.dart';
 import 'package:flymedia_app/models/response/campaign_upload_response.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/previewListing.dart';
 import 'package:flymedia_app/src/search/widget/custom_field.dart';
+import 'package:flymedia_app/utils/extensions/context_extension.dart';
+import 'package:flymedia_app/utils/extensions/string_extensions.dart';
+import 'package:flymedia_app/utils/widgets/alert_loader.dart';
 import 'package:get/get.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants/colors.dart';
@@ -15,7 +19,8 @@ import 'applications.dart';
 
 class ViewCampaign extends StatefulWidget {
   final CampaignUploadResponse id;
-  const ViewCampaign({super.key, required this.id});
+  final int index;
+  const ViewCampaign({super.key, required this.id, required this.index});
 
   @override
   State<ViewCampaign> createState() => _ViewCampaignState();
@@ -23,21 +28,19 @@ class ViewCampaign extends StatefulWidget {
 
 class _ViewCampaignState extends State<ViewCampaign> {
   late CampaignUploadResponse campaign;
+  bool loading = false;
   @override
   void initState() {
     super.initState();
     campaign = widget.id;
   }
 
-  // getCampaign() {
-  //   campaign = CampaignHelper.getCampaign(widget.id);
-  // }
-
   @override
   Widget build(BuildContext context) {
-    return Consumer<CampaignsNotifier>(
-        builder: (context, campaignNotifier, child) {
-      return Scaffold(
+    return LoadingOverlay(
+      isLoading: loading,
+      progressIndicator: const AlertLoader(message: 'Deleting Campaign'),
+      child: Scaffold(
           appBar: AppBar(
             leading: IconButton(
               onPressed: () {
@@ -86,7 +89,7 @@ class _ViewCampaignState extends State<ViewCampaign> {
                 Container(
                   margin: EdgeInsets.only(top: 12.h),
                   child: Text(
-                    '${campaign.rateFrom} - ${campaign.rateTo}',
+                    '${campaign.rateFrom.formatComma()} - ${campaign.rateTo.formatComma()} USD',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: AppColors.mainTextColor,
                           fontSize: 16.sp,
@@ -98,7 +101,9 @@ class _ViewCampaignState extends State<ViewCampaign> {
                 SizedBox(height: 15.h),
                 TextButton(
                     onPressed: () {
-                      Get.to(() => const Applications());
+                      Get.to(() => Applications(
+                            campaignId: campaign.id,
+                          ));
                     },
                     child: Container(
                       padding: EdgeInsets.all(10.r),
@@ -153,17 +158,25 @@ class _ViewCampaignState extends State<ViewCampaign> {
                       backgroundColor: AppColors.errorColor,
                     ),
                     onPressed: () async {
-                      bool success =
-                          await CampaignHelper.deleteCampaign(campaign.id);
-                      if (success) {
-                        Get.back();
-                      } else {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text('Failed to delete campaign'),
-                          ),
-                        );
-                      }
+                      setState(() {
+                        loading = true;
+                      });
+
+                      await CampaignHelper.deleteCampaign(campaign.id)
+                          .then((resp) {
+                        if (resp) {
+                          context
+                              .read<CampaignsNotifier>()
+                              .deleteCampaign(widget.index);
+                          context.showSuccess('Campaign deleted successfully');
+                          Get.back();
+                        } else {
+                          context.showError('Failed to delete campaign');
+                        }
+                        setState(() {
+                          loading = false;
+                        });
+                      });
                     },
                     child: Text(
                       'Delete Campaign',
@@ -173,7 +186,7 @@ class _ViewCampaignState extends State<ViewCampaign> {
                 )
               ],
             ),
-          ));
-    });
+          )),
+    );
   }
 }

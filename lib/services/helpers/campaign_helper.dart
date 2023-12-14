@@ -30,52 +30,6 @@ class CampaignHelper {
     }
   }
 
-  // static Future<GetSpecificClientCampaignRes> getUserCampaigns(
-  //     String userId) async {
-  //   final SharedPreferences prefs = await SharedPreferences.getInstance();
-  //   String? token = prefs.getString('token');
-  //   String? userId = prefs.getString('userId');
-  //
-  //   if (token == null) {
-  //     throw Exception('Failed to load campaign');
-  //   }
-  //
-  //   Map<String, String> requestHeaders = {
-  //     'Content-Type': 'application/json',
-  //     'authorization': 'Bearer $token',
-  //   };
-  //
-  //   var url = Uri.https(Config.apiUrl, Config.specificUserCampaign + userId!);
-  //   print(url);
-  //
-  //   var response = await client.get(url, headers: requestHeaders);
-  //
-  //   if (response.statusCode == 200) {
-  //     var specificClientCampaign =
-  //         getSpecificClientCampaignResFromJson(response.body);
-  //     return specificClientCampaign;
-  //   } else {
-  //     throw Exception('Failed to load campaign');
-  //   }
-  // }
-
-  // static Future<GetCampaignRes> getCampaign(String campaignId) async {
-  //   Map<String, String> requestHeaders = {
-  //     'Content-Type': 'application/json',
-  //   };
-
-  //   var url = Uri.https(Config.apiUrl, "${Config.campaignUpload}/$campaignId");
-  //   var response = await client.get(url, headers: requestHeaders);
-  //   print(response.body);
-
-  //   if (response.statusCode == 200) {
-  //     var campaign = getCampaignResFromJson(response.body);
-  //     return campaign;
-  //   } else {
-  //     throw Exception('Failed to load campaign');
-  //   }
-  // }
-
   static Future<List<CampaignUploadResponse>> searchCampaign(
       String query) async {
     Map<String, String> requestHeaders = {
