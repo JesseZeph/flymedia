@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/colors.dart';
 import 'package:flymedia_app/constants/textstring.dart';
-import 'package:flymedia_app/src/clientdashboard/clientHomepage.dart';
 
 import '../../../constants/imageStrings.dart';
-import '../../../route/route.dart';
 
 class VerificationInProgress extends StatelessWidget {
   const VerificationInProgress({super.key});
@@ -42,11 +40,11 @@ class VerificationInProgress extends StatelessWidget {
               textAlign: TextAlign.center,
             ),
           ),
-          TextButton(
-              onPressed: () {
-                pushToAndClearStack(context, ClientHomePage());
-              },
-              child: Text('Go back to dashboard'))
+          // TextButton(
+          //     onPressed: () {
+          //       pushToAndClearStack(context, ClientHomePage());
+          //     },
+          //     child: Text('Go back to dashboard'))
         ],
       )),
     );

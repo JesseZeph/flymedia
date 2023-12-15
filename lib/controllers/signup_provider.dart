@@ -77,8 +77,10 @@ class SignUpNotifier extends ChangeNotifier {
     return wasSuccessful;
   }
 
-  userEmailVerification(VerificationCode model) {
-    AuthHelper.verifyUserEmail(model).then((response) {
+  userEmailVerification(VerificationCode model) async {
+    loader = !loader;
+    notifyListeners();
+    await AuthHelper.verifyUserEmail(model).then((response) {
       if (response == true) {
         Get.offAll(const UserVerificationSuccessful());
       } else {
@@ -92,6 +94,8 @@ class SignUpNotifier extends ChangeNotifier {
             ));
       }
     });
+    loader = !loader;
+    notifyListeners();
   }
 
   influencerEmailVerification(VerificationCode model) {

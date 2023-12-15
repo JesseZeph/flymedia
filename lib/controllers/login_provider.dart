@@ -48,28 +48,13 @@ class LoginNotifier extends ChangeNotifier {
   //   notifyListeners();
   // }
 
-  Future<List<bool>> login(String model) async {
+  Future<List<dynamic>> login(String model) async {
     _loader = !_loader;
     notifyListeners();
-    List<bool> wasSuccessful = [false];
+    List<dynamic> wasSuccessful = [false];
     await AuthHelper.login(model).then(
       (response) {
         wasSuccessful = response;
-        // if (response == true) {
-        //   loader = false;
-        //   Get.to(() => const ClientVerificationOnboarding());
-        // } else {
-        //   Get.snackbar(
-        //     'Sign in failed',
-        //     'Please check your details',
-        //     colorText: Colors.white,
-        //     backgroundColor: AppColors.errorColor,
-        //     icon: const Icon(
-        //       Icons.add_alert,
-        //       color: Colors.white,
-        //     ),
-        //   );
-        // }
       },
     );
     _loader = !_loader;
@@ -77,29 +62,13 @@ class LoginNotifier extends ChangeNotifier {
     return wasSuccessful;
   }
 
-  Future<bool> influencerSignin(String model) async {
+  Future<List<dynamic>> influencerSignin(String model) async {
     _loader = !_loader;
     notifyListeners();
-    bool wasSuccessful = false;
+    List<dynamic> wasSuccessful = [false];
     await AuthHelper.influencersLogin(model).then(
       (response) {
         wasSuccessful = response;
-        // if (response == true) {
-        //   loader = false;
-        //   loggedIn = true;
-        //   Get.to(() => const InfluencerHomePage());
-        // } else {
-        //   Get.snackbar(
-        //     'Sign in failed',
-        //     'Please check your details',
-        //     colorText: Colors.white,
-        //     backgroundColor: AppColors.errorColor,
-        //     icon: const Icon(
-        //       Icons.add_alert,
-        //       color: Colors.white,
-        //     ),
-        //   );
-        // }
       },
     );
     _loader = !_loader;

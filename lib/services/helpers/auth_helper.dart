@@ -102,7 +102,7 @@ class AuthHelper {
     }
   }
 
-  static Future<List<bool>> login(String model) async {
+  static Future<List<dynamic>> login(String model) async {
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
     };
@@ -110,12 +110,14 @@ class AuthHelper {
     var url = Uri.https(Config.apiUrl, Config.login);
     var response = await client.post(url, headers: requestHeaders, body: model);
 
+    var decodedResponse = jsonDecode(response.body);
+
     if (response.statusCode == 200) {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-      var decodedResponse = jsonDecode(response.body);
-
-      var hasCompany = decodedResponse['hasCompany'];
+      var verifiedCompany =
+          (decodedResponse['company'] as Map<String, dynamic>)['isVerified'] ??
+              false;
 
       var user = loginResponseModelFromJson(response.body);
       await prefs.setString('token', user.userToken);
@@ -126,19 +128,20 @@ class AuthHelper {
       await prefs.setString('fullname', user.fullname);
       await prefs.setInt('selectedContainer', 1);
       await prefs.setBool('loggedIn', true);
-      return [true, hasCompany];
+      return [true, verifiedCompany];
     } else {
-      return [false];
+      return [false, decodedResponse['message']];
     }
   }
 
-  static Future<bool> influencersLogin(String model) async {
+  static Future<List<dynamic>> influencersLogin(String model) async {
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
     };
 
     var url = Uri.https(Config.apiUrl, Config.influencerLogin);
     var response = await client.post(url, headers: requestHeaders, body: model);
+    var decodedResponse = jsonDecode(response.body);
 
     if (response.statusCode == 200) {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -151,9 +154,9 @@ class AuthHelper {
       await prefs.setString('fullname', user.fullname);
       await prefs.setInt('selectedContainer', 2);
       await prefs.setBool('loggedIn', true);
-      return true;
+      return [true, decodedResponse['isVerified']];
     } else {
-      return false;
+      return [false, decodedResponse['message']];
     }
   }
 }

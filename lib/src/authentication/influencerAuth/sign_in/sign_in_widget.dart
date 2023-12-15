@@ -94,10 +94,10 @@ class _InfluencerSignInState extends State<InfluencerSignIn> {
                   await loginNotifier
                       .influencerSignin(newModel)
                       .then((success) {
-                    if (success) {
+                    if (success.first) {
                       Get.to(() => const InfluencerHomePage());
                     } else {
-                      context.showError("Sign up failed. Try again later.");
+                      context.showError(success.last);
                     }
                   });
                 },

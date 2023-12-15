@@ -99,9 +99,8 @@ class _SignInWidgetState extends State<SignInWidget> {
                       Get.offAll(() => success.last
                           ? const ClientHomePage()
                           : const ClientVerificationOnboarding());
-                      // Get.to(() => const ClientVerificationOnboarding());
                     } else {
-                      context.showError("Sign up failed. Try again later.");
+                      context.showError(success.last);
                     }
                   });
                 },

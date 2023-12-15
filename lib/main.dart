@@ -24,6 +24,22 @@ void main() async {
   final selectedContainer = prefs.getInt('selectedContainer') ?? 0;
 
   Widget defaultHome;
+  // switch (selectedContainer) {
+  //   case 1:
+  //     defaultHome = const ClientHomePage();
+  //     break;
+  //   case 2:
+  //     defaultHome = const ClientHomePage();
+  //     break;
+  //   case 3:
+  //     defaultHome = const ClientHomePage();
+  //     break;
+  //   case 4:
+  //     defaultHome = const ClientHomePage();
+  //     break;
+  //   default:
+  //     defaultHome = const SplashScreen();
+  // }
   if (selectedContainer == 1) {
     defaultHome = const ClientHomePage();
   } else if (selectedContainer == 2) {

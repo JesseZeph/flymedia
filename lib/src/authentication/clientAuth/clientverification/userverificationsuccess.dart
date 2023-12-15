@@ -29,16 +29,16 @@ class UserVerificationSuccessful extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const AuthenticationView(),
-                  ),
-                );
+                Navigator.of(context).pushAndRemoveUntil(
+                    MaterialPageRoute(
+                      builder: (context) => const AuthenticationView(),
+                    ),
+                    (route) => false);
               },
               child: Padding(
                 padding: EdgeInsets.only(top: 30.h),
                 child: const RoundedButtonWidget(
-                  title: 'Back to homepage',
+                  title: 'Back to login',
                 ),
               ),
             )
