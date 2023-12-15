@@ -19,10 +19,10 @@ class InfluencerHomePage extends StatefulWidget {
 class _InfluencerHomePage extends State<InfluencerHomePage> {
   int _selectedIndex = 0;
 
-  static final List<Widget> _widgetOptions = <Widget>[
+  var pages = <Widget>[
     const CampaignPage(),
     const MessagePage(),
-    const ProfilePage(),
+    // const ProfilePage(),
   ];
 
   @override
@@ -39,9 +39,13 @@ class _InfluencerHomePage extends State<InfluencerHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    var profile = context.watch<ProfileProvider>().userProfile;
+    pages.add(ProfilePage(
+      userProfile: profile,
+    ));
     return Scaffold(
       body: Center(
-        child: _widgetOptions[_selectedIndex],
+        child: pages[_selectedIndex],
       ),
       bottomNavigationBar: BottomNavigationBar(
           currentIndex: _selectedIndex,

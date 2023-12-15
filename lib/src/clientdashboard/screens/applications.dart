@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/models/profile/profile_model.dart';
 import 'package:flymedia_app/services/helpers/applications_helper.dart';
+import 'package:flymedia_app/src/influencerDashboard/dashboardPages/profile.dart';
 import 'package:flymedia_app/utils/extensions/string_extensions.dart';
 import 'package:flymedia_app/utils/widgets/alert_loader.dart';
 import 'package:provider/provider.dart';
@@ -95,13 +96,22 @@ class _ApplicantsTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => ProfilePage(
+                userProfile: profile,
+                isPersonalView: false,
+              ),
+            ));
+      },
       child: Container(
         padding: EdgeInsets.only(left: 10.w, bottom: 15.h),
         decoration: BoxDecoration(
             border: Border(
                 bottom: BorderSide(
-          color: AppColors.lightHintTextColor.withOpacity(0.2),
+          color: AppColors.lightHintTextColor.withOpacity(0.4),
           width: 1,
         ))),
         child: Row(

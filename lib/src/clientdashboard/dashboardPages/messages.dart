@@ -18,13 +18,15 @@ class _MessagesState extends State<Messages> {
 
     return loginNotifier.loggedIn == false
         ? ModalWidget(context: context)
-        : Scaffold(
-            body: Center(
-              child: Column(
-                children: [
-                  Text('Messages'),
-                ],
-              ),
+        : const Scaffold(
+            body: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: double.infinity,
+                ),
+                Text('Messages'),
+              ],
             ),
           );
   }
