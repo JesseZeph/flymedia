@@ -72,6 +72,7 @@ class ProfileHelper {
               const Duration(seconds: 15),
               onTimeout: () => http.Response('Network Timeout', 504),
             );
+
         if (response.statusCode == 504) {
           return [false, 'Network Timeout'];
         }

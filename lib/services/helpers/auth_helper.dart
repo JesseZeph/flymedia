@@ -102,7 +102,7 @@ class AuthHelper {
     }
   }
 
-  static Future<bool> login(String model) async {
+  static Future<List<bool>> login(String model) async {
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
     };
@@ -113,6 +113,10 @@ class AuthHelper {
     if (response.statusCode == 200) {
       final SharedPreferences prefs = await SharedPreferences.getInstance();
 
+      var decodedResponse = jsonDecode(response.body);
+
+      var hasCompany = decodedResponse['hasCompany'];
+
       var user = loginResponseModelFromJson(response.body);
       await prefs.setString('token', user.userToken);
       await prefs.setString('userId', user.id);
@@ -122,9 +126,9 @@ class AuthHelper {
       await prefs.setString('fullname', user.fullname);
       await prefs.setInt('selectedContainer', 1);
       await prefs.setBool('loggedIn', true);
-      return true;
+      return [true, hasCompany];
     } else {
-      return false;
+      return [false];
     }
   }
 

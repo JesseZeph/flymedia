@@ -48,10 +48,10 @@ class LoginNotifier extends ChangeNotifier {
   //   notifyListeners();
   // }
 
-  Future<bool> login(String model) async {
+  Future<List<bool>> login(String model) async {
     _loader = !_loader;
     notifyListeners();
-    bool wasSuccessful = false;
+    List<bool> wasSuccessful = [false];
     await AuthHelper.login(model).then(
       (response) {
         wasSuccessful = response;

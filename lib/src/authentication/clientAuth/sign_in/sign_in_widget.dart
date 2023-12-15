@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 
 import '../../../../constants/textstring.dart';
 import '../../../../utils/widgets/headings.dart';
+import '../../../clientdashboard/screens/verificationScreen.dart';
 import '../../components/loadingerror.dart';
 import '../sign_up/social_buttons.dart';
 import 'button.dart';
@@ -94,8 +95,10 @@ class _SignInWidgetState extends State<SignInWidget> {
                       LoginModel(email: email.text, password: password.text);
                   String newModel = loginModelToJson(model);
                   await loginNotifier.login(newModel).then((success) {
-                    if (success) {
-                      Get.offAll(() => const ClientHomePage());
+                    if (success.first) {
+                      Get.offAll(() => success.last
+                          ? const ClientHomePage()
+                          : const ClientVerificationOnboarding());
                       // Get.to(() => const ClientVerificationOnboarding());
                     } else {
                       context.showError("Sign up failed. Try again later.");

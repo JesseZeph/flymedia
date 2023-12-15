@@ -39,7 +39,6 @@ class _ProfilePageState extends State<EditProfile> {
     } else {
       selectedOptions.add(option);
     }
-    print("===> options: \n $selectedOptions \n =====>");
     setState(() {});
   }
 

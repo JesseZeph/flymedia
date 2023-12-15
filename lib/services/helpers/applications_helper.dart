@@ -23,7 +23,6 @@ class ApplicationsHelper extends ChangeNotifier {
           body: {"influencerId": userId, "campaignId": campaignId});
 
       final decodedResponse = jsonDecode(response.body);
-
       _isLoading = !_isLoading;
       notifyListeners();
       return [decodedResponse['success'], decodedResponse['message']];
