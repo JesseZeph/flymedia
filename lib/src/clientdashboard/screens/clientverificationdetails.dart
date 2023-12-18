@@ -44,6 +44,17 @@ class _ClientVerificationDetailsState extends State<ClientVerificationDetails> {
     super.dispose();
   }
 
+  bool isValidForm() {
+    List<String> fields = [
+      companyEmail.text,
+      companyHq.text,
+      companyName.text,
+      website.text,
+      memberContact.text
+    ];
+    return fields.every((field) => field.isNotEmpty);
+  }
+
   @override
   Widget build(BuildContext context) {
     return LoadingOverlay(
@@ -84,7 +95,7 @@ class _ClientVerificationDetailsState extends State<ClientVerificationDetails> {
                       hintText: 'Enter your company name',
                       onChanged: (_) {},
                       validator: (val) {
-                        if (val == null || val.isEmpty) return '*Required';
+                        if (val == null || val.isEmpty) return '';
                         return null;
                       },
                     ),
@@ -108,7 +119,7 @@ class _ClientVerificationDetailsState extends State<ClientVerificationDetails> {
                       hintText: 'Where is your company located?',
                       onChanged: (_) {},
                       validator: (val) {
-                        if (val == null || val.isEmpty) return '*Required';
+                        if (val == null || val.isEmpty) return '';
                         return null;
                       },
                     ),
@@ -132,7 +143,7 @@ class _ClientVerificationDetailsState extends State<ClientVerificationDetails> {
                       hintText: 'e.g. https://companyname.com',
                       onChanged: (_) {},
                       validator: (val) {
-                        if (val == null || val.isEmpty) return '*Required';
+                        if (val == null || val.isEmpty) return '';
                         return null;
                       },
                     ),
@@ -156,7 +167,7 @@ class _ClientVerificationDetailsState extends State<ClientVerificationDetails> {
                       hintText: 'Please use your official email address',
                       onChanged: (_) {},
                       validator: (val) {
-                        if (val == null || val.isEmpty) return '*Required';
+                        if (val == null || val.isEmpty) return '';
                         return null;
                       },
                     ),
@@ -181,7 +192,7 @@ class _ClientVerificationDetailsState extends State<ClientVerificationDetails> {
                       hintText: 'Who can we get in touch with?',
                       onChanged: (_) {},
                       validator: (val) {
-                        if (val == null || val.isEmpty) return '*Required';
+                        if (val == null || val.isEmpty) return '';
                         return null;
                       },
                     ),
@@ -193,7 +204,7 @@ class _ClientVerificationDetailsState extends State<ClientVerificationDetails> {
                     ),
                     child: AnimatedButton(
                       onTap: () async {
-                        if (formKey.currentState!.validate()) {
+                        if (isValidForm()) {
                           setState(() {
                             loading = !loading;
                           });
@@ -212,15 +223,13 @@ class _ClientVerificationDetailsState extends State<ClientVerificationDetails> {
                               loading = !loading;
                             });
                             if (result) {
-                              Get.to(() => const VerificationInProgress());
+                              Get.offAll(() => const VerificationInProgress());
                             } else {
                               context
                                   .showError('Error occured, try again later.');
-                              // Get.snackbar('Error', 'Verification request failed');
                             }
                           });
                         } else {
-                          formKey.currentState!.reset();
                           context.showError('One or more fields are empty');
                         }
                       },

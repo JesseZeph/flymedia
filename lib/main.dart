@@ -16,6 +16,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'controllers/login_provider.dart';
 import 'controllers/onboarding_provider.dart';
 import 'controllers/signup_provider.dart';
+import 'src/clientdashboard/screens/verificationinprogress.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -24,31 +25,33 @@ void main() async {
   final selectedContainer = prefs.getInt('selectedContainer') ?? 0;
 
   Widget defaultHome;
-  // switch (selectedContainer) {
-  //   case 1:
-  //     defaultHome = const ClientHomePage();
-  //     break;
-  //   case 2:
-  //     defaultHome = const ClientHomePage();
-  //     break;
-  //   case 3:
-  //     defaultHome = const ClientHomePage();
-  //     break;
-  //   case 4:
-  //     defaultHome = const ClientHomePage();
-  //     break;
-  //   default:
-  //     defaultHome = const SplashScreen();
-  // }
-  if (selectedContainer == 1) {
-    defaultHome = const ClientHomePage();
-  } else if (selectedContainer == 2) {
-    defaultHome = const InfluencerHomePage();
-  } else if (selectedContainer == 3) {
-    defaultHome = const AccountOption();
-  } else {
-    defaultHome = const SplashScreen();
+  switch (selectedContainer) {
+    case 1:
+      defaultHome = const ClientHomePage();
+      break;
+    case 2:
+      defaultHome = const InfluencerHomePage();
+      break;
+    case 3:
+      defaultHome = const AccountOption();
+      break;
+    case 4:
+      defaultHome = const VerificationInProgress(
+        shouldValidateCompany: true,
+      );
+      break;
+    default:
+      defaultHome = const SplashScreen();
   }
+  // if (selectedContainer == 1) {
+  //   defaultHome = const ClientHomePage();
+  // } else if (selectedContainer == 2) {
+  //   defaultHome = const InfluencerHomePage();
+  // } else if (selectedContainer == 3) {
+  //   defaultHome = const AccountOption();
+  // } else {
+  //   defaultHome = const SplashScreen();
+  // }
 
   runApp(MultiProvider(
     providers: [

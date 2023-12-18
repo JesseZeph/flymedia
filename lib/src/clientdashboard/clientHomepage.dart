@@ -1,11 +1,15 @@
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flymedia_app/controllers/login_provider.dart';
+import 'package:flymedia_app/services/helpers/applications_helper.dart';
 import 'package:flymedia_app/src/clientdashboard/dashboardPages/campaign.dart';
+import 'package:flymedia_app/utils/extensions/context_extension.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/colors.dart';
 import '../../controllers/campaign_provider.dart';
+import '../../route/route.dart';
+import '../accountoption/view.dart';
 import 'dashboardPages/help.dart';
 import 'dashboardPages/messages.dart';
 import 'dashboardPages/payment.dart';
@@ -33,6 +37,7 @@ class _ClientHomePageState extends State<ClientHomePage> {
   void initState() {
     super.initState();
     fetchData();
+    validateToken();
   }
 
   fetchData() async {
@@ -40,6 +45,16 @@ class _ClientHomePageState extends State<ClientHomePage> {
       context
           .read<CampaignsNotifier>()
           .getClientCampaigns(context.read<LoginNotifier>().userId);
+    });
+  }
+
+  validateToken() async {
+    await context.read<ApplicationsHelper>().validateToken().then((isValid) {
+      if (!isValid) {
+        context.read<LoginNotifier>().logout();
+        pushToAndClearStack(context, const AccountOption());
+        if (mounted) context.showError('Session Expired, log in.');
+      }
     });
   }
 

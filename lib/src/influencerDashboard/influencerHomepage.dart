@@ -5,9 +5,13 @@ import 'package:flymedia_app/controllers/profile_provider.dart';
 import 'package:flymedia_app/src/influencerDashboard/dashboardPages/campaignpage.dart';
 import 'package:flymedia_app/src/influencerDashboard/dashboardPages/messagespage.dart';
 import 'package:flymedia_app/src/influencerDashboard/dashboardPages/profile.dart';
+import 'package:flymedia_app/utils/extensions/context_extension.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants/colors.dart';
+import '../../route/route.dart';
+import '../../services/helpers/applications_helper.dart';
+import '../accountoption/view.dart';
 
 class InfluencerHomePage extends StatefulWidget {
   const InfluencerHomePage({super.key});
@@ -29,12 +33,23 @@ class _InfluencerHomePage extends State<InfluencerHomePage> {
   void initState() {
     super.initState();
     loadInfo();
+    validateToken();
   }
 
   loadInfo() async {
     await context.read<LoginNotifier>().getPref().then((_) => context
         .read<ProfileProvider>()
         .getProfile(context.read<LoginNotifier>().userId));
+  }
+
+  validateToken() async {
+    await context.read<ApplicationsHelper>().validateToken().then((isValid) {
+      if (!isValid) {
+        context.read<LoginNotifier>().logout();
+        pushToAndClearStack(context, const AccountOption());
+        if (mounted) context.showError('Session Expired, log in.');
+      }
+    });
   }
 
   @override

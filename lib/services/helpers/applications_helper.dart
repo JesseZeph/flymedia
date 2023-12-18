@@ -57,6 +57,26 @@ class ApplicationsHelper extends ChangeNotifier {
     return returnList;
   }
 
+  Future<bool> validateToken() async {
+    var prefs = await SharedPreferences.getInstance();
+    var url = Uri.https(Config.apiUrl, Config.validateToken);
+    var response =
+        await http.post(url, body: {"token": "${prefs.getString('token')}"});
+
+    var decodedResponse = jsonDecode(response.body);
+
+    return decodedResponse["is_valid"];
+  }
+
+  Future<bool> validateCompany(String userId) async {
+    var url = Uri.https(Config.apiUrl, Config.validateCompany);
+    var response = await http.post(url, body: {"user_id": userId});
+
+    var decodedResponse = jsonDecode(response.body);
+
+    return decodedResponse["is_verified"];
+  }
+
   Future<Map<String, String>> getHeaders() async {
     final prefs = await SharedPreferences.getInstance();
 

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flymedia_app/models/response/influencer_login_response.dart';
 import 'package:http/http.dart' as https;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -34,6 +35,7 @@ class AuthHelper {
         return false;
       }
     } catch (e) {
+      debugPrint("====> sign up error : ${e.toString()}");
       return false;
     }
   }
@@ -103,35 +105,43 @@ class AuthHelper {
   }
 
   static Future<List<dynamic>> login(String model) async {
-    Map<String, String> requestHeaders = {
-      'Content-Type': 'application/json',
-    };
+    try {
+      Map<String, String> requestHeaders = {
+        'Content-Type': 'application/json',
+      };
 
-    var url = Uri.https(Config.apiUrl, Config.login);
-    var response = await client.post(url, headers: requestHeaders, body: model);
+      var url = Uri.https(Config.apiUrl, Config.login);
 
-    var decodedResponse = jsonDecode(response.body);
+      var response =
+          await client.post(url, headers: requestHeaders, body: model);
 
-    if (response.statusCode == 200) {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      var decodedResponse = jsonDecode(response.body);
 
-      var verifiedCompany =
-          (decodedResponse['company'] as Map<String, dynamic>)['isVerified'] ??
-              false;
+      if (response.statusCode == 200) {
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-      var user = loginResponseModelFromJson(response.body);
-      await prefs.setString('token', user.userToken);
-      await prefs.setString('userId', user.id);
-      await prefs.setString('uid', user.uid);
-      await prefs.setString('profile', user.profile);
-      await prefs.setString('email', user.email);
-      await prefs.setString('fullname', user.fullname);
-      await prefs.setInt('selectedContainer', 1);
-      await prefs.setBool('loggedIn', true);
-      return [true, verifiedCompany];
-    } else {
-      return [false, decodedResponse['message']];
+        var verifiedCompany = (decodedResponse['company']
+                as Map<String, dynamic>)['isVerified'] ??
+            false;
+
+        var user = loginResponseModelFromJson(response.body);
+        await prefs.setString('token', user.userToken);
+        await prefs.setString('userId', user.id);
+        await prefs.setString('uid', user.uid);
+        await prefs.setString('profile', user.profile);
+        await prefs.setString('email', user.email);
+        await prefs.setString('fullname', user.fullname);
+        await prefs.setInt('selectedContainer', 1);
+        await prefs.setBool('loggedIn', true);
+        return [true, verifiedCompany];
+      } else {
+        return [false, decodedResponse['message']];
+      }
+    } catch (e, s) {
+      debugPrint("==> login error: ${e.toString()}");
+      debugPrintStack(stackTrace: s);
     }
+    return [false, 'An error occured. Try again later.'];
   }
 
   static Future<List<dynamic>> influencersLogin(String model) async {
@@ -139,24 +149,31 @@ class AuthHelper {
       'Content-Type': 'application/json',
     };
 
-    var url = Uri.https(Config.apiUrl, Config.influencerLogin);
-    var response = await client.post(url, headers: requestHeaders, body: model);
-    var decodedResponse = jsonDecode(response.body);
+    try {
+      var url = Uri.https(Config.apiUrl, Config.influencerLogin);
+      var response =
+          await client.post(url, headers: requestHeaders, body: model);
+      var decodedResponse = jsonDecode(response.body);
 
-    if (response.statusCode == 200) {
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      if (response.statusCode == 200) {
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-      var user = influencerLoginResponseModelFromJson(response.body);
-      await prefs.setString('token', user.userToken);
-      await prefs.setString('userId', user.id);
-      await prefs.setString('uid', user.uid);
-      await prefs.setString('profile', user.profile);
-      await prefs.setString('fullname', user.fullname);
-      await prefs.setInt('selectedContainer', 2);
-      await prefs.setBool('loggedIn', true);
-      return [true, decodedResponse['isVerified']];
-    } else {
-      return [false, decodedResponse['message']];
+        var user = influencerLoginResponseModelFromJson(response.body);
+        await prefs.setString('token', user.userToken);
+        await prefs.setString('userId', user.id);
+        await prefs.setString('uid', user.uid);
+        await prefs.setString('profile', user.profile);
+        await prefs.setString('fullname', user.fullname);
+        await prefs.setInt('selectedContainer', 2);
+        await prefs.setBool('loggedIn', true);
+        return [true, decodedResponse['isVerified']];
+      } else {
+        return [false, decodedResponse['message']];
+      }
+    } catch (e, s) {
+      debugPrint("==> login error: ${e.toString()}");
+      debugPrintStack(stackTrace: s);
     }
+    return [false, 'An error occured. Try again later.'];
   }
 }

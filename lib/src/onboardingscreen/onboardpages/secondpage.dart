@@ -17,27 +17,26 @@ class SecondOnboard extends StatelessWidget {
       body: Center(
         child: Stack(
           children: [
-            Positioned(
-              top: 45.h,
-              left: 290.w,
-              child: Align(
-                alignment: Alignment.topRight,
-                child: TextButton(
-                  onPressed: () {
-                    // Navigator.of(context).pushReplacementNamed(
-                    //     '/skip'); // Use MaterialPageRoute for navigation
-                  },
-                  child: Text(
-                    'Skip',
-                    style: Theme.of(context).textTheme.displaySmall?.copyWith(
-                          color: AppColors.mainColor,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 12.sp,
-                        ),
-                  ),
-                ),
-              ),
-            ),
+            // Positioned(
+            //   top: 45.h,
+            //   left: 290.w,
+            //   child: Align(
+            //     alignment: Alignment.topRight,
+            //     child: TextButton(
+            //       onPressed: () {
+            //         Navigator
+            //       },
+            //       child: Text(
+            //         'Skip',
+            //         style: Theme.of(context).textTheme.displaySmall?.copyWith(
+            //               color: AppColors.mainColor,
+            //               fontWeight: FontWeight.w700,
+            //               fontSize: 12.sp,
+            //             ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
             Positioned(
               left: 30.w,
               top: 100.h,

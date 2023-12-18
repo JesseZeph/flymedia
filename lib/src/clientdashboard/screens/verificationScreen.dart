@@ -4,14 +4,33 @@ import 'package:flymedia_app/constants/textstring.dart';
 import 'package:flymedia_app/src/authentication/components/animated_button.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/widgets/welcomeWidget.dart';
 import 'package:flymedia_app/utils/widgets/headings.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../constants/colors.dart';
 import '../../../utils/widgets/tiles.dart';
 import '../../authentication/components/roundedbutton.dart';
 import 'clientverificationdetails.dart';
 
-class ClientVerificationOnboarding extends StatelessWidget {
+class ClientVerificationOnboarding extends StatefulWidget {
   const ClientVerificationOnboarding({Key? key}) : super(key: key);
+
+  @override
+  State<ClientVerificationOnboarding> createState() =>
+      _ClientVerificationOnboardingState();
+}
+
+class _ClientVerificationOnboardingState
+    extends State<ClientVerificationOnboarding> {
+  @override
+  void initState() {
+    super.initState();
+    savePage();
+  }
+
+  savePage() async {
+    var prefs = await SharedPreferences.getInstance();
+    prefs.setInt('selectedContainer', 3);
+  }
 
   @override
   Widget build(BuildContext context) {
