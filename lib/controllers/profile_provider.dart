@@ -21,6 +21,7 @@ class ProfileProvider extends ChangeNotifier with ProfileHelper {
     notifyListeners();
     var resp = await updateProfile(userId, details.toMap(), hasFile,
         isPutRequest: isUpdate);
+    await getProfile(userId);
     _isFetchingProfile = !_isFetchingProfile;
     notifyListeners();
     return resp;

@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flymedia_app/models/response/influencer_login_response.dart';
@@ -85,8 +84,6 @@ class AuthHelper {
   }
 
   static Future<bool> verifyInfluencerEmail(VerificationCode model) async {
-    log('Verifying User ${model.email}');
-    log('Verifying User ${model.verificationCode}');
     try {
       Map<String, String> requestHeaders = {
         'Content-Type': 'application/json',
@@ -131,9 +128,9 @@ class AuthHelper {
         await prefs.setString('profile', user.profile);
         await prefs.setString('email', user.email);
         await prefs.setString('fullname', user.fullname);
-        await prefs.setInt('selectedContainer', 1);
+
         await prefs.setBool('loggedIn', true);
-        return [true, verifiedCompany];
+        return [true, decodedResponse['isVerified'], verifiedCompany];
       } else {
         return [false, decodedResponse['message']];
       }
@@ -145,6 +142,7 @@ class AuthHelper {
   }
 
   static Future<List<dynamic>> influencersLogin(String model) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
     };
@@ -156,16 +154,15 @@ class AuthHelper {
       var decodedResponse = jsonDecode(response.body);
 
       if (response.statusCode == 200) {
-        final SharedPreferences prefs = await SharedPreferences.getInstance();
-
         var user = influencerLoginResponseModelFromJson(response.body);
         await prefs.setString('token', user.userToken);
         await prefs.setString('userId', user.id);
         await prefs.setString('uid', user.uid);
         await prefs.setString('profile', user.profile);
         await prefs.setString('fullname', user.fullname);
-        await prefs.setInt('selectedContainer', 2);
+
         await prefs.setBool('loggedIn', true);
+
         return [true, decodedResponse['isVerified']];
       } else {
         return [false, decodedResponse['message']];

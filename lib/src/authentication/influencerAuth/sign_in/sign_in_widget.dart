@@ -6,11 +6,13 @@ import 'package:flymedia_app/src/authentication/components/text_input_field.dart
 import 'package:flymedia_app/utils/widgets/divider.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../constants/textstring.dart';
 import '../../../../utils/widgets/headings.dart';
 import '../../../influencerDashboard/influencerHomepage.dart';
 import '../../components/loadingerror.dart';
+import '../influencerverification/useremailverification.dart';
 import '../sign_up/social_buttons.dart';
 import 'button.dart';
 import 'forgot_password.dart';
@@ -88,14 +90,21 @@ class _InfluencerSignInState extends State<InfluencerSignIn> {
                     context.showError('One or more fields are empty.');
                     return;
                   }
+
                   InfluencerLoginModel model = InfluencerLoginModel(
-                      email: email.text, password: password.text);
+                      email: email.text,
+                      password: password.text,
+                      userType: "Influencer");
                   String newModel = influencerLoginModelToJson(model);
                   await loginNotifier
                       .influencerSignin(newModel)
-                      .then((success) {
+                      .then((success) async {
                     if (success.first) {
-                      Get.to(() => const InfluencerHomePage());
+                      var prefs = await SharedPreferences.getInstance();
+                      prefs.setString('email', email.text);
+                      Get.offAll(() => success.last
+                          ? const InfluencerHomePage()
+                          : const InfluencerEmailVerification());
                     } else {
                       context.showError(success.last);
                     }

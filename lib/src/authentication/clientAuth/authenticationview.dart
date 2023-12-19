@@ -5,6 +5,7 @@ import 'package:flymedia_app/controllers/signup_provider.dart';
 import 'package:flymedia_app/utils/widgets/alert_loader.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../components/auth_switch_button.dart';
 import '../components/slidefadeswitcher.dart';
@@ -20,6 +21,19 @@ class AuthenticationView extends StatefulWidget {
 
 class _AuthenticationViewState extends State<AuthenticationView> {
   bool _showSignin = true;
+
+  @override
+  void initState() {
+    super.initState();
+    savePage();
+  }
+
+  savePage() {
+    SharedPreferences.getInstance().then((prefs) {
+      prefs.setInt('selectedContainer', 3);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     var loading = context.watch<SignUpNotifier>().loader ||

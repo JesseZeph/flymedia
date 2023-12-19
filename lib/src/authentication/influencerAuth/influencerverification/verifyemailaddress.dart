@@ -30,7 +30,7 @@ class InfluencerVerifyEmail extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                Get.to(const InfluencerEmailVerification());
+                Get.to(() => const InfluencerEmailVerification());
               },
               child: Padding(
                 padding: EdgeInsets.only(top: 30.h),

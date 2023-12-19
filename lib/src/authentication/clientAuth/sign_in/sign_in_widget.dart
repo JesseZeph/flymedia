@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/controllers/login_provider.dart';
 import 'package:flymedia_app/models/requests/auth/login_model.dart';
+import 'package:flymedia_app/src/authentication/clientAuth/clientverification/useremailverification.dart';
 import 'package:flymedia_app/src/authentication/components/text_input_field.dart';
 import 'package:flymedia_app/src/clientdashboard/clientHomepage.dart';
 import 'package:flymedia_app/utils/extensions/context_extension.dart';
 import 'package:flymedia_app/utils/widgets/divider.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../constants/textstring.dart';
 import '../../../../utils/widgets/headings.dart';
@@ -91,14 +93,22 @@ class _SignInWidgetState extends State<SignInWidget> {
                     context.showError('One or more fields are empty.');
                     return;
                   }
-                  LoginModel model =
-                      LoginModel(email: email.text, password: password.text);
+                  LoginModel model = LoginModel(
+                      email: email.text,
+                      password: password.text,
+                      userType: 'Client');
                   String newModel = loginModelToJson(model);
-                  await loginNotifier.login(newModel).then((success) {
+                  await loginNotifier.login(newModel).then((success) async {
                     if (success.first) {
-                      Get.offAll(() => success.last
-                          ? const ClientHomePage()
-                          : const ClientVerificationOnboarding());
+                      var prefs = await SharedPreferences.getInstance();
+                      prefs.setString('email', email.text);
+                      if (!success[1]) {
+                        Get.offAll(() => const UserEmailVerification());
+                      } else {
+                        Get.offAll(() => success.last
+                            ? const ClientHomePage()
+                            : const ClientVerificationOnboarding());
+                      }
                     } else {
                       context.showError(success.last);
                     }

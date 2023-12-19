@@ -2,18 +2,19 @@ import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/controllers/campaign_provider.dart';
-import 'package:flymedia_app/controllers/profile_provider.dart';
 import 'package:flymedia_app/models/response/campaign_upload_response.dart';
-import 'package:flymedia_app/src/influencerDashboard/screens/profile_edit.dart';
 import 'package:flymedia_app/src/search/search.dart';
 import 'package:flymedia_app/utils/widgets/archery_refresh.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../constants/colors.dart';
+import '../../../controllers/profile_provider.dart';
 import '../../clientdashboard/screens/widgets/appbar.dart';
 import '../../clientdashboard/screens/widgets/welcomeWidget.dart';
 import '../screens/campaignlisting.dart';
+import '../screens/profile_edit.dart';
 
 class CampaignPage extends StatefulWidget {
   const CampaignPage({super.key});
@@ -23,9 +24,11 @@ class CampaignPage extends StatefulWidget {
 }
 
 class _CampaignPageState extends State<CampaignPage> {
+  bool profileComplete = false;
   @override
   void initState() {
     super.initState();
+    checkProfile();
     context.read<CampaignsNotifier>().getCampaigns();
   }
 
@@ -33,9 +36,15 @@ class _CampaignPageState extends State<CampaignPage> {
     await context.read<CampaignsNotifier>().getCampaigns();
   }
 
+  checkProfile() {
+    SharedPreferences.getInstance().then((prefs) {
+      profileComplete = prefs.getBool('profile') ?? false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    var loadingProfile = context.watch<ProfileProvider>().isFetchingProfile;
+    // var loadingProfile = context.watch<ProfileProvider>().isFetchingProfile;
     var userProfile = context.watch<ProfileProvider>().userProfile;
     return EasyRefresh(
       header: const ArcheryHeader(),
@@ -80,7 +89,7 @@ class _CampaignPageState extends State<CampaignPage> {
                 ),
               ),
               SizedBox(height: 20.h),
-              if (!loadingProfile && userProfile == null)
+              if (!profileComplete)
                 GestureDetector(
                   onTap: () {
                     // navigateToPage(context, '/');
@@ -131,7 +140,6 @@ class _CampaignPageState extends State<CampaignPage> {
                             SizedBox(height: 10.h),
                             TextButton(
                               onPressed: () {
-                                // navigateToPage(context, '/editProfile');
                                 Navigator.of(context).push(MaterialPageRoute(
                                   builder: (context) => EditProfile(
                                     profile: userProfile,

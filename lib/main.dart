@@ -43,15 +43,6 @@ void main() async {
     default:
       defaultHome = const SplashScreen();
   }
-  // if (selectedContainer == 1) {
-  //   defaultHome = const ClientHomePage();
-  // } else if (selectedContainer == 2) {
-  //   defaultHome = const InfluencerHomePage();
-  // } else if (selectedContainer == 3) {
-  //   defaultHome = const AccountOption();
-  // } else {
-  //   defaultHome = const SplashScreen();
-  // }
 
   runApp(MultiProvider(
     providers: [

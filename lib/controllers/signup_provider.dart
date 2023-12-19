@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flymedia_app/models/requests/auth/verification_code.dart';
 import 'package:flymedia_app/src/authentication/clientAuth/clientverification/userverificationsuccess.dart';
 import 'package:flymedia_app/src/authentication/influencerAuth/influencerverification/userverificationsuccess.dart';
+import 'package:flymedia_app/utils/extensions/context_extension.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../constants/colors.dart';
 import '../services/helpers/auth_helper.dart';
 
 class SignUpNotifier extends ChangeNotifier {
@@ -61,66 +61,45 @@ class SignUpNotifier extends ChangeNotifier {
     bool wasSuccessful = false;
     await AuthHelper.influenerRegister(model).then((response) {
       wasSuccessful = response;
-
-      // if (response == true) {
-      //   Get.offAll(const InfluencerVerifyEmail());
-      // } else {
-      //   loader = false;
-      //   Get.snackbar('Sign up failed', 'Please check your details',
-      //       colorText: Colors.white,
-      //       backgroundColor: AppColors.errorColor,
-      //       icon: const Icon(Icons.add_alert));
-      // }
     });
     _loader = !_loader;
     notifyListeners();
     return wasSuccessful;
   }
 
-  userEmailVerification(VerificationCode model) async {
-    loader = !loader;
+  userEmailVerification(VerificationCode model, BuildContext cnt) async {
+    _loader = !_loader;
     notifyListeners();
     await AuthHelper.verifyUserEmail(model).then((response) {
       if (response == true) {
         Get.offAll(const UserVerificationSuccessful());
       } else {
-        loader = false;
-        Get.snackbar('Verification failed', 'invalid OTP',
-            colorText: Colors.white,
-            backgroundColor: AppColors.errorColor,
-            icon: const Icon(
-              Icons.add_alert,
-              color: AppColors.lightHintTextColor,
-            ));
+        cnt.showError('Invalid OTP');
       }
     });
-    loader = !loader;
+    _loader = !_loader;
     notifyListeners();
   }
 
-  influencerEmailVerification(VerificationCode model) {
+  influencerEmailVerification(VerificationCode model, BuildContext cnt) {
+    _loader = !_loader;
+    notifyListeners();
     AuthHelper.verifyInfluencerEmail(model).then(
       (response) {
         if (response == true) {
           Get.offAll(const InfluencerVerifySuccess());
         } else {
-          loader = false;
-          Get.snackbar('Verification failed', 'invalid OTP',
-              colorText: Colors.white,
-              backgroundColor: AppColors.errorColor,
-              icon: const Icon(
-                Icons.add_alert,
-                color: AppColors.lightHintTextColor,
-              ));
+          cnt.showError('Invalid OTP');
         }
       },
     );
+    _loader = !_loader;
+    notifyListeners();
   }
 
   getPref() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    // selectedContainer = prefs.getInt('selectedContainer') ?? 0;
     loggedIn = prefs.getBool('loggedIn') ?? false;
   }
 }

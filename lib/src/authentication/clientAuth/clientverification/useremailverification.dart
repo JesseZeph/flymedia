@@ -43,6 +43,13 @@ class _UserEmailVerificationState extends State<UserEmailVerification> {
   }
 
   @override
+  void dispose() {
+    email.dispose();
+    verificationCode.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final defaultPinTheme = PinTheme(
         width: 45.w,
@@ -92,15 +99,14 @@ class _UserEmailVerificationState extends State<UserEmailVerification> {
                       showCursor: false,
                       onChanged: (_) {},
                       onCompleted: (value) async {
-                        final SharedPreferences prefs =
-                            await SharedPreferences.getInstance();
+                        SharedPreferences.getInstance().then((prefs) {
+                          String? userEmail = prefs.getString('email');
+                          VerificationCode model = VerificationCode(
+                              email: userEmail,
+                              verificationCode: verificationCode.text);
 
-                        String? userEmail = prefs.getString('email');
-                        VerificationCode model = VerificationCode(
-                            email: userEmail,
-                            verificationCode: verificationCode.text);
-
-                        signUpNotifier.userEmailVerification(model);
+                          signUpNotifier.userEmailVerification(model, context);
+                        });
                       },
                     ),
                   ),
@@ -150,18 +156,19 @@ class _UserEmailVerificationState extends State<UserEmailVerification> {
                   ),
                   GestureDetector(
                     onTap: () async {
-                      // signUpNotifier.loader = true;
+                      if (verificationCode.text.isEmpty ||
+                          verificationCode.text.length < 6) {
+                        context.showError('Enter complete code.');
+                        return;
+                      }
+                      SharedPreferences.getInstance().then((prefs) {
+                        String? userEmail = prefs.getString('email');
+                        VerificationCode model = VerificationCode(
+                            email: userEmail,
+                            verificationCode: verificationCode.text);
 
-                      final SharedPreferences prefs =
-                          await SharedPreferences.getInstance();
-
-                      String? userEmail = prefs.getString('email');
-                      VerificationCode model = VerificationCode(
-                          email: userEmail,
-                          verificationCode: verificationCode.text);
-                      // log(jsonDecode('New Email ' + model.email!));
-                      // String newModel = verifyModelToJson(model);
-                      signUpNotifier.userEmailVerification(model);
+                        signUpNotifier.userEmailVerification(model, context);
+                      });
                     },
                     child: Padding(
                       padding: EdgeInsets.only(top: 10.h),

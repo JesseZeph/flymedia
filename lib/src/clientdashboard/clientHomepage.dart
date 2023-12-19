@@ -5,6 +5,7 @@ import 'package:flymedia_app/services/helpers/applications_helper.dart';
 import 'package:flymedia_app/src/clientdashboard/dashboardPages/campaign.dart';
 import 'package:flymedia_app/utils/extensions/context_extension.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constants/colors.dart';
 import '../../controllers/campaign_provider.dart';
@@ -45,6 +46,9 @@ class _ClientHomePageState extends State<ClientHomePage> {
       context
           .read<CampaignsNotifier>()
           .getClientCampaigns(context.read<LoginNotifier>().userId);
+    });
+    SharedPreferences.getInstance().then((prefs) {
+      prefs.setInt('selectedContainer', 1);
     });
   }
 

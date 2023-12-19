@@ -17,16 +17,17 @@ class CampaignHelper {
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
     };
-
+    List<CampaignUploadResponse> resp = [];
     var url = Uri.https(Config.apiUrl, Config.getAllCampaigns);
 
     var response = await client.get(url, headers: requestHeaders);
 
     if (response.statusCode == 200) {
-      var jobList = campaignResponseFromJson(response.body);
-      return jobList;
+      resp = campaignResponseFromJson(response.body);
+      return resp;
     } else {
-      throw Exception('Failed to load campaign');
+      // throw Exception('Failed to load campaign');
+      return resp;
     }
   }
 

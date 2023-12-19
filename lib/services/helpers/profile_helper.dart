@@ -37,6 +37,7 @@ class ProfileHelper {
   Future<List<dynamic>> updateProfile(
       String userId, Map<String, String> details, bool hasFile,
       {bool isPutRequest = false}) async {
+    var prefs = await SharedPreferences.getInstance();
     try {
       if (hasFile) {
         File file = File(details['imageUrl'] ?? '');
@@ -54,12 +55,13 @@ class ProfileHelper {
                   http.StreamedResponse(Stream.fromIterable([]), 504),
             );
 
-        if (response.statusCode == 504) {
+        if (response.statusCode == 200) {
+          prefs.setBool('profile', true);
+        } else if (response.statusCode == 504) {
           return [false, 'Network Timeout'];
         }
         var finalResponse = await http.Response.fromStream(response);
         var decodedResponse = jsonDecode(finalResponse.body);
-        getUserProfile(userId);
         return [decodedResponse['success'], decodedResponse['message']];
       } else {
         final response = await http
@@ -73,12 +75,13 @@ class ProfileHelper {
               onTimeout: () => http.Response('Network Timeout', 504),
             );
 
-        if (response.statusCode == 504) {
+        if (response.statusCode == 200) {
+          prefs.setBool('profile', true);
+        } else if (response.statusCode == 504) {
           return [false, 'Network Timeout'];
         }
 
         var decodedResponse = jsonDecode(response.body);
-        getUserProfile(userId);
         return [decodedResponse['success'], decodedResponse['message']];
       }
     } catch (e, s) {

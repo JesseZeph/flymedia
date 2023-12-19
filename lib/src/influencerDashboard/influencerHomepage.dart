@@ -7,6 +7,7 @@ import 'package:flymedia_app/src/influencerDashboard/dashboardPages/messagespage
 import 'package:flymedia_app/src/influencerDashboard/dashboardPages/profile.dart';
 import 'package:flymedia_app/utils/extensions/context_extension.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constants/colors.dart';
 import '../../route/route.dart';
@@ -26,7 +27,7 @@ class _InfluencerHomePage extends State<InfluencerHomePage> {
   var pages = <Widget>[
     const CampaignPage(),
     const MessagePage(),
-    // const ProfilePage(),
+    const ProfilePage(),
   ];
 
   @override
@@ -37,6 +38,9 @@ class _InfluencerHomePage extends State<InfluencerHomePage> {
   }
 
   loadInfo() async {
+    SharedPreferences.getInstance().then((prefs) {
+      prefs.setInt('selectedContainer', 2);
+    });
     await context.read<LoginNotifier>().getPref().then((_) => context
         .read<ProfileProvider>()
         .getProfile(context.read<LoginNotifier>().userId));
@@ -54,10 +58,6 @@ class _InfluencerHomePage extends State<InfluencerHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var profile = context.watch<ProfileProvider>().userProfile;
-    pages.add(ProfilePage(
-      userProfile: profile,
-    ));
     return Scaffold(
       body: Center(
         child: pages[_selectedIndex],
