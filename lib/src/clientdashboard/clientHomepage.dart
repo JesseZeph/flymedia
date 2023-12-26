@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flymedia_app/controllers/chat_provider.dart';
 import 'package:flymedia_app/controllers/login_provider.dart';
 import 'package:flymedia_app/services/helpers/applications_helper.dart';
 import 'package:flymedia_app/src/clientdashboard/dashboardPages/campaign.dart';
@@ -29,16 +32,23 @@ class _ClientHomePageState extends State<ClientHomePage> {
 
   static final List<Widget> _widgetOptions = <Widget>[
     const Campaign(),
-    const Messages(),
+    const ClientMessagePage(),
     const ClientHelp(),
     const Payment(),
   ];
+
+  Timer? timer;
 
   @override
   void initState() {
     super.initState();
     fetchData();
     validateToken();
+    timer = Timer.periodic(const Duration(seconds: 5), (_) {
+      context
+          .read<ChatProvider>()
+          .fetchUserMessages(context.read<LoginNotifier>().userId, "Client");
+    });
   }
 
   fetchData() async {
@@ -46,6 +56,9 @@ class _ClientHomePageState extends State<ClientHomePage> {
       context
           .read<CampaignsNotifier>()
           .getClientCampaigns(context.read<LoginNotifier>().userId);
+      context
+          .read<ChatProvider>()
+          .fetchUserMessages(context.read<LoginNotifier>().userId, "Client");
     });
     SharedPreferences.getInstance().then((prefs) {
       prefs.setInt('selectedContainer', 1);
@@ -60,6 +73,12 @@ class _ClientHomePageState extends State<ClientHomePage> {
         if (mounted) context.showError('Session Expired, log in.');
       }
     });
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 
   @override

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>89477570848-mmeibbvie02d7b01n4r80fgssc7aqqhs.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.89477570848-mmeibbvie02d7b01n4r80fgssc7aqqhs</string>
+	<key>ANDROID_CLIENT_ID</key>
+	<string>89477570848-7a4p75d6tade0an7egardi9bavomlnl9.apps.googleusercontent.com</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAab6xIoRhgIx7InB9l7dD-iv9mfp--rlM</string>
+	<key>GCM_SENDER_ID</key>
+	<string>89477570848</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.flymedia.RunnerTests</string>
+	<key>PROJECT_ID</key>
+	<string>flymedia-app-7a2b9</string>
+	<key>STORAGE_BUCKET</key>
+	<string>flymedia-app-7a2b9.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:89477570848:ios:1ae4a9076ba300e6067745</string>
+	<key>DATABASE_URL</key>
+	<string>https://flymedia-app-7a2b9-default-rtdb.europe-west1.firebasedatabase.app</string>
+</dict>
+</plist>

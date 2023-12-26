@@ -22,4 +22,5 @@ class Config {
   static const String campaignApplicants = "/api/applications/campaign";
   static const String validateToken = "/api/confirm/token";
   static const String validateCompany = "/api/confirm/company";
+  static const String chats = "/api/chats";
 }

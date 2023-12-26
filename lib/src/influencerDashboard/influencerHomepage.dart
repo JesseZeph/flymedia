@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flymedia_app/controllers/login_provider.dart';
@@ -10,6 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constants/colors.dart';
+import '../../controllers/chat_provider.dart';
 import '../../route/route.dart';
 import '../../services/helpers/applications_helper.dart';
 import '../accountoption/view.dart';
@@ -23,6 +26,7 @@ class InfluencerHomePage extends StatefulWidget {
 
 class _InfluencerHomePage extends State<InfluencerHomePage> {
   int _selectedIndex = 0;
+  Timer? timer;
 
   var pages = <Widget>[
     const CampaignPage(),
@@ -35,15 +39,28 @@ class _InfluencerHomePage extends State<InfluencerHomePage> {
     super.initState();
     loadInfo();
     validateToken();
+    timer = Timer.periodic(const Duration(seconds: 5), (_) {
+      SharedPreferences.getInstance().then((prefs) {
+        context.read<ChatProvider>().fetchUserMessages(
+            prefs.getString('influencerId') ??
+                context.read<LoginNotifier>().userId,
+            "Influencer");
+      });
+    });
   }
 
-  loadInfo() async {
+  loadInfo() {
+    context.read<LoginNotifier>().getPref();
     SharedPreferences.getInstance().then((prefs) {
       prefs.setInt('selectedContainer', 2);
+      context
+          .read<ProfileProvider>()
+          .getProfile(prefs.getString('userId') ?? '');
+      context.read<ChatProvider>().fetchUserMessages(
+          prefs.getString('influencerId') ??
+              context.read<LoginNotifier>().userId,
+          "Influencer");
     });
-    await context.read<LoginNotifier>().getPref().then((_) => context
-        .read<ProfileProvider>()
-        .getProfile(context.read<LoginNotifier>().userId));
   }
 
   validateToken() async {
@@ -54,6 +71,12 @@ class _InfluencerHomePage extends State<InfluencerHomePage> {
         if (mounted) context.showError('Session Expired, log in.');
       }
     });
+  }
+
+  @override
+  void dispose() {
+    timer?.cancel();
+    super.dispose();
   }
 
   @override

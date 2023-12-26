@@ -59,7 +59,7 @@ class ProfileModel {
 
   Map<String, String> toMap() {
     return {
-      'id': id,
+      '_id': id,
       'imageUrl': imageUrl ?? '',
       'firstAndLastName': firstAndLastName ?? '',
       'location': location ?? '',
@@ -69,7 +69,24 @@ class ProfileModel {
       'email': email ?? '',
       'tikTokLink': profileLink ?? '',
       'bio': bio ?? '',
+      // 'niches': niches.toString()
       ...{for (var element in niches ?? []) 'niches[]': element}
+    };
+  }
+
+  Map<String, String> toStore() {
+    return {
+      '_id': id,
+      'imageUrl': imageUrl ?? '',
+      'firstAndLastName': firstAndLastName ?? '',
+      'location': location ?? '',
+      'noOfTikTokFollowers': noOfTikTokFollowers ?? '',
+      'noOfTikTokLikes': noOfTikTokLikes ?? '',
+      'postsViews': postsViews ?? '',
+      'email': email ?? '',
+      'tikTokLink': profileLink ?? '',
+      'bio': bio ?? '',
+      'niches': niches?.join(",") ?? ''
     };
   }
 
@@ -90,10 +107,30 @@ class ProfileModel {
     );
   }
 
+  factory ProfileModel.fromStorage(Map<String, dynamic> map) {
+    return ProfileModel(
+      id: map['_id'] ?? '',
+      imageUrl: map['imageURL'],
+      firstAndLastName: map['firstAndLastName'],
+      location: map['location'],
+      noOfTikTokFollowers: map['noOfTikTokFollowers'],
+      noOfTikTokLikes: map['noOfTikTokLikes'],
+      postsViews: map['postsViews'],
+      email: map['email'],
+      profileLink: map.containsKey('tikTokLink') ? map['tikTokLink'] : null,
+      niches: List<String>.from(((map['niches'] as String).split(','))),
+      bio: map['bio'],
+    );
+  }
+
   String toJson() => json.encode(toMap());
+  String toStorage() => json.encode(toStore());
 
   factory ProfileModel.fromJson(String source) =>
       ProfileModel.fromMap(json.decode(source));
+
+  factory ProfileModel.storage(String source) =>
+      ProfileModel.fromStorage(json.decode(source));
 
   @override
   String toString() {

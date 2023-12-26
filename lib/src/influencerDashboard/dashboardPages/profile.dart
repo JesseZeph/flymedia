@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flymedia_app/controllers/chat_provider.dart';
+import 'package:flymedia_app/controllers/profile_provider.dart';
+import 'package:flymedia_app/models/chats/chat_model.dart';
 import 'package:flymedia_app/models/profile/profile_model.dart';
+import 'package:flymedia_app/src/influencerDashboard/screens/chat_page.dart';
 import 'package:flymedia_app/src/influencerDashboard/screens/profile_edit.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants/colors.dart';
 import '../../../controllers/login_provider.dart';
-import '../../../controllers/profile_provider.dart';
 import '../../../utils/modal.dart';
 import '../../../utils/widgets/divider.dart';
 import '../../../utils/widgets/subheadings.dart';
@@ -24,6 +28,22 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  ProfileModel? profile;
+  ChatModel? chatModel;
+
+  @override
+  void initState() {
+    super.initState();
+    retrieveChat();
+  }
+
+  retrieveChat() async {
+    if (!widget.isPersonalView) {
+      chatModel = await context.read<ChatProvider>().fetchSpecificChat(
+          context.read<LoginNotifier>().userId, widget.userProfile?.id ?? '');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     var isLoggedIn = context.watch<LoginNotifier>().loggedIn;
@@ -37,6 +57,13 @@ class _ProfilePageState extends State<ProfilePage> {
             ? Scaffold(
                 appBar: AppBar(
                   automaticallyImplyLeading: false,
+                  leading: widget.isPersonalView
+                      ? null
+                      : IconButton(
+                          onPressed: () {
+                            Get.back();
+                          },
+                          icon: const Icon(Icons.arrow_back_ios)),
                   actions: widget.isPersonalView
                       ? [
                           TextButton(
@@ -127,28 +154,41 @@ class _ProfilePageState extends State<ProfilePage> {
                                 textAlign: TextAlign.center,
                               ),
                             )
-                          : Column(
-                              children: [
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(Icons.message_outlined),
-                                  iconSize: 25,
-                                  color: AppColors.mainColor,
+                          : TextButton(
+                              onPressed: () async {
+                                Get.to(() => ChatPage(
+                                      model: chatModel ??
+                                          ChatModel(
+                                              id: '',
+                                              companyOwnerId: context
+                                                  .read<LoginNotifier>()
+                                                  .userId,
+                                              influencerId: profile.id,
+                                              lastMessage: '',
+                                              newMessagesCount: 0),
+                                      isClientView: true,
+                                    ));
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(10.r),
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                      width: 1,
+                                      color: AppColors.mainColor,
+                                    ),
+                                    borderRadius: BorderRadius.circular(25.r)),
+                                child: Text(
+                                  'Send Message',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(
+                                        color: AppColors.mainColor,
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w400,
+                                      ),
                                 ),
-                                // Text(
-                                //   'Message Influencer',
-                                //   style: Theme.of(context)
-                                //       .textTheme
-                                //       .bodyMedium
-                                //       ?.copyWith(
-                                //         color: AppColors.mainColor,
-                                //         fontSize: 12.sp,
-                                //         fontWeight: FontWeight.w600,
-                                //       ),
-                                //   textAlign: TextAlign.center,
-                                // ),
-                              ],
-                            ),
+                              )),
                       Padding(
                         padding: EdgeInsets.only(top: 12.h),
                         child: const FullDivider(),

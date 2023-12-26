@@ -5,6 +5,7 @@ import 'package:flymedia_app/services/helpers/applications_helper.dart';
 import 'package:flymedia_app/src/authentication/components/animated_button.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/previewListing.dart';
 import 'package:flymedia_app/utils/extensions/context_extension.dart';
+import 'package:flymedia_app/utils/extensions/string_extensions.dart';
 import 'package:flymedia_app/utils/widgets/alert_loader.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
@@ -34,6 +35,7 @@ class _ViewCampaignListingState extends State<ViewCampaignListing> {
   @override
   Widget build(BuildContext context) {
     var isloading = context.watch<ApplicationsHelper>().isLoading;
+    var profile = context.watch<ProfileProvider>().userProfile;
     return LoadingOverlay(
       isLoading: isloading,
       progressIndicator: const AlertLoader(message: 'Sending application'),
@@ -86,7 +88,7 @@ class _ViewCampaignListingState extends State<ViewCampaignListing> {
                 Container(
                   margin: EdgeInsets.only(top: 12.h),
                   child: Text(
-                    '${campaign.rateFrom} - ${campaign.rateTo}',
+                    '${campaign.rateFrom.formatComma()} - ${campaign.rateTo.formatComma()} USD',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: AppColors.mainTextColor,
                           fontSize: 16.sp,
@@ -129,29 +131,23 @@ class _ViewCampaignListingState extends State<ViewCampaignListing> {
                   padding: EdgeInsets.all(22.r),
                   child: AnimatedButton(
                       onTap: () async {
-                        if (context.read<ProfileProvider>().userProfile ==
-                            null) {
+                        if (profile == null) {
                           context.showError(
                               'You must verify your profile to apply.');
                           return;
+                        } else {
+                          await context
+                              .read<ApplicationsHelper>()
+                              .applyToCampaign(
+                                  userId: profile.id, campaignId: campaign.id)
+                              .then((resp) {
+                            if (resp.first) {
+                              context.showSuccess(resp.last);
+                            } else {
+                              context.showError(resp.last);
+                            }
+                          });
                         }
-
-                        await context
-                            .read<ApplicationsHelper>()
-                            .applyToCampaign(
-                                userId: context
-                                        .read<ProfileProvider>()
-                                        .userProfile
-                                        ?.id ??
-                                    '',
-                                campaignId: campaign.id)
-                            .then((resp) {
-                          if (resp.first) {
-                            context.showSuccess(resp.last);
-                          } else {
-                            context.showError(resp.last);
-                          }
-                        });
                       },
                       child: const RoundedButtonWidget(
                         title: 'Apply Now',

@@ -24,7 +24,7 @@ class CampaignPage extends StatefulWidget {
 }
 
 class _CampaignPageState extends State<CampaignPage> {
-  bool profileComplete = false;
+  bool profileComplete = true;
   @override
   void initState() {
     super.initState();
@@ -39,6 +39,9 @@ class _CampaignPageState extends State<CampaignPage> {
   checkProfile() {
     SharedPreferences.getInstance().then((prefs) {
       profileComplete = prefs.getBool('profile') ?? false;
+      setState(() {});
+    }).catchError((err) {
+      profileComplete = false;
     });
   }
 
@@ -89,11 +92,9 @@ class _CampaignPageState extends State<CampaignPage> {
                 ),
               ),
               SizedBox(height: 20.h),
-              if (!profileComplete)
+              if (!profileComplete && userProfile == null)
                 GestureDetector(
-                  onTap: () {
-                    // navigateToPage(context, '/');
-                  },
+                  onTap: () {},
                   child: Container(
                     width: 321.w,
                     padding:

@@ -10,10 +10,16 @@ environment:
 dependencies:
   animated_text_kit: ^4.2.2
   cached_network_image: ^3.2.3
+  cloud_firestore: ^4.13.6
   cupertino_icons: ^1.0.2
   easy_refresh: ^3.3.2+1
+  emoji_picker_flutter: ^1.6.3
   equatable: ^2.0.5
+  file_picker: ^6.1.1
   file_selector_macos: ^0.9.3+3
+  firebase_core: ^2.24.2
+  firebase_storage: ^11.5.6
+  firebase_ui_firestore: ^1.5.15
   fluentui_icons: ^1.0.0
   flutter:
     sdk: flutter
@@ -31,7 +37,7 @@ dependencies:
   http: ^1.1.0
   image_cropper: ^5.0.1
   image_picker: ^1.0.4
-  intl: ^0.19.0
+  intl: ^0.18.1
   loading_animation_widget: ^1.2.0+4
   loading_overlay: ^0.3.0
   objectid: 2.0.0

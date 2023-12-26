@@ -56,7 +56,6 @@ class ProfileHelper {
             );
 
         if (response.statusCode == 200) {
-          prefs.setBool('profile', true);
         } else if (response.statusCode == 504) {
           return [false, 'Network Timeout'];
         }
