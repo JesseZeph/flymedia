@@ -14,6 +14,7 @@ import 'package:flymedia_app/utils/widgets/chat_message_box.dart';
 import 'package:flymedia_app/utils/widgets/custom_text.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
 
 class ChatPage extends StatefulWidget {
@@ -54,32 +55,42 @@ class _ChatPageState extends State<ChatPage> {
 
   void sendMessage() async {
     ChatMessages msg = ChatMessages(
-        clientId: clientId ?? '',
-        influencerId: influencerId ?? '',
-        type: hasPickedFile ? 'File' : 'Text',
-        text: textController.text,
-        fileName: hasPickedFile
-            ? filePicked?.path.split(Platform.pathSeparator).last ?? ''
-            : '',
-        sentBy: context.read<LoginNotifier>().userId);
+      clientId: clientId ?? '',
+      influencerId: influencerId ?? '',
+      type: hasPickedFile ? 'File' : 'Text',
+      text:
+          textController.text.isNotEmpty ? textController.text : 'Sent a file',
+      fileName: hasPickedFile
+          ? filePicked?.path.split(Platform.pathSeparator).last ?? ''
+          : '',
+      sentBy: context.read<LoginNotifier>().userId,
+    );
+    if (hasPickedFile) {
+      var downloadUrl = await context.read<ChatProvider>().uploadFileToStorage(
+          filePicked ?? File(''), msg.clientId, msg.influencerId);
 
-    print("===========> msg: $msg ===============>");
+      msg.downloadUrl = downloadUrl;
+      filePicked = null;
+      hasPickedFile = false;
+    }
+    Provider.of<ChatProvider>(context, listen: false).sendMessage(msg);
 
-    // context.read<ChatProvider>().sendMessage(msg);
-    // if (widget.model.id.isEmpty) {
-    //   var msgModel = widget.model;
-    //   msgModel.lastMessage = textController.text;
-    //   context.read<ChatProvider>().addChat(
-    //       msgModel,
-    //       widget.isClientView ? clientId ?? '' : influencerId ?? '',
-    //       widget.isClientView ? 'Client' : 'Influencer');
-    // } else {
-    //   context.read<ChatProvider>().updateChat(
-    //       widget.model.id,
-    //       textController.text,
-    //       widget.isClientView ? clientId ?? '' : influencerId ?? '',
-    //       widget.isClientView ? 'Client' : 'Influencer');
-    // }
+    if (widget.model.id.isEmpty) {
+      var msgModel = widget.model;
+      msgModel.lastMessage = textController.text;
+      context.read<ChatProvider>().addChat(
+          msgModel,
+          widget.isClientView ? clientId ?? '' : influencerId ?? '',
+          widget.isClientView ? 'Client' : 'Influencer');
+    } else {
+      context.read<ChatProvider>().updateChat(
+          widget.model.id,
+          textController.text.isNotEmpty ? textController.text : 'Sent a file',
+          widget.isClientView ? clientId ?? '' : influencerId ?? '',
+          widget.isClientView ? 'Client' : 'Influencer');
+    }
+
+    setState(() {});
   }
 
   void pickFile() async {
@@ -103,250 +114,296 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: Padding(
-      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
-      child: SafeArea(
-          child: Column(
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              IconButton(
-                  onPressed: () {
-                    Navigator.pop(context, finalMessage);
-                  },
-                  icon: const Icon(
-                    Icons.arrow_back_ios,
-                    color: Colors.black,
-                  )),
-              SizedBox(
-                width: 70.w,
+    var isUploading = context.watch<ChatProvider>().uploadingFile;
+    var progress = context.watch<ChatProvider>().uploadProgress;
+    return LoadingOverlay(
+      isLoading: isUploading,
+      progressIndicator: AlertDialog.adaptive(
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            SizedBox(
+              height: 40.h,
+              width: 40.w,
+              child: CircularProgressIndicator(
+                value: progress,
+                backgroundColor: AppColors.dialogColor,
+                color: AppColors.deepGreen,
               ),
-              Column(
-                children: [
-                  SizedBox(
-                    height: 70.h,
-                    width: 70.w,
-                    child: CircleAvatar(
-                        radius: 50,
-                        backgroundColor: AppColors.dialogColor,
-                        backgroundImage: NetworkImage(
-                          widget.isClientView
-                              ? widget.model.influencerId['imageURL']
-                              : widget.model.companyOwnerId['profile'],
-                        )),
-                  ),
-                  SizedBox(
-                    height: 8.h,
-                  ),
-                  CustomKarlaText(
-                    text: widget.isClientView
-                        ? widget.model.influencerId['firstAndLastName']
-                        : widget.model.companyOwnerId['fullname'],
-                    size: 14,
-                    weight: FontWeight.w700,
-                  ),
-                  // SizedBox(
-                  //   height: 8.h,
-                  // ),
-                  // SizedBox(
-                  //   height: 22.h,
-                  //   // width: 77.w,
-                  //   child: ElevatedButton(
-                  //     onPressed: () {},
-                  //     style: ButtonStyle(
-                  //         elevation: const MaterialStatePropertyAll(0),
-                  //         shape: MaterialStatePropertyAll(
-                  //             RoundedRectangleBorder(
-                  //                 side: const BorderSide(
-                  //                     color: Color(0xffE4E7EC)),
-                  //                 borderRadius: BorderRadius.circular(4))),
-                  //         backgroundColor:
-                  //             const MaterialStatePropertyAll(Colors.white)),
-                  //     child: const CustomKarlaText(
-                  //       text: "View profile",
-                  //       size: 12,
-                  //       weight: FontWeight.w400,
-                  //       color: Color(0xff667085),
-                  //     ),
-                  //   ),
-                  // )
-                ],
-              )
-            ],
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            const CustomKarlaText(text: 'Uploading file...'),
+          ],
+        ),
+        actions: [
+          ElevatedButton(
+            onPressed: () {
+              context.read<ChatProvider>().uploadTask?.cancel();
+            },
+            style: ButtonStyle(
+                elevation: const MaterialStatePropertyAll(0),
+                shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                    side: const BorderSide(color: Color(0xffE4E7EC)),
+                    borderRadius: BorderRadius.circular(4))),
+                backgroundColor: const MaterialStatePropertyAll(Colors.white)),
+            child: const CustomKarlaText(
+              text: "Cancel Upload",
+              size: 12,
+              weight: FontWeight.w400,
+              color: Color(0xff667085),
+            ),
           ),
-          SizedBox(
-            height: 10.h,
-          ),
-          Expanded(
-              child: FirestoreListView<ChatMessages>(
-                  query: chats.orderBy('timeStamp', descending: true),
-                  pageSize: 20,
-                  controller: listController,
-                  reverse: true,
-                  shrinkWrap: true,
-                  itemBuilder: (context, snapshot) {
-                    ChatMessages message = snapshot.data();
-                    bool isUserMsg =
-                        message.isSender(context.read<LoginNotifier>().userId);
-                    return Align(
-                      alignment: isUserMsg
-                          ? Alignment.centerLeft
-                          : Alignment.centerRight,
-                      child: Container(
-                        margin: EdgeInsets.symmetric(vertical: 10.h),
-                        child: ChatMessageBox(
-                            isUserMessage: isUserMsg, message: message),
-                      ),
-                    );
-                  })),
-          Visibility(
-              visible: hasPickedFile,
-              child: Container(
-                margin: EdgeInsets.only(top: 10.h),
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                    color: const Color(0xffF2F4F7),
-                    borderRadius:
-                        BorderRadius.vertical(top: const Radius.circular(6).r)),
-                child: Row(
-                  children: [
-                    Expanded(
-                        child: CustomKarlaText(
-                      text:
-                          filePicked?.path.split(Platform.pathSeparator).last ??
-                              '',
-                    )),
-                    IconButton(
-                        onPressed: () {
-                          filePicked = null;
-                          hasPickedFile = false;
-                          setState(() {});
-                        },
-                        icon: const Icon(Icons.close))
-                  ],
-                ),
-              )),
-          SizedBox(
-            height: 60.h,
-            width: Get.width,
-            child: Row(
+        ],
+      ),
+      child: Scaffold(
+          body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
+        child: SafeArea(
+            child: Column(
+          children: [
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Expanded(
-                    child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 15.w),
-                  height: 40.h,
+                IconButton(
+                    onPressed: () {
+                      Navigator.pop(context, finalMessage);
+                    },
+                    icon: const Icon(
+                      Icons.arrow_back_ios,
+                      color: Colors.black,
+                    )),
+                SizedBox(
+                  width: 70.w,
+                ),
+                Column(
+                  children: [
+                    SizedBox(
+                      height: 70.h,
+                      width: 70.w,
+                      child: CircleAvatar(
+                          radius: 50,
+                          backgroundColor: AppColors.dialogColor,
+                          backgroundImage: NetworkImage(
+                            widget.isClientView
+                                ? widget.model.influencerId['imageURL']
+                                : widget.model.companyOwnerId['profile'],
+                          )),
+                    ),
+                    SizedBox(
+                      height: 8.h,
+                    ),
+                    CustomKarlaText(
+                      text: widget.isClientView
+                          ? widget.model.influencerId['firstAndLastName']
+                          : widget.model.companyOwnerId['fullname'],
+                      size: 14,
+                      weight: FontWeight.w700,
+                    ),
+                    // SizedBox(
+                    //   height: 8.h,
+                    // ),
+                    // SizedBox(
+                    //   height: 22.h,
+                    //   // width: 77.w,
+                    //   child: ElevatedButton(
+                    //     onPressed: () {},
+                    //     style: ButtonStyle(
+                    //         elevation: const MaterialStatePropertyAll(0),
+                    //         shape: MaterialStatePropertyAll(
+                    //             RoundedRectangleBorder(
+                    //                 side: const BorderSide(
+                    //                     color: Color(0xffE4E7EC)),
+                    //                 borderRadius: BorderRadius.circular(4))),
+                    //         backgroundColor:
+                    //             const MaterialStatePropertyAll(Colors.white)),
+                    //     child: const CustomKarlaText(
+                    //       text: "View profile",
+                    //       size: 12,
+                    //       weight: FontWeight.w400,
+                    //       color: Color(0xff667085),
+                    //     ),
+                    //   ),
+                    // )
+                  ],
+                )
+              ],
+            ),
+            SizedBox(
+              height: 10.h,
+            ),
+            Expanded(
+                child: FirestoreListView<ChatMessages>(
+                    query: chats.orderBy('timeStamp', descending: true),
+                    pageSize: 20,
+                    controller: listController,
+                    reverse: true,
+                    shrinkWrap: true,
+                    itemBuilder: (context, snapshot) {
+                      ChatMessages message = snapshot.data();
+                      bool isUserMsg = message
+                          .isSender(context.read<LoginNotifier>().userId);
+                      return Align(
+                        alignment: isUserMsg
+                            ? Alignment.centerLeft
+                            : Alignment.centerRight,
+                        child: Container(
+                          margin: EdgeInsets.symmetric(vertical: 10.h),
+                          child: ChatMessageBox(
+                              isUserMessage: isUserMsg, message: message),
+                        ),
+                      );
+                    })),
+            Visibility(
+                visible: hasPickedFile,
+                child: Container(
+                  margin: EdgeInsets.only(top: 10.h),
+                  padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
                       color: const Color(0xffF2F4F7),
-                      borderRadius: BorderRadius.circular(22).r),
+                      borderRadius: BorderRadius.vertical(
+                          top: const Radius.circular(6).r)),
                   child: Row(
                     children: [
-                      // GestureDetector(
-                      //   onTap: () {
-                      //     setState(() {
-                      //       pickEmoji = !pickEmoji;
-                      //     });
-                      //   },
-                      //   child: const Icon(
-                      //     Icons.emoji_emotions,
-                      //     size: 18,
-                      //     color: Color(0xff828A9C),
-                      //   ),
-                      // ),
-                      // SizedBox(
-                      //   width: 10.w,
-                      // ),
                       Expanded(
-                        child: TextFormField(
-                          controller: textController,
-                          onChanged: (text) => setState(() {
-                            showSend =
-                                textController.text.isNotEmpty ? true : false;
-                          }),
-                          decoration: InputDecoration(
-                              isDense: true,
-                              border: InputBorder.none,
-                              hintStyle: GoogleFonts.karla(
-                                  fontSize: 14.sp, fontWeight: FontWeight.w400),
-                              hintText: 'Type your message here...'),
-                        ),
-                      ),
+                          child: CustomKarlaText(
+                        text: filePicked?.path
+                                .split(Platform.pathSeparator)
+                                .last ??
+                            '',
+                      )),
+                      IconButton(
+                          onPressed: () {
+                            filePicked = null;
+                            hasPickedFile = false;
+                            setState(() {});
+                          },
+                          icon: const Icon(Icons.close))
                     ],
                   ),
                 )),
-                SizedBox(
-                  width: 5.w,
-                ),
-                IconButton(
-                    onPressed: () => pickFile(),
-                    icon: const Icon(
-                      Icons.description_outlined,
-                      size: 25,
-                      color: Color(0xff667085),
-                    )),
-                // PopupMenuButton(
-                //     onSelected: (value) {
-                //       pickFile();
-                //     },
-                //     color: Colors.white,
-                //     elevation: 0,
-                //     itemBuilder: (context) => [
-                //           const PopupMenuItem(
-                //               value: 'Attach Document',
-                //               child: CustomKarlaText(
-                //                 text: 'Attach Document',
-                //               ))
-                //         ],
-                //     icon: const Icon(
-                //       Icons.description_outlined,
-                //       size: 25,
-                //       color: Color(0xff667085),
-                //     )),
-                if (showSend || hasPickedFile)
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: 5.w,
-                      ),
-                      GestureDetector(
-                          onTap: () {
-                            showSend = false;
-                            sendMessage();
-                            finalMessage = textController.text;
-                            FocusScopeNode currentFocus =
-                                FocusScope.of(context);
+            SizedBox(
+              height: 60.h,
+              width: Get.width,
+              child: Row(
+                children: [
+                  Expanded(
+                      child: Container(
+                    padding: EdgeInsets.symmetric(horizontal: 15.w),
+                    height: 40.h,
+                    decoration: BoxDecoration(
+                        color: const Color(0xffF2F4F7),
+                        borderRadius: BorderRadius.circular(22).r),
+                    child: Row(
+                      children: [
+                        // GestureDetector(
+                        //   onTap: () {
+                        //     setState(() {
+                        //       pickEmoji = !pickEmoji;
+                        //     });
+                        //   },
+                        //   child: const Icon(
+                        //     Icons.emoji_emotions,
+                        //     size: 18,
+                        //     color: Color(0xff828A9C),
+                        //   ),
+                        // ),
+                        // SizedBox(
+                        //   width: 10.w,
+                        // ),
+                        Expanded(
+                          child: TextFormField(
+                            controller: textController,
+                            onChanged: (text) => setState(() {
+                              showSend =
+                                  textController.text.isNotEmpty ? true : false;
+                            }),
+                            decoration: InputDecoration(
+                                isDense: true,
+                                border: InputBorder.none,
+                                hintStyle: GoogleFonts.karla(
+                                    fontSize: 14.sp,
+                                    fontWeight: FontWeight.w400),
+                                hintText: 'Type your message here...'),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )),
+                  SizedBox(
+                    width: 5.w,
+                  ),
+                  IconButton(
+                      onPressed: () => pickFile(),
+                      icon: const Icon(
+                        Icons.description_outlined,
+                        size: 25,
+                        color: Color(0xff667085),
+                      )),
+                  // PopupMenuButton(
+                  //     onSelected: (value) {
+                  //       pickFile();
+                  //     },
+                  //     color: Colors.white,
+                  //     elevation: 0,
+                  //     itemBuilder: (context) => [
+                  //           const PopupMenuItem(
+                  //               value: 'Attach Document',
+                  //               child: CustomKarlaText(
+                  //                 text: 'Attach Document',
+                  //               ))
+                  //         ],
+                  //     icon: const Icon(
+                  //       Icons.description_outlined,
+                  //       size: 25,
+                  //       color: Color(0xff667085),
+                  //     )),
+                  if (showSend || hasPickedFile)
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 5.w,
+                        ),
+                        GestureDetector(
+                            onTap: () {
+                              showSend = false;
+                              sendMessage();
+                              finalMessage = textController.text;
+                              FocusScopeNode currentFocus =
+                                  FocusScope.of(context);
 
-                            if (!currentFocus.hasPrimaryFocus) {
-                              currentFocus.unfocus();
-                            }
-                            textController.clear();
-                          },
-                          child: const CircleAvatar(
-                            backgroundColor: AppColors.mainColor,
-                            child: Icon(
-                              Icons.send,
-                              color: Colors.white,
-                            ),
-                          )),
-                    ],
-                  )
-              ],
+                              if (!currentFocus.hasPrimaryFocus) {
+                                currentFocus.unfocus();
+                              }
+                              textController.clear();
+                            },
+                            child: const CircleAvatar(
+                              backgroundColor: AppColors.mainColor,
+                              child: Icon(
+                                Icons.send,
+                                color: Colors.white,
+                              ),
+                            )),
+                      ],
+                    )
+                ],
+              ),
             ),
-          ),
-          // if (pickEmoji)
-          //   Offstage(
-          //     offstage: !pickEmoji,
-          //     child: SizedBox(
-          //       height: 200.h,
-          //       child: EmojiPicker(
-          //         textEditingController: textController,
-          //         config: const Config(columns: 7, bgColor: Colors.white),
-          //       ),
-          //     ),
-          //   )
-        ],
+            // if (pickEmoji)
+            //   Offstage(
+            //     offstage: !pickEmoji,
+            //     child: SizedBox(
+            //       height: 200.h,
+            //       child: EmojiPicker(
+            //         textEditingController: textController,
+            //         config: const Config(columns: 7, bgColor: Colors.white),
+            //       ),
+            //     ),
+            //   )
+          ],
+        )),
       )),
-    ));
+    );
   }
 }
