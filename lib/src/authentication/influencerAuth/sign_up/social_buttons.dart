@@ -1,11 +1,20 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flymedia_app/controllers/signup_provider.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../constants/imageStrings.dart';
 import '../../../../utils/widgets/social_auth_buttons.dart';
 
-class SocialAuth extends StatelessWidget {
-  const SocialAuth({super.key});
+class SocialAuth extends StatefulWidget {
+  const SocialAuth(
+      {super.key, required this.isSignUp, required this.userIsClient});
+  final bool isSignUp, userIsClient;
 
+  @override
+  State<SocialAuth> createState() => _SocialAuthState();
+}
+
+class _SocialAuthState extends State<SocialAuth> {
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -14,7 +23,13 @@ class SocialAuth extends StatelessWidget {
         AppleGoogleButton(
           text: 'Join with Google',
           imagePath: AppImages.google,
-          onTap: () {},
+          onTap: () {
+            if (widget.isSignUp) {
+              context
+                  .read<SignUpNotifier>()
+                  .signUpWithGoogle(context, widget.userIsClient);
+            } else {}
+          },
         ),
         AppleGoogleButton(
           text: 'Join with Apple',

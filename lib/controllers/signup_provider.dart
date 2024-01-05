@@ -4,9 +4,13 @@ import 'package:flymedia_app/src/authentication/clientAuth/clientverification/us
 import 'package:flymedia_app/src/authentication/influencerAuth/influencerverification/userverificationsuccess.dart';
 import 'package:flymedia_app/utils/extensions/context_extension.dart';
 import 'package:get/get.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../models/requests/auth/signup.dart';
 import '../services/helpers/auth_helper.dart';
+import '../src/authentication/clientAuth/clientverification/verifyemailaddress.dart';
+import '../src/authentication/influencerAuth/influencerverification/verifyemailaddress.dart';
 
 class SignUpNotifier extends ChangeNotifier {
   bool _obscureText = true;
@@ -43,27 +47,37 @@ class SignUpNotifier extends ChangeNotifier {
     }
   }
 
-  Future<bool> signUp(String model) async {
-    _loader = !_loader;
-    notifyListeners();
+  Future<bool> signUp(String model, {bool notSocialAuth = true}) async {
+    if (notSocialAuth) {
+      _loader = !_loader;
+      notifyListeners();
+    }
+
     bool wasSuccessful = false;
     await AuthHelper.signUp(model).then((response) {
       wasSuccessful = response;
     });
-    _loader = !_loader;
-    notifyListeners();
+    if (notSocialAuth) {
+      _loader = !_loader;
+      notifyListeners();
+    }
     return wasSuccessful;
   }
 
-  Future<bool> influencerSignup(String model) async {
-    _loader = !_loader;
-    notifyListeners();
+  Future<bool> influencerSignup(String model,
+      {bool notSocialAuth = true}) async {
+    if (notSocialAuth) {
+      _loader = !_loader;
+      notifyListeners();
+    }
     bool wasSuccessful = false;
     await AuthHelper.influenerRegister(model).then((response) {
       wasSuccessful = response;
     });
-    _loader = !_loader;
-    notifyListeners();
+    if (notSocialAuth) {
+      _loader = !_loader;
+      notifyListeners();
+    }
     return wasSuccessful;
   }
 
@@ -101,5 +115,53 @@ class SignUpNotifier extends ChangeNotifier {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
     loggedIn = prefs.getBool('loggedIn') ?? false;
+  }
+
+  signUpWithGoogle(BuildContext context, bool isClient) async {
+    _loader = !_loader;
+    notifyListeners();
+    const List<String> scopes = <String>[
+      'email',
+    ];
+
+    var googleSignIn = GoogleSignIn(
+      scopes: scopes,
+    );
+
+    try {
+      var userData = await googleSignIn.signIn();
+      if (userData != null) {
+        SignupModel model = SignupModel(
+            fullname: userData.displayName ?? 'Anonymous',
+            email: userData.email,
+            password: userData.id);
+        String newModel = signupModelToJson(model);
+        if (isClient) {
+          await signUp(newModel, notSocialAuth: false).then((success) {
+            if (success) {
+              Get.offAll(() => const VerifyEmailAccount());
+            } else {
+              context.showError("Sign up failed. Try again later.");
+            }
+          });
+        } else {
+          await influencerSignup(newModel, notSocialAuth: false)
+              .then((success) {
+            if (success) {
+              Get.offAll(() => const InfluencerVerifyEmail());
+            } else {
+              context.showError("Sign up failed. Try again later.");
+            }
+          });
+        }
+      }
+    } catch (e, s) {
+      debugPrint("=======> error with google sign in: $e");
+      debugPrintStack(stackTrace: s);
+      context.showError('Could not authenticate');
+    }
+
+    _loader = !_loader;
+    notifyListeners();
   }
 }

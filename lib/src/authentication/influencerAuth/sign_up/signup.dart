@@ -50,7 +50,10 @@ class _SignUpState extends State<InfluencerSignUp> {
             subText: AppTexts.createAccountSubText,
           ),
         ),
-        const SocialAuth(),
+        const SocialAuth(
+          isSignUp: true,
+          userIsClient: false,
+        ),
         SizedBox(height: 32.h),
         const DividerWidget(),
         SizedBox(height: 25.h),

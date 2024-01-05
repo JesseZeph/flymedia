@@ -81,7 +81,10 @@ class _SignInWidgetState extends State<SignInWidget> {
             SizedBox(
               height: 25.h,
             ),
-            const SocialAuth(),
+            const SocialAuth(
+              isSignUp: false,
+              userIsClient: true,
+            ),
             SizedBox(
               height: 25.h,
             ),

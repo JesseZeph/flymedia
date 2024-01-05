@@ -78,7 +78,10 @@ class _InfluencerSignInState extends State<InfluencerSignIn> {
             SizedBox(
               height: 25.h,
             ),
-            const SocialAuth(),
+            const SocialAuth(
+              isSignUp: false,
+              userIsClient: false,
+            ),
             SizedBox(
               height: 25.h,
             ),

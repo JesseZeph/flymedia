@@ -55,5 +55,18 @@
 	<true/>
 	<key>UIFileSharingEnabled</key>
 	<true/>
+	<key>GIDClientID</key>
+	<string>89477570848-rm04585n10hq3aq2mrceutnghgdrtno2.apps.googleusercontent.com</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.89477570848-rm04585n10hq3aq2mrceutnghgdrtno2</string>
+			</array>
+		</dict>
+	</array>
 </dict>
 </plist>
