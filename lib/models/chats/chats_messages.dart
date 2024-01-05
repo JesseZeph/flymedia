@@ -108,4 +108,6 @@ class ChatMessages {
   bool isSender(String userId) => sentBy == userId;
   bool get isFile => type == 'File';
   bool justUploaded(int uploadTime) => (uploadTime - timeStamp!) <= 3000;
+  String get filePath =>
+      '${clientId.substring(17)}_${influencerId.substring(17)}/$fileName}';
 }

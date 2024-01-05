@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:background_downloader/background_downloader.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:firebase_ui_firestore/firebase_ui_firestore.dart';
@@ -37,6 +38,7 @@ class _ChatPageState extends State<ChatPage> {
   String? influencerId;
   bool hasPickedFile = false;
   File? filePicked;
+  ChatModel? msgSent;
 
   @override
   void initState() {
@@ -68,23 +70,23 @@ class _ChatPageState extends State<ChatPage> {
     if (hasPickedFile) {
       var downloadUrl = await context.read<ChatProvider>().uploadFileToStorage(
           filePicked ?? File(''), msg.clientId, msg.influencerId);
-
+      print("============> download url: $downloadUrl =========>");
       msg.downloadUrl = downloadUrl;
       filePicked = null;
       hasPickedFile = false;
     }
     Provider.of<ChatProvider>(context, listen: false).sendMessage(msg);
 
-    if (widget.model.id.isEmpty) {
-      var msgModel = widget.model;
-      msgModel.lastMessage = textController.text;
-      context.read<ChatProvider>().addChat(
-          msgModel,
+    if (widget.model.id.isEmpty && msgSent == null) {
+      msgSent = await context.read<ChatProvider>().addChat(
+          clientId ?? '',
+          influencerId ?? '',
+          textController.text,
           widget.isClientView ? clientId ?? '' : influencerId ?? '',
           widget.isClientView ? 'Client' : 'Influencer');
     } else {
       context.read<ChatProvider>().updateChat(
-          widget.model.id,
+          msgSent?.id ?? widget.model.id,
           textController.text.isNotEmpty ? textController.text : 'Sent a file',
           widget.isClientView ? clientId ?? '' : influencerId ?? '',
           widget.isClientView ? 'Client' : 'Influencer');
@@ -115,10 +117,13 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     var isUploading = context.watch<ChatProvider>().uploadingFile;
-    var progress = context.watch<ChatProvider>().uploadProgress;
+    var isDownloading = context.watch<ChatProvider>().downloadingFile;
+    var progress = context.watch<ChatProvider>().taskProgress;
     return LoadingOverlay(
-      isLoading: isUploading,
+      isLoading: isUploading || isDownloading,
       progressIndicator: AlertDialog.adaptive(
+        backgroundColor: AppColors.lightMain,
+        elevation: 0,
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
@@ -134,25 +139,32 @@ class _ChatPageState extends State<ChatPage> {
             SizedBox(
               height: 10.h,
             ),
-            const CustomKarlaText(text: 'Uploading file...'),
+            CustomKarlaText(
+                text:
+                    isUploading ? 'Uploading file...' : 'Downloading file...'),
           ],
         ),
         actions: [
           ElevatedButton(
             onPressed: () {
-              context.read<ChatProvider>().uploadTask?.cancel();
+              if (isUploading) {
+                context.read<ChatProvider>().uploadTask?.cancel();
+              } else {
+                var taskId = context.read<ChatProvider>().currentTaskId ?? '';
+                FileDownloader().cancelTaskWithId(taskId);
+              }
             },
             style: ButtonStyle(
                 elevation: const MaterialStatePropertyAll(0),
                 shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                    side: const BorderSide(color: Color(0xffE4E7EC)),
+                    side: const BorderSide(color: AppColors.mainColor),
                     borderRadius: BorderRadius.circular(4))),
                 backgroundColor: const MaterialStatePropertyAll(Colors.white)),
             child: const CustomKarlaText(
-              text: "Cancel Upload",
+              text: "Cancel",
               size: 12,
               weight: FontWeight.w400,
-              color: Color(0xff667085),
+              color: AppColors.mainColor,
             ),
           ),
         ],
@@ -201,31 +213,6 @@ class _ChatPageState extends State<ChatPage> {
                       size: 14,
                       weight: FontWeight.w700,
                     ),
-                    // SizedBox(
-                    //   height: 8.h,
-                    // ),
-                    // SizedBox(
-                    //   height: 22.h,
-                    //   // width: 77.w,
-                    //   child: ElevatedButton(
-                    //     onPressed: () {},
-                    //     style: ButtonStyle(
-                    //         elevation: const MaterialStatePropertyAll(0),
-                    //         shape: MaterialStatePropertyAll(
-                    //             RoundedRectangleBorder(
-                    //                 side: const BorderSide(
-                    //                     color: Color(0xffE4E7EC)),
-                    //                 borderRadius: BorderRadius.circular(4))),
-                    //         backgroundColor:
-                    //             const MaterialStatePropertyAll(Colors.white)),
-                    //     child: const CustomKarlaText(
-                    //       text: "View profile",
-                    //       size: 12,
-                    //       weight: FontWeight.w400,
-                    //       color: Color(0xff667085),
-                    //     ),
-                    //   ),
-                    // )
                   ],
                 )
               ],

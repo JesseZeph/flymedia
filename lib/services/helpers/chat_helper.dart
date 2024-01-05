@@ -51,17 +51,21 @@ class ChatHelper {
     return chat;
   }
 
-  Future<ChatModel?> addChat(ChatModel chat) async {
+  Future<ChatModel?> addChat(
+      String clientId, String influencerId, String lastMessage) async {
     ChatModel? newChat;
     var url = Uri.https(
       Config.apiUrl,
       Config.chats,
     );
     try {
-      var response =
-          await http.post(url, headers: await getHeaders(), body: chat.toMap());
+      var response = await http.post(url, headers: await getHeaders(), body: {
+        "company_owner_id": clientId,
+        "influencer_id": influencerId,
+        "last_message": lastMessage
+      });
 
-      newChat = jsonDecode(response.body)['data'];
+      newChat = ChatModel.fromMap(jsonDecode(response.body)['data']);
     } catch (e, s) {
       debugPrint(e.toString());
       debugPrintStack(stackTrace: s);

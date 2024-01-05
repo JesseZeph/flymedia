@@ -1,5 +1,7 @@
 import 'dart:io';
 
+import 'package:background_downloader/background_downloader.dart'
+    as bg_downloader;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
@@ -15,9 +17,11 @@ class ChatProvider extends ChangeNotifier {
   List<ChatModel> userMessages = [];
   bool fetchingChat = true;
   int? uploadTime;
-  double uploadProgress = 0;
+  double taskProgress = 0;
   bool uploadingFile = false;
+  bool downloadingFile = false;
   UploadTask? uploadTask;
+  String? currentTaskId;
 
   fetchUserMessages(String userId, String userType) async {
     List<ChatModel> messages =
@@ -28,9 +32,11 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  addChat(ChatModel chat, String userId, String userType) async {
-    await helper.addChat(chat);
+  Future<ChatModel?> addChat(String clientId, String influencerId,
+      String lastMessage, String userId, String userType) async {
+    var chat = await helper.addChat(clientId, influencerId, lastMessage);
     await fetchUserMessages(userId, userType);
+    return chat;
   }
 
   updateChat(String? chatId, String? lastMessage, String userId,
@@ -83,54 +89,69 @@ class ChatProvider extends ChangeNotifier {
     }
   }
 
-  Future<String?> getdownloadLink(ChatMessages message) async {
-    String? downloadUrl;
-    String path =
-        '${message.clientId.substring(17)}_${message.influencerId.substring(17)}/${message.fileName}';
-    var storageRef = FirebaseStorage.instance.ref();
-    var fileRef = storageRef.child(path);
-    downloadUrl = await fileRef.getDownloadURL();
-    return downloadUrl;
-  }
-
   Future<String?> uploadFileToStorage(
       File file, String clientId, String influencerId) async {
     String? downloadUrl;
     bool cancelled = false;
-    print('===========> Got here 1 =============>');
     uploadingFile = !uploadingFile;
     uploadTime = DateTime.now().millisecondsSinceEpoch;
     notifyListeners();
-    print('===========> Got here 2 =============>');
     String path =
-        '${clientId.substring(17)}_${influencerId.substring(17)}/${file.path.split(Platform.pathSeparator).last}';
-    print('===========> Got here 3 =============>');
-    print('===========> path: $path =============>');
+        '${clientId.substring(17)}/${influencerId.substring(17)}/${file.path.split(Platform.pathSeparator).last}';
     var storageRef = FirebaseStorage.instance.ref();
     var fileRef = storageRef.child(path);
-    uploadTask = fileRef.putFile(file);
-    uploadTask?.snapshotEvents.listen((event) {
-      switch (event.state) {
-        case TaskState.running:
-          uploadProgress = event.bytesTransferred / event.totalBytes;
-          print(
-              '===========> upload progress : $uploadProgress =============>');
-          notifyListeners();
-          break;
-        case TaskState.paused:
-        case TaskState.error:
-        case TaskState.canceled:
-          cancelled = true;
-          break;
-        case TaskState.success:
-          break;
-      }
-    });
-    uploadProgress = 0;
+    try {
+      // uploadTask = fileRef.putFile(file);
+      // uploadTask?.snapshotEvents.listen((event) {
+      fileRef.putFile(file).snapshotEvents.listen((event) {
+        switch (event.state) {
+          case TaskState.running:
+            taskProgress = event.bytesTransferred / event.totalBytes;
+            notifyListeners();
+            break;
+          case TaskState.paused:
+          case TaskState.error:
+          case TaskState.canceled:
+            cancelled = true;
+            break;
+          case TaskState.success:
+            break;
+        }
+      });
+      await fileRef.putFile(file);
+    } on FirebaseException catch (e) {
+      debugPrint("========> firebase storage error: '${e.code}': ${e.message}");
+    }
+
+    taskProgress = 0;
     uploadTime = null;
     uploadingFile = !uploadingFile;
     notifyListeners();
-    downloadUrl = cancelled ? await fileRef.getDownloadURL() : null;
+    downloadUrl = cancelled ? null : await fileRef.getDownloadURL();
     return downloadUrl;
+  }
+
+  Future<bg_downloader.TaskStatusUpdate?> downloadFile(
+      bg_downloader.DownloadTask task) async {
+    bg_downloader.TaskStatusUpdate? result;
+    downloadingFile = !downloadingFile;
+    currentTaskId = task.taskId;
+    notifyListeners();
+    try {
+      result = await bg_downloader.FileDownloader().download(
+        task,
+        onProgress: (progress) {
+          taskProgress = progress;
+          notifyListeners();
+        },
+      );
+    } catch (e, s) {
+      debugPrint("error with downloading file: $e");
+      debugPrintStack(stackTrace: s);
+    }
+    downloadingFile = !downloadingFile;
+
+    notifyListeners();
+    return result;
   }
 }

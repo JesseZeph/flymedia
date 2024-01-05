@@ -1,8 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/colors.dart';
+import 'package:flymedia_app/controllers/chat_provider.dart';
 import 'package:flymedia_app/models/chats/chats_messages.dart';
+import 'package:flymedia_app/src/authentication/influencerAuth/sign_in/sign_in_widget.dart';
 import 'package:flymedia_app/utils/widgets/custom_text.dart';
+// import 'package:path_provider/path_provider.dart';
+import 'package:background_downloader/background_downloader.dart';
+import 'package:objectid/objectid.dart';
+import 'package:provider/provider.dart';
 
 class ChatMessageBox extends StatefulWidget {
   const ChatMessageBox(
@@ -15,6 +23,48 @@ class ChatMessageBox extends StatefulWidget {
 }
 
 class _ChatMessageBoxState extends State<ChatMessageBox> {
+  downloadFile() async {
+    if (Platform.isAndroid) {
+      await permissionsAllowed().then((permissionsGranted) {
+        if (!permissionsGranted) {
+          context.showError('Grant permissions to download files.');
+          return;
+        }
+      });
+    }
+    var downloadTask = DownloadTask(
+        taskId: ObjectId().toString(),
+        url: widget.message.downloadUrl ?? '',
+        filename: widget.message.fileName,
+        updates: Updates.progress,
+        directory: 'flymedia/downloads');
+    context
+        .read<ChatProvider>()
+        .downloadFile(downloadTask)
+        .then((result) async {
+      if (result == null || result.status != TaskStatus.complete) {
+        context.showError('Could not download File.');
+      } else {
+        FileDownloader()
+            .moveToSharedStorage(downloadTask, SharedStorage.downloads)
+            .then(
+          (_) {
+            context.showSuccess('File downloaded successfully');
+          },
+        );
+      }
+    });
+  }
+
+  Future<bool> permissionsAllowed() async {
+    const permissionType = PermissionType.androidSharedStorage;
+    var status = await FileDownloader().permissions.status(permissionType);
+    if (status != PermissionStatus.granted) {
+      status = await FileDownloader().permissions.request(permissionType);
+    }
+    return status == PermissionStatus.granted;
+  }
+
   @override
   Widget build(BuildContext context) {
     // var lastUploadTime = context.watch<ChatProvider>().uploadTime;
@@ -54,12 +104,15 @@ class _ChatMessageBoxState extends State<ChatMessageBox> {
                         SizedBox(
                           width: 5.w,
                         ),
-                        CustomKarlaText(
-                          text: widget.message.fileName ?? '',
-                          align: TextAlign.start,
-                          weight: FontWeight.w400,
-                          color: Colors.black,
-                          size: 14,
+                        Expanded(
+                          child: CustomKarlaText(
+                            text: widget.message.fileName ?? '',
+                            align: TextAlign.start,
+                            weight: FontWeight.w400,
+                            color: Colors.black,
+                            size: 14,
+                            overflow: TextOverflow.ellipsis,
+                          ),
                         )
                       ],
                     ),
@@ -92,8 +145,7 @@ class _ChatMessageBoxState extends State<ChatMessageBox> {
                       //     :
                       IconButton(
                         onPressed: () {
-                          print(
-                              "========> download url: ${widget.message.downloadUrl} =====>");
+                          downloadFile();
                         },
                         icon: const Icon(Icons.download_for_offline_outlined),
                         iconSize: 30,

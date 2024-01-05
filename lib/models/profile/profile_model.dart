@@ -60,7 +60,7 @@ class ProfileModel {
   Map<String, String> toMap() {
     return {
       '_id': id,
-      'imageUrl': imageUrl ?? '',
+      'imageURL': imageUrl ?? '',
       'firstAndLastName': firstAndLastName ?? '',
       'location': location ?? '',
       'noOfTikTokFollowers': noOfTikTokFollowers ?? '',

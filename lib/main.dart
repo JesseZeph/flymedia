@@ -23,10 +23,13 @@ import 'src/clientdashboard/screens/verificationinprogress.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   Widget? defaultHome;
   try {
+    await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform);
+
     final selectedContainer = prefs.getInt('selectedContainer') ?? 0;
 
     switch (selectedContainer) {

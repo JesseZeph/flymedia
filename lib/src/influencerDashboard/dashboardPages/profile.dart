@@ -163,7 +163,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                               companyOwnerId: context
                                                   .read<LoginNotifier>()
                                                   .userId,
-                                              influencerId: profile.id,
+                                              influencerId: profile.toMap(),
                                               lastMessage: '',
                                               newMessagesCount: 0),
                                       isClientView: true,
