@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flymedia_app/controllers/onboarding_provider.dart';
+import 'package:flymedia_app/src/onboardingscreen/onboardpages/firstpage.dart';
 import 'package:flymedia_app/src/onboardingscreen/onboardpages/secondpage.dart';
 import 'package:flymedia_app/src/onboardingscreen/onboardpages/thirdpage.dart';
 import 'package:provider/provider.dart';
@@ -38,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 },
                 controller: _pageViewController,
                 children: const [
-                  // FirstOnboard(),
+                  FirstOnboard(),
                   SecondOnboard(),
                   ThirdOnboard(),
                   FourthOnboard(),

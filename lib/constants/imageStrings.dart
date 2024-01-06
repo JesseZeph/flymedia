@@ -16,11 +16,11 @@ class AppImages {
   static const String line2 = 'assets/images/line2.png';
   static const String bitmoji = 'assets/images/bitmoji.png';
   static const String handshake = 'assets/images/handshake.png';
-  static const String secondOnboard = 'assets/images/secondOnboard.png';
+  static const String secondOnboard = 'assets/images/splash-2.png';
   static const String firstOnboard = 'assets/images/firstOnboardEllipes.png';
   static const String sophieEllipse = 'assets/images/sophieEllipse.png';
-  static const String onboarding = 'assets/images/onboarding.png';
-  static const String fourthOnboard = 'assets/images/rectangle.png';
+  static const String onboarding = 'assets/images/splash-1.png';
+  static const String fourthOnboard = 'assets/images/splash-3.png';
   static const String shinyTictok = 'assets/images/shinytictok.png';
   static const String tikTok = 'assets/images/tiktok.png';
   static const String love = 'assets/images/iconlove.png';
