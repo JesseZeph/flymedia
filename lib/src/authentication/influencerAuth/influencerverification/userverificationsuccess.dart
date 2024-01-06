@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flymedia_app/src/authentication/clientAuth/authenticationview.dart';
 import 'package:flymedia_app/src/authentication/forgotpassword/screens/checkemail.dart';
+import 'package:flymedia_app/src/authentication/influencerAuth/sign_in/sign_in_widget.dart';
 import 'package:flymedia_app/src/influencerDashboard/influencerHomepage.dart';
 import 'package:get/get.dart';
 
@@ -32,7 +34,7 @@ class InfluencerVerifySuccess extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                Get.to(() => const InfluencerHomePage());
+                Get.to(() => const AuthenticationView());
               },
               child: Padding(
                 padding: EdgeInsets.only(top: 30.h),
