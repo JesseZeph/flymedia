@@ -151,7 +151,6 @@ class AuthHelper {
       var url = Uri.https(Config.apiUrl, Config.login);
       var response =
           await client.post(url, headers: requestHeaders, body: model);
-      print("login resp: /n ${response.body} /n");
       var decodedResponse = jsonDecode(response.body);
       if (response.statusCode == 200) {
         var user = influencerLoginResponseModelFromJson(response.body);

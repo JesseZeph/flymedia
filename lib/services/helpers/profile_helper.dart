@@ -40,7 +40,7 @@ class ProfileHelper {
     var prefs = await SharedPreferences.getInstance();
     try {
       if (hasFile) {
-        File file = File(details['imageUrl'] ?? '');
+        File file = File(details['imageURL'] ?? '');
         var request = http.MultipartRequest(isPutRequest ? 'PUT' : "POST",
             Uri.https(Config.apiUrl, Config.influencerProfile + userId))
           ..fields.addAll(details)
