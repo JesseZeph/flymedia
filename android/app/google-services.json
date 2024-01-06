@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "89477570848-eb7gtqjtfv09ormj1ccdbpg45agns6ph.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.flymedia",
+            "certificate_hash": "b8628573620850a69bd35c13c1443f19546a1670"
+          }
+        },
+        {
           "client_id": "89477570848-pupb2ebmupac5kao97r3mkp5dnrl3pv6.apps.googleusercontent.com",
           "client_type": 3
         }
