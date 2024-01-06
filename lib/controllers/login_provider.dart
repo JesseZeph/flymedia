@@ -167,6 +167,69 @@ class LoginNotifier extends ChangeNotifier {
     notifyListeners();
   }
 
+  signInWIthApple(BuildContext context, bool isClient) async {
+    _loader = !_loader;
+    notifyListeners();
+    const List<String> scopes = <String>[
+      'email',
+    ];
+
+    var googleSignIn = GoogleSignIn(
+      scopes: scopes,
+    );
+
+    try {
+      var userData = await googleSignIn.signIn();
+      if (userData != null) {
+        if (isClient) {
+          LoginModel model = LoginModel(
+              email: userData.email, password: userData.id, userType: 'Client');
+          String newModel = loginModelToJson(model);
+          await login(newModel, notSocialAuth: false).then((success) async {
+            if (success.first) {
+              var prefs = await SharedPreferences.getInstance();
+              prefs.setString('email', model.email);
+              if (!success[1]) {
+                Get.offAll(() => const UserEmailVerification());
+              } else {
+                Get.offAll(() => success.last
+                    ? const ClientHomePage()
+                    : const ClientVerificationOnboarding());
+              }
+            } else {
+              context.showError(success.last);
+            }
+          });
+        } else {
+          InfluencerLoginModel model = InfluencerLoginModel(
+              email: userData.email,
+              password: userData.id,
+              userType: "Influencer");
+          String newModel = influencerLoginModelToJson(model);
+          await influencerSignin(newModel, notSocialAuth: false)
+              .then((success) async {
+            if (success.first) {
+              var prefs = await SharedPreferences.getInstance();
+              prefs.setString('email', model.email);
+              Get.offAll(() => success.last
+                  ? const InfluencerHomePage()
+                  : const InfluencerEmailVerification());
+            } else {
+              context.showError(success.last);
+            }
+          });
+        }
+      }
+    } catch (e, s) {
+      debugPrint("=======> error with google sign in: $e");
+      debugPrintStack(stackTrace: s);
+      context.showError('Could not authenticate');
+    }
+
+    _loader = !_loader;
+    notifyListeners();
+  }
+
   logout() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     var googleSignIn = GoogleSignIn();
