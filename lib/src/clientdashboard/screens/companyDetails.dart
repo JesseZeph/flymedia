@@ -167,7 +167,7 @@ class _CompanyDetailsState extends State<CompanyDetails> {
             ),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 20.h),
-              child: const SubHeadings(
+              child: const Headings(
                 text: 'Job Title',
               ),
             ),
@@ -183,7 +183,7 @@ class _CompanyDetailsState extends State<CompanyDetails> {
             ),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 20.h),
-              child: const SubHeadings(
+              child: const Headings(
                 text: 'Country',
               ),
             ),
@@ -203,7 +203,7 @@ class _CompanyDetailsState extends State<CompanyDetails> {
               ),
             ),
             Container(
-              margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),
+              margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 15.h),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -228,8 +228,8 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                   'Number of views required',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: Colors.black,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w400),
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600),
                 )),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 20.w),
@@ -246,8 +246,8 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                   'Job description',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: Colors.black,
-                      fontSize: 12.sp,
-                      fontWeight: FontWeight.w400),
+                      fontSize: 14.sp,
+                      fontWeight: FontWeight.w600),
                 )),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 10.h),

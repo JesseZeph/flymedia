@@ -54,6 +54,7 @@ class CustomInputField extends StatelessWidget {
         maxLines: maxLines,
         maxLength: maxLength,
         onChanged: onChanged,
+        onTapOutside: (event) => FocusScope.of(context).unfocus(),
         inputFormatters: inputFormatters,
         decoration: InputDecoration(
           border: InputBorder.none,
