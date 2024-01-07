@@ -76,7 +76,7 @@ class CustomField extends StatelessWidget {
               text,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     fontSize: 13.sp,
-                    fontWeight: FontWeight.w400,
+                    fontWeight: FontWeight.w600,
                     color: Colors.black,
                   ),
             ),
@@ -92,6 +92,7 @@ class CustomField extends StatelessWidget {
               child: TextFormField(
                 keyboardType: inputType ?? TextInputType.text,
                 controller: textController,
+                onTapOutside: (event) => FocusScope.of(context).unfocus(),
                 decoration: InputDecoration(
                   border: InputBorder.none,
                   hintStyle: Theme.of(context).textTheme.bodySmall?.copyWith(

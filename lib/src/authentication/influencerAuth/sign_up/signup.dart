@@ -75,8 +75,11 @@ class _SignUpState extends State<InfluencerSignUp> {
         SizedBox(
           height: 40.h,
         ),
-        CheckWidget(
-          onPressed: (val) => agreedToTerms = val ?? false,
+        Padding(
+          padding: EdgeInsets.only(left: 8.w),
+          child: CheckWidget(
+            onPressed: (val) => agreedToTerms = val ?? false,
+          ),
         ),
         SizedBox(
           height: 15.h,

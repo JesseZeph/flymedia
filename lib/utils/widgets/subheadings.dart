@@ -106,7 +106,7 @@ class CHeadingAndSubText extends StatelessWidget {
             style: Theme.of(context).textTheme.bodySmall?.copyWith(
                   fontSize: 14.sp,
                   color: Colors.black,
-                  fontWeight: FontWeight.w400,
+                  fontWeight: FontWeight.w600,
                 ),
           ),
           SizedBox(height: 5.w),
