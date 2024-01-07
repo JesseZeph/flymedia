@@ -39,7 +39,17 @@ class _SocialAuthState extends State<SocialAuth> {
         AppleGoogleButton(
           text: 'Join with Apple',
           imagePath: AppImages.apple,
-          onTap: () {},
+          onTap: () {
+            if (widget.isSignUp) {
+              context
+                  .read<SignUpNotifier>()
+                  .signUpWithApple(context, widget.userIsClient);
+            } else {
+              context
+                  .read<LoginNotifier>()
+                  .signInWithApple(context, widget.userIsClient);
+            }
+          },
         ),
       ],
     );
