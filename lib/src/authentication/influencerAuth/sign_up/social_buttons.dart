@@ -22,7 +22,7 @@ class _SocialAuthState extends State<SocialAuth> {
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         AppleGoogleButton(
-          text: widget.isSignUp ? 'Sign up with Google' : 'Sign in with Google',
+          text: widget.isSignUp ? 'Google sign up' : 'Google sign in',
           imagePath: AppImages.google,
           onTap: () {
             if (widget.isSignUp) {
@@ -37,7 +37,7 @@ class _SocialAuthState extends State<SocialAuth> {
           },
         ),
         AppleGoogleButton(
-          text: widget.isSignUp ? 'Sign up with Applw' : 'Sign in with Apple',
+          text: widget.isSignUp ? 'Apple sign up' : 'Apple sign in',
           imagePath: AppImages.apple,
           onTap: () {
             if (widget.isSignUp) {
