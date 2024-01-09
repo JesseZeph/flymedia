@@ -65,6 +65,32 @@ class AuthHelper {
     }
   }
 
+  static Future<bool> appleSignUp(Map<String, String> details) async {
+    try {
+      Map<String, String> requestHeaders = {
+        'Content-Type': 'application/json',
+      };
+
+      var url = Uri.https(Config.apiUrl, Config.signupApple);
+      var response =
+          await client.post(url, headers: requestHeaders, body: details);
+
+      if (response.statusCode == 201) {
+        SignupResponse signupResponse =
+            SignupResponse.fromJson(jsonDecode(response.body));
+
+        final SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('email', signupResponse.user!.email!);
+
+        return true;
+      } else {
+        return false;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+
   static Future<bool> verifyUserEmail(VerificationCode model) async {
     try {
       Map<String, String> requestHeaders = {

@@ -6,6 +6,7 @@ import 'package:crypto/crypto.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flymedia_app/models/requests/auth/verification_code.dart';
+import 'package:flymedia_app/services/config.dart';
 import 'package:flymedia_app/src/authentication/clientAuth/clientverification/userverificationsuccess.dart';
 import 'package:flymedia_app/src/authentication/influencerAuth/influencerverification/userverificationsuccess.dart';
 import 'package:flymedia_app/utils/extensions/context_extension.dart';
@@ -174,9 +175,9 @@ class SignUpNotifier extends ChangeNotifier {
   signUpWithApple(BuildContext context, bool isClient) async {
     _loader = !_loader;
     notifyListeners();
-    String clientID = 'com.example.app-demo-service';
+    String clientID = 'com.example.flymedia-service';
     String callbackUrl =
-        'https://hurricane-insidious-shock.glitch.me/callbacks/sign_with_apple';
+        'https://${Config.apiUrl}/callbacks/sign_in_with_apple';
 
     try {
       final rawNonce = generateNonce();

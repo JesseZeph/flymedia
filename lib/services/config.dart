@@ -3,6 +3,8 @@ class Config {
   // static const apiUrl = " localhost:6002";
 
   static const String signupUrl = "/api/register";
+  static const String signupApple = "/apple/sign_up_with_apple";
+  static const String appleCallback = "/apple/callbacks/sign_up_with_apple";
   static const String influencerSignup = "/api/register/influencer";
   static const String verifyEmail = "/api/verifyEmail";
   static const String login = "/api/login";
