@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/textstring.dart';
+import 'package:flymedia_app/controllers/login_provider.dart';
 import 'package:flymedia_app/src/authentication/components/animated_button.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/widgets/welcomeWidget.dart';
 import 'package:flymedia_app/utils/widgets/headings.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../constants/colors.dart';
@@ -24,6 +26,7 @@ class _ClientVerificationOnboardingState
   @override
   void initState() {
     super.initState();
+    context.read<LoginNotifier>().getPref();
     savePage();
   }
 
@@ -68,7 +71,7 @@ class _ClientVerificationOnboardingState
             child: Container(
               margin: EdgeInsets.only(left: 23.w),
               child: Text(
-                'Why Do You Need To Get Verified?',
+                'Why do you need to get verified?',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       color: AppColors.mainTextColor,
                       fontWeight: FontWeight.w700,

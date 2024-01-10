@@ -38,7 +38,7 @@ class UserVerificationSuccessful extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.only(top: 30.h),
                 child: const RoundedButtonWidget(
-                  title: 'Back to login',
+                  title: 'Back to log in',
                 ),
               ),
             )

@@ -32,12 +32,12 @@ class InfluencerVerifySuccess extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                Get.to(() => const InfluencerAuthView());
+                Get.offAll(() => const InfluencerAuthView());
               },
               child: Padding(
                 padding: EdgeInsets.only(top: 30.h),
                 child: const RoundedButtonWidget(
-                  title: 'Back to homepage',
+                  title: 'Back to log in',
                 ),
               ),
             )
