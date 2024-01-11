@@ -233,8 +233,8 @@ class _ChatPageState extends State<ChatPage> {
                           .isSender(context.read<LoginNotifier>().userId);
                       return Align(
                         alignment: isUserMsg
-                            ? Alignment.centerLeft
-                            : Alignment.centerRight,
+                            ? Alignment.centerRight
+                            : Alignment.centerLeft,
                         child: Container(
                           margin: EdgeInsets.symmetric(vertical: 10.h),
                           child: ChatMessageBox(

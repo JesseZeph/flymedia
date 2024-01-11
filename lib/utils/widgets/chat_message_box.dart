@@ -73,14 +73,14 @@ class _ChatMessageBoxState extends State<ChatMessageBox> {
       padding: const EdgeInsets.all(14).r,
       decoration: BoxDecoration(
         color: widget.isUserMessage
-            ? const Color(0xffF2F4F7)
-            : AppColors.mainColor,
+            ? AppColors.mainColor
+            : const Color(0xffF2F4F7),
         borderRadius: BorderRadius.only(
             bottomLeft: const Radius.circular(8),
             bottomRight: const Radius.circular(8),
-            topLeft:
-                widget.isUserMessage ? Radius.zero : const Radius.circular(8),
             topRight:
+                widget.isUserMessage ? Radius.zero : const Radius.circular(8),
+            topLeft:
                 widget.isUserMessage ? const Radius.circular(8) : Radius.zero),
       ),
       child: SizedBox(
@@ -128,7 +128,7 @@ class _ChatMessageBoxState extends State<ChatMessageBox> {
                         align: TextAlign.start,
                         weight: FontWeight.w400,
                         color:
-                            widget.isUserMessage ? Colors.black : Colors.white,
+                            widget.isUserMessage ? Colors.white : Colors.black,
                         size: 14,
                       )),
                       // widget.message.justUploaded(lastUploadTime ?? 0) &&
@@ -158,7 +158,7 @@ class _ChatMessageBoxState extends State<ChatMessageBox> {
                 text: widget.message.text ?? '',
                 align: TextAlign.start,
                 weight: FontWeight.w400,
-                color: widget.isUserMessage ? Colors.black : Colors.white,
+                color: widget.isUserMessage ? Colors.white : Colors.black,
                 size: 14,
               ),
       ),

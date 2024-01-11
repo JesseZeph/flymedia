@@ -20,16 +20,16 @@ class _ClientHelpState extends State<ClientHelp> {
   Widget build(BuildContext context) {
     var loginNotifier = Provider.of<LoginNotifier>(context);
     const String selectedUrl =
-        'https://tawk.to/chat/64edcd25b2d3e13950ecb7b6/1hhf0ig3c';
+        'https://tawk.to/chat/659fbf338d261e1b5f51dc71/1hjs05p1h';
 
     return loginNotifier.loggedIn == false
         ? ModalWidget(context: context)
-        : Scaffold(
-            appBar: AppBar(
-              backgroundColor: Colors.white,
-            ),
-            body: Center(
-              child: _buildWebView(selectedUrl),
+        : SafeArea(
+            top: true,
+            child: Scaffold(
+              body: Center(
+                child: _buildWebView(selectedUrl),
+              ),
             ),
           );
   }
