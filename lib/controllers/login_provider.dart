@@ -1,4 +1,5 @@
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flymedia_app/services/helpers/auth_helper.dart';
 import 'package:flymedia_app/utils/apple_auth_handler.dart';
@@ -17,6 +18,7 @@ import '../src/clientdashboard/screens/verificationScreen.dart';
 import '../src/influencerDashboard/influencerHomepage.dart';
 
 class LoginNotifier extends ChangeNotifier {
+  final auth = FirebaseAuth.instance;
   bool _obscureText = true;
   bool _loader = false;
   bool _entrypoint = false;
@@ -249,10 +251,9 @@ class LoginNotifier extends ChangeNotifier {
 
   logout() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-    var googleSignIn = GoogleSignIn();
+    auth.signOut();
     await prefs.clear();
     await prefs.setBool('loggedIn', false);
     await prefs.setInt('selectedContainer', 3);
-    googleSignIn.signOut();
   }
 }

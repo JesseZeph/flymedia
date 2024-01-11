@@ -1,6 +1,7 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flymedia_app/models/requests/auth/verification_code.dart';
 import 'package:flymedia_app/src/authentication/clientAuth/clientverification/userverificationsuccess.dart';
@@ -18,6 +19,7 @@ import '../src/authentication/influencerAuth/influencerverification/verifyemaila
 
 class SignUpNotifier extends ChangeNotifier {
   bool _obscureText = true;
+  final auth = FirebaseAuth.instance;
   bool get obscureText => _obscureText;
   set obscureText(bool newState) {
     _obscureText = newState;
@@ -58,8 +60,13 @@ class SignUpNotifier extends ChangeNotifier {
     }
 
     bool wasSuccessful = false;
-    await AuthHelper.signUp(model).then((response) {
+    await AuthHelper.signUp(model).then((response) async {
       wasSuccessful = response;
+      if (wasSuccessful) {
+        var originalModel = signupModelFromJson(model);
+        await auth.createUserWithEmailAndPassword(
+            email: originalModel.email, password: originalModel.password);
+      }
     });
     if (notSocialAuth) {
       _loader = !_loader;
@@ -75,8 +82,13 @@ class SignUpNotifier extends ChangeNotifier {
       notifyListeners();
     }
     bool wasSuccessful = false;
-    await AuthHelper.influenerRegister(model).then((response) {
+    await AuthHelper.influenerRegister(model).then((response) async {
       wasSuccessful = response;
+      if (wasSuccessful) {
+        var originalModel = signupModelFromJson(model);
+        await auth.createUserWithEmailAndPassword(
+            email: originalModel.email, password: originalModel.password);
+      }
     });
     if (notSocialAuth) {
       _loader = !_loader;
