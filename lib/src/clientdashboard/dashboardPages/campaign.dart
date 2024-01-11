@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/colors.dart';
 import 'package:flymedia_app/controllers/login_provider.dart';
-import 'package:flymedia_app/src/clientdashboard/screens/companyDetails.dart';
+import 'package:flymedia_app/src/clientdashboard/screens/company_details.dart';
 import 'package:flymedia_app/utils/widgets/archery_refresh.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +13,7 @@ import '../../../controllers/campaign_provider.dart';
 import '../../../models/response/campaign_upload_response.dart';
 import '../screens/view_campaign.dart';
 import '../screens/widgets/appbar.dart';
-import '../screens/widgets/welcomeWidget.dart';
+import '../screens/widgets/welcome_widget.dart';
 
 class Campaign extends StatefulWidget {
   const Campaign({Key? key}) : super(key: key);

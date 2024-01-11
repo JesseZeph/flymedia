@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/colors.dart';
-import 'package:flymedia_app/constants/imageStrings.dart';
+import 'package:flymedia_app/constants/image_strings.dart';
 import 'package:flymedia_app/src/onboardingscreen/onboardpages/thirdpage.dart';
 
 import '../../../constants/textstring.dart';
@@ -138,7 +138,6 @@ class SecondOnboard extends StatelessWidget {
                     ),
                   ),
                 ),
-                //TODO: you overflow here on a smaller screen size, you could fix it
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,

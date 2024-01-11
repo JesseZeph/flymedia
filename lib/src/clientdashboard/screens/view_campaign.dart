@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/controllers/campaign_provider.dart';
 import 'package:flymedia_app/models/response/campaign_upload_response.dart';
-import 'package:flymedia_app/src/clientdashboard/screens/previewListing.dart';
+import 'package:flymedia_app/src/clientdashboard/screens/preview_listing.dart';
 import 'package:flymedia_app/src/search/widget/custom_field.dart';
 import 'package:flymedia_app/utils/extensions/context_extension.dart';
 import 'package:flymedia_app/utils/extensions/string_extensions.dart';

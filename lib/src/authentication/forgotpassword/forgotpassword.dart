@@ -43,7 +43,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
             children: [
               Container(
                 margin: EdgeInsets.only(top: 60.h),
-                child: HeadingAndSubText(
+                child: const HeadingAndSubText(
                   heading: AppTexts.forgotPasswordHeader,
                   subText: AppTexts.forgotPasswordSubText,
                 ),

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -13,9 +15,9 @@ import '../models/requests/auth/influencer_login_model.dart';
 import '../models/requests/auth/login_model.dart';
 import '../src/authentication/clientAuth/clientverification/useremailverification.dart';
 import '../src/authentication/influencerAuth/influencerverification/useremailverification.dart';
-import '../src/clientdashboard/clientHomepage.dart';
-import '../src/clientdashboard/screens/verificationScreen.dart';
-import '../src/influencerDashboard/influencerHomepage.dart';
+import '../src/clientdashboard/client_home_page.dart';
+import '../src/clientdashboard/screens/verification_screen.dart';
+import '../src/influencerDashboard/influencer_homepage.dart';
 
 class LoginNotifier extends ChangeNotifier {
   final auth = FirebaseAuth.instance;

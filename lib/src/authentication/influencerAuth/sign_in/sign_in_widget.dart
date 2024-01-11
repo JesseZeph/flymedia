@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/controllers/login_provider.dart';
 import 'package:flymedia_app/models/requests/auth/influencer_login_model.dart';
 import 'package:flymedia_app/src/authentication/components/text_input_field.dart';
+import 'package:flymedia_app/utils/extensions/context_extension.dart';
 import 'package:flymedia_app/utils/widgets/divider.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -10,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../constants/textstring.dart';
 import '../../../../utils/widgets/headings.dart';
-import '../../../influencerDashboard/influencerHomepage.dart';
+import '../../../influencerDashboard/influencer_homepage.dart';
 import '../../components/loadingerror.dart';
 import '../influencerverification/useremailverification.dart';
 import '../sign_up/social_buttons.dart';
@@ -44,7 +45,7 @@ class _InfluencerSignInState extends State<InfluencerSignIn> {
           children: [
             Container(
               margin: EdgeInsets.only(top: 50.h, bottom: 32.h),
-              child: HeadingAndSubText(
+              child: const HeadingAndSubText(
                 heading: AppTexts.welcomeBackHeader,
                 subText: AppTexts.welcomeBackSubText,
               ),
@@ -152,36 +153,4 @@ class EmailFieldLogin extends StatelessWidget {
 //NOTE: GOOD!
 void loader(BuildContext context) {
   LoadingSheet.show(context);
-}
-
-//TODO: place them in proper files sha
-//NOTE: just a simple scaffold for error ui state
-extension SnackbarExtension on BuildContext {
-  void _showSnackBar(
-    String message, {
-    Color? color,
-  }) {
-    ScaffoldMessenger.of(this).showSnackBar(
-      SnackBar(
-        content: Text(
-          message,
-        ),
-        backgroundColor: color,
-      ),
-    );
-  }
-
-  void showError(String message) {
-    _showSnackBar(
-      message,
-      color: Colors.red,
-    );
-  }
-
-  void showSuccess(String message) {
-    _showSnackBar(
-      message,
-      color: Colors.green,
-    );
-  }
 }

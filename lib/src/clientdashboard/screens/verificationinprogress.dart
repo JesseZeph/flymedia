@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/colors.dart';
 import 'package:flymedia_app/constants/textstring.dart';
 import 'package:flymedia_app/services/helpers/applications_helper.dart';
-import 'package:flymedia_app/src/clientdashboard/clientHomepage.dart';
+import 'package:flymedia_app/src/clientdashboard/client_home_page.dart';
 import 'package:flymedia_app/utils/extensions/context_extension.dart';
 import 'package:flymedia_app/utils/widgets/alert_loader.dart';
 import 'package:get/get.dart';
@@ -11,7 +11,7 @@ import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../../../constants/imageStrings.dart';
+import '../../../constants/image_strings.dart';
 
 class VerificationInProgress extends StatefulWidget {
   const VerificationInProgress({super.key, this.shouldValidateCompany = false});

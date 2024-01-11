@@ -5,7 +5,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/controllers/campaign_provider.dart';
 import 'package:flymedia_app/models/requests/campaign/campain_upload.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/widgets/appbar.dart';
-import 'package:flymedia_app/src/clientdashboard/screens/widgets/flyButton.dart';
+import 'package:flymedia_app/src/clientdashboard/screens/widgets/fly_button.dart';
 import 'package:flymedia_app/utils/extensions/context_extension.dart';
 import 'package:flymedia_app/utils/extensions/string_extensions.dart';
 import 'package:flymedia_app/utils/widgets/alert_loader.dart';
@@ -16,7 +16,7 @@ import 'package:provider/provider.dart';
 import '../../../constants/colors.dart';
 import '../../../controllers/login_provider.dart';
 import '../../../utils/widgets/headings.dart';
-import 'campaignLive.dart';
+import 'campaign_live.dart';
 
 class PreviewListing extends StatelessWidget {
   const PreviewListing({super.key, required this.campaignDetails});

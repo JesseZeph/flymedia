@@ -50,12 +50,8 @@ class _ClientHelpState extends State<ClientHelp> {
           name: '${name.split(' ').first},',
           email: email,
         ),
-        onLoad: () {
-          print('Hello Tawk!');
-        },
-        onLinkTap: (String url) {
-          print(url);
-        },
+        onLoad: () {},
+        onLinkTap: (String url) {},
         placeholder: const Center(
           child: Text('Loading...'),
         ),

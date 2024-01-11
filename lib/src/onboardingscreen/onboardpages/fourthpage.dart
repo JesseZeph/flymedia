@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/colors.dart';
-import 'package:flymedia_app/constants/imageStrings.dart';
+import 'package:flymedia_app/constants/image_strings.dart';
 import 'package:flymedia_app/src/accountoption/view.dart';
 
 import '../../../constants/textstring.dart';
@@ -116,7 +116,7 @@ class FourthOnboard extends StatelessWidget {
               child: Container(
                 width: 325.w,
                 margin: EdgeInsets.only(top: 470.h, left: 15.w),
-                child: HeadingAndSubText(
+                child: const HeadingAndSubText(
                   heading: AppTexts.connectHeader,
                   subText: AppTexts.connectSubText,
                 ),

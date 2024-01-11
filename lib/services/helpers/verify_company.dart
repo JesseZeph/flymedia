@@ -12,7 +12,6 @@ class VerifyCompanyHelper {
       String? token = prefs.getString('token');
 
       if (token == null) {
-        print("Token is missing or empty");
         return false;
       }
 
@@ -29,11 +28,9 @@ class VerifyCompanyHelper {
       if (response.statusCode == 200) {
         return true;
       } else {
-        print("Verification failed with status code: ${response.statusCode}");
         return false;
       }
     } catch (e) {
-      print("Error during verification: $e");
       return false;
     }
   }

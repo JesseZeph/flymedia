@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/colors.dart';
 import 'package:flymedia_app/constants/textstring.dart';
 import 'package:flymedia_app/src/authentication/clientAuth/authenticationview.dart';
-import 'package:flymedia_app/src/authentication/influencerAuth/influencerView.dart';
+import 'package:flymedia_app/src/authentication/influencerAuth/influencer_view.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,10 +13,10 @@ class AccountOption extends StatefulWidget {
   const AccountOption({Key? key}) : super(key: key);
 
   @override
-  _AccountOptionState createState() => _AccountOptionState();
+  AccountOptionState createState() => AccountOptionState();
 }
 
-class _AccountOptionState extends State<AccountOption> {
+class AccountOptionState extends State<AccountOption> {
   int selectedContainer = 0;
 
   void saveSelectedContainer() async {
@@ -33,7 +33,7 @@ class _AccountOptionState extends State<AccountOption> {
             Container(
               width: 300.w,
               margin: EdgeInsets.only(top: 50.h, bottom: 20.h),
-              child: HeadingAndSubText(
+              child: const HeadingAndSubText(
                 heading: AppTexts.pathText,
                 subText: AppTexts.pathSubText,
               ),

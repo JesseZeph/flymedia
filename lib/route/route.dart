@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flymedia_app/src/authentication/forgotpassword/screens/checkemail.dart';
-import 'package:flymedia_app/src/authentication/forgotpassword/screens/resetPassword.dart';
-import 'package:flymedia_app/src/authentication/forgotpassword/screens/verifyEmail.dart';
-import 'package:flymedia_app/src/clientdashboard/clientHomepage.dart';
+import 'package:flymedia_app/src/authentication/forgotpassword/screens/reset_password.dart';
+import 'package:flymedia_app/src/authentication/forgotpassword/screens/verify_email.dart';
+import 'package:flymedia_app/src/clientdashboard/client_home_page.dart';
 import 'package:flymedia_app/src/influencerDashboard/dashboardPages/profile.dart';
-import 'package:flymedia_app/src/influencerDashboard/influencerHomepage.dart';
+import 'package:flymedia_app/src/influencerDashboard/influencer_homepage.dart';
 
 import '../src/accountoption/view.dart';
 import '../src/authentication/clientAuth/authenticationview.dart';
 import '../src/authentication/forgotpassword/forgotpassword.dart';
-import '../src/clientdashboard/screens/verificationScreen.dart';
+import '../src/clientdashboard/screens/verification_screen.dart';
 import '../src/onboardingscreen/onboarding.dart';
 import '../src/onboardingscreen/onboardpages/fourthpage.dart';
 import '../src/onboardingscreen/onboardpages/secondpage.dart';

@@ -3,7 +3,7 @@ import 'package:flymedia_app/controllers/login_provider.dart';
 import 'package:flymedia_app/controllers/signup_provider.dart';
 import 'package:provider/provider.dart';
 
-import '../../../../constants/imageStrings.dart';
+import '../../../../constants/image_strings.dart';
 import '../../../../utils/widgets/social_auth_buttons.dart';
 
 class SocialAuth extends StatefulWidget {

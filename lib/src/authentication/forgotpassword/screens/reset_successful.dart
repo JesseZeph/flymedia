@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/route/route.dart';
-import 'package:flymedia_app/src/clientdashboard/clientHomepage.dart';
-import 'package:flymedia_app/src/influencerDashboard/influencerHomepage.dart';
+import 'package:flymedia_app/src/clientdashboard/client_home_page.dart';
+import 'package:flymedia_app/src/influencerDashboard/influencer_homepage.dart';
 
 import '../../components/roundedbutton.dart';
 import 'checkemail.dart';

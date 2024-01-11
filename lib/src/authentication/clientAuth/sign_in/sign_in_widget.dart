@@ -4,7 +4,7 @@ import 'package:flymedia_app/controllers/login_provider.dart';
 import 'package:flymedia_app/models/requests/auth/login_model.dart';
 import 'package:flymedia_app/src/authentication/clientAuth/clientverification/useremailverification.dart';
 import 'package:flymedia_app/src/authentication/components/text_input_field.dart';
-import 'package:flymedia_app/src/clientdashboard/clientHomepage.dart';
+import 'package:flymedia_app/src/clientdashboard/client_home_page.dart';
 import 'package:flymedia_app/utils/extensions/context_extension.dart';
 import 'package:flymedia_app/utils/widgets/divider.dart';
 import 'package:get/get.dart';
@@ -13,7 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../constants/textstring.dart';
 import '../../../../utils/widgets/headings.dart';
-import '../../../clientdashboard/screens/verificationScreen.dart';
+import '../../../clientdashboard/screens/verification_screen.dart';
 import '../../components/loadingerror.dart';
 import '../sign_up/social_buttons.dart';
 import 'button.dart';
@@ -47,7 +47,7 @@ class _SignInWidgetState extends State<SignInWidget> {
           children: [
             Container(
               margin: EdgeInsets.only(top: 50.h, bottom: 32.h),
-              child: HeadingAndSubText(
+              child: const HeadingAndSubText(
                 heading: AppTexts.welcomeBackHeader,
                 subText: AppTexts.welcomeBackSubText,
               ),

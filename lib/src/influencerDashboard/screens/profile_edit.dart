@@ -13,9 +13,9 @@ import '../../../route/route.dart';
 import '../../../utils/widgets/subheadings.dart';
 import '../../authentication/components/text_input_field.dart';
 import '../../clientdashboard/screens/widgets/country_dropdown.dart';
-import '../../clientdashboard/screens/widgets/customTextField.dart';
-import '../../clientdashboard/screens/widgets/flyButton.dart';
-import '../../clientdashboard/screens/widgets/salaryInput.dart';
+import '../../clientdashboard/screens/widgets/custom_text_field.dart';
+import '../../clientdashboard/screens/widgets/fly_button.dart';
+import '../../clientdashboard/screens/widgets/salary_input.dart';
 
 class EditProfile extends StatefulWidget {
   const EditProfile({super.key, required this.profile});
@@ -421,7 +421,7 @@ class _ProfilePageState extends State<EditProfile> {
                                       profileLink: profileLinkCtrl.text,
                                       bio: bioCtrl.text),
                                   hasFile,
-                                  false)
+                                  widget.profile != null)
                               .then((resp) {
                             if (resp.first) {
                               context.showSuccess(resp.last);

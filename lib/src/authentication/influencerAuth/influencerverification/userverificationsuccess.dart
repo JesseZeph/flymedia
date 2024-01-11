@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/src/authentication/forgotpassword/screens/checkemail.dart';
-import 'package:flymedia_app/src/authentication/influencerAuth/influencerView.dart';
+import 'package:flymedia_app/src/authentication/influencerAuth/influencer_view.dart';
 import 'package:get/get.dart';
 
 import '../../components/roundedbutton.dart';

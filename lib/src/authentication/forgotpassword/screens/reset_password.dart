@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/services/helpers/forgot_password_helper.dart';
 import 'package:flymedia_app/src/authentication/components/text_input_field.dart';
-import 'package:flymedia_app/src/authentication/forgotpassword/screens/resetSuccessful.dart';
+import 'package:flymedia_app/src/authentication/forgotpassword/screens/reset_successful.dart';
 import 'package:flymedia_app/utils/extensions/context_extension.dart';
 import 'package:flymedia_app/utils/widgets/alert_loader.dart';
 import 'package:flymedia_app/utils/widgets/headings.dart';
@@ -41,7 +41,7 @@ class _ResetPasswordState extends State<ResetPassword> {
             children: [
               Container(
                 margin: EdgeInsets.only(top: 60.h),
-                child: HeadingAndSubText(
+                child: const HeadingAndSubText(
                     heading: 'Reset Password',
                     subText: 'Enter your new password.'),
               ),

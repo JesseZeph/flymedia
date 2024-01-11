@@ -6,7 +6,7 @@ import '../../constants/colors.dart';
 class HeadingAndSubText extends StatelessWidget {
   final String heading;
   final String subText;
-  HeadingAndSubText({
+  const HeadingAndSubText({
     super.key,
     required this.heading,
     required this.subText,

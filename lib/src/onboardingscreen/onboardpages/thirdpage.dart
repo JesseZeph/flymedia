@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:flymedia_app/constants/colors.dart';
-import 'package:flymedia_app/constants/imageStrings.dart';
+import 'package:flymedia_app/constants/image_strings.dart';
 import 'package:flymedia_app/src/onboardingscreen/onboardpages/fourthpage.dart';
 
 import '../../../constants/textstring.dart';
@@ -100,7 +100,7 @@ class ThirdOnboard extends StatelessWidget {
               child: Container(
                 width: 325.w,
                 margin: EdgeInsets.only(top: 470.h, left: 15.w),
-                child: HeadingAndSubText(
+                child: const HeadingAndSubText(
                   heading: AppTexts.colabText,
                   subText: AppTexts.colabSubText,
                 ),

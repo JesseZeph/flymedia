@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import '../../../../constants/colors.dart';
-import 'characterCount.dart';
+import 'character_count.dart';
 
 class CustomInputField extends StatelessWidget {
   final int maxLines;

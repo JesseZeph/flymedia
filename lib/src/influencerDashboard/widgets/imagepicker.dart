@@ -21,10 +21,10 @@ class ProfilePicturePicker extends StatefulWidget {
   final String? imageUrl;
 
   @override
-  _ProfilePicturePickerState createState() => _ProfilePicturePickerState();
+  ProfilePicturePickerState createState() => ProfilePicturePickerState();
 }
 
-class _ProfilePicturePickerState extends State<ProfilePicturePicker> {
+class ProfilePicturePickerState extends State<ProfilePicturePicker> {
   String? _image;
   late bool isEdits;
 

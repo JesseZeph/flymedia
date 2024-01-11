@@ -38,6 +38,7 @@ class ProfileHelper {
       String userId, Map<String, String> details, bool hasFile,
       {bool isPutRequest = false}) async {
     var prefs = await SharedPreferences.getInstance();
+
     try {
       if (hasFile) {
         File file = File(details['imageURL'] ?? '');
@@ -66,7 +67,7 @@ class ProfileHelper {
         final response = await http
             .put(
                 Uri.https(Config.apiUrl,
-                    '${Config.influencerProfile}${details['id'] ?? ''}'),
+                    '${Config.influencerProfile}${details['_id']}'),
                 headers: await getHeaders(),
                 body: details)
             .timeout(
@@ -79,7 +80,6 @@ class ProfileHelper {
         } else if (response.statusCode == 504) {
           return [false, 'Network Timeout'];
         }
-
         var decodedResponse = jsonDecode(response.body);
         return [decodedResponse['success'], decodedResponse['message']];
       }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/controllers/login_provider.dart';
 import 'package:flymedia_app/route/route.dart';
@@ -23,25 +22,25 @@ class FlyAppBar extends StatelessWidget {
           child: PopupMenuButton<String>(
             icon: const Icon(Icons.menu),
             onSelected: (value) {
-              if (value == 'profile') {
-                //TODO Handle profile action
-              } else if (value == 'logout') {
+              // if (value == 'profile') {
+              // } else
+              if (value == 'logout') {
                 _showLogoutDialog(context);
               }
             },
             itemBuilder: (BuildContext context) {
               return [
-                PopupMenuItem<String>(
-                  value: 'profile',
-                  child: ListTile(
-                    leading: const Icon(Icons.person),
-                    title: Text('Profile',
-                        style: Theme.of(context)
-                            .textTheme
-                            .bodySmall
-                            ?.copyWith(fontSize: 12.sp)),
-                  ),
-                ),
+                // PopupMenuItem<String>(
+                //   value: 'profile',
+                //   child: ListTile(
+                //     leading: const Icon(Icons.person),
+                //     title: Text('Profile',
+                //         style: Theme.of(context)
+                //             .textTheme
+                //             .bodySmall
+                //             ?.copyWith(fontSize: 12.sp)),
+                //   ),
+                // ),
                 PopupMenuItem<String>(
                   value: 'logout',
                   child: ListTile(

@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -5,7 +7,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/colors.dart';
 import 'package:flymedia_app/controllers/chat_provider.dart';
 import 'package:flymedia_app/models/chats/chats_messages.dart';
-import 'package:flymedia_app/src/authentication/influencerAuth/sign_in/sign_in_widget.dart';
+import 'package:flymedia_app/utils/extensions/context_extension.dart';
 import 'package:flymedia_app/utils/widgets/custom_text.dart';
 // import 'package:path_provider/path_provider.dart';
 import 'package:background_downloader/background_downloader.dart';

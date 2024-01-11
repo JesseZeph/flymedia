@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/textstring.dart';
 import 'package:flymedia_app/controllers/login_provider.dart';
 import 'package:flymedia_app/src/authentication/components/animated_button.dart';
-import 'package:flymedia_app/src/clientdashboard/screens/widgets/welcomeWidget.dart';
+import 'package:flymedia_app/src/clientdashboard/screens/widgets/welcome_widget.dart';
 import 'package:flymedia_app/utils/widgets/headings.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -45,7 +45,7 @@ class _ClientVerificationOnboardingState
             subText: 'Welcome to Flymedia!',
           ),
           SizedBox(height: 20.h),
-          HeadingAndSubText(
+          const HeadingAndSubText(
             heading: AppTexts.verificationHeader,
             subText: AppTexts.verificationSubText,
           ),

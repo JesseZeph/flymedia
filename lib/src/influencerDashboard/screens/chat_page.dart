@@ -1,3 +1,5 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:io';
 
 import 'package:background_downloader/background_downloader.dart';
@@ -70,7 +72,6 @@ class _ChatPageState extends State<ChatPage> {
     if (hasPickedFile) {
       var downloadUrl = await context.read<ChatProvider>().uploadFileToStorage(
           filePicked ?? File(''), msg.clientId, msg.influencerId);
-      print("============> download url: $downloadUrl =========>");
       msg.downloadUrl = downloadUrl;
       filePicked = null;
       hasPickedFile = false;

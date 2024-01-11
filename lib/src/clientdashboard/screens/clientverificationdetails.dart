@@ -69,7 +69,7 @@ class _ClientVerificationDetailsState extends State<ClientVerificationDetails> {
             children: [
               Container(
                 margin: EdgeInsets.only(top: 30.h, bottom: 30.h),
-                child: HeadingAndSubText(
+                child: const HeadingAndSubText(
                   heading: 'Company Details',
                   subText: "Fill in your company details to be verified.",
                 ),

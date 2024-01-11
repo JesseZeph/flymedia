@@ -12,7 +12,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../../../constants/colors.dart';
 import '../../../controllers/profile_provider.dart';
 import '../../clientdashboard/screens/widgets/appbar.dart';
-import '../../clientdashboard/screens/widgets/welcomeWidget.dart';
+import '../../clientdashboard/screens/widgets/welcome_widget.dart';
 import '../screens/campaignlisting.dart';
 import '../screens/profile_edit.dart';
 

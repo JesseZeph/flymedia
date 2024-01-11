@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/controllers/profile_provider.dart';
 import 'package:flymedia_app/services/helpers/applications_helper.dart';
 import 'package:flymedia_app/src/authentication/components/animated_button.dart';
-import 'package:flymedia_app/src/clientdashboard/screens/previewListing.dart';
+import 'package:flymedia_app/src/clientdashboard/screens/preview_listing.dart';
 import 'package:flymedia_app/utils/extensions/context_extension.dart';
 import 'package:flymedia_app/utils/extensions/string_extensions.dart';
 import 'package:flymedia_app/utils/widgets/alert_loader.dart';

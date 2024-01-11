@@ -68,10 +68,7 @@ class _CheckWidgetState extends State<CheckWidget> {
                         .textTheme
                         .bodySmall
                         ?.copyWith(fontSize: 11, color: AppColors.mainColor),
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        print("Tap gesture");
-                      },
+                    recognizer: TapGestureRecognizer()..onTap = () {},
                   ),
                   TextSpan(
                     text: " and ",
@@ -86,10 +83,7 @@ class _CheckWidgetState extends State<CheckWidget> {
                         .textTheme
                         .bodySmall
                         ?.copyWith(fontSize: 11, color: AppColors.mainColor),
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () {
-                        print("Tap gesture");
-                      },
+                    recognizer: TapGestureRecognizer()..onTap = () {},
                   ),
                 ],
               ),

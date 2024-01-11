@@ -10,10 +10,10 @@ class RadioButtonsTile extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _RadioButtonsTileState createState() => _RadioButtonsTileState();
+  RadioButtonsTileState createState() => RadioButtonsTileState();
 }
 
-class _RadioButtonsTileState extends State<RadioButtonsTile> {
+class RadioButtonsTileState extends State<RadioButtonsTile> {
   int? _radioValue; // To keep track of the selected radio button value
 
   @override
