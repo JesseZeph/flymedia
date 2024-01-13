@@ -93,6 +93,9 @@ class _SignUpState extends State<SignUp> {
           } else if (!agreedToTerms) {
             context.showError('Agree to Terms of Service.');
             return;
+          } else if (password.text.length < 6) {
+            context.showError('Password should be at least 6 characters.');
+            return;
           }
           SignupModel model = SignupModel(
               fullname: fullname.text,

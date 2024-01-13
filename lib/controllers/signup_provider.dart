@@ -1,9 +1,9 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flymedia_app/models/requests/auth/verification_code.dart';
+import 'package:flymedia_app/services/firebase/auth_helper.dart';
 import 'package:flymedia_app/src/authentication/clientAuth/clientverification/userverificationsuccess.dart';
 import 'package:flymedia_app/src/authentication/influencerAuth/influencerverification/userverificationsuccess.dart';
 import 'package:flymedia_app/utils/apple_auth_handler.dart';
@@ -19,7 +19,7 @@ import '../src/authentication/influencerAuth/influencerverification/verifyemaila
 
 class SignUpNotifier extends ChangeNotifier {
   bool _obscureText = true;
-  final auth = FirebaseAuth.instance;
+  final auth = FirebaseAuthHelper();
   bool get obscureText => _obscureText;
   set obscureText(bool newState) {
     _obscureText = newState;
@@ -64,7 +64,7 @@ class SignUpNotifier extends ChangeNotifier {
       wasSuccessful = response;
       if (wasSuccessful) {
         var originalModel = signupModelFromJson(model);
-        await auth.createUserWithEmailAndPassword(
+        await auth.signUp(
             email: originalModel.email, password: originalModel.password);
       }
     });
@@ -86,7 +86,7 @@ class SignUpNotifier extends ChangeNotifier {
       wasSuccessful = response;
       if (wasSuccessful) {
         var originalModel = signupModelFromJson(model);
-        await auth.createUserWithEmailAndPassword(
+        await auth.signIn(
             email: originalModel.email, password: originalModel.password);
       }
     });

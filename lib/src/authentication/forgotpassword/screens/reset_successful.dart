@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/route/route.dart';
-import 'package:flymedia_app/src/clientdashboard/client_home_page.dart';
-import 'package:flymedia_app/src/influencerDashboard/influencer_homepage.dart';
+import 'package:flymedia_app/src/authentication/clientAuth/authenticationview.dart';
+import 'package:flymedia_app/src/authentication/influencerAuth/influencer_view.dart';
 
 import '../../components/roundedbutton.dart';
 import 'checkemail.dart';
@@ -33,15 +33,10 @@ class ResetSuccessful extends StatelessWidget {
             GestureDetector(
               onTap: () {
                 if (isInfluencer) {
-                  pushToAndClearStack(context, const InfluencerHomePage());
+                  pushToAndClearStack(context, const InfluencerAuthView());
                 } else {
-                  pushToAndClearStack(context, const ClientHomePage());
+                  pushToAndClearStack(context, const AuthenticationView());
                 }
-                // Navigator.of(context).push(
-                //   MaterialPageRoute(
-                //     builder: (context) => const ClientHomePage(),
-                //   ),
-                // );
               },
               child: Padding(
                 padding: EdgeInsets.only(top: 30.h),

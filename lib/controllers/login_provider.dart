@@ -1,8 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flymedia_app/services/firebase/auth_helper.dart';
 import 'package:flymedia_app/services/helpers/auth_helper.dart';
 import 'package:flymedia_app/utils/apple_auth_handler.dart';
 import 'package:flymedia_app/utils/extensions/context_extension.dart';
@@ -20,7 +20,7 @@ import '../src/clientdashboard/screens/verification_screen.dart';
 import '../src/influencerDashboard/influencer_homepage.dart';
 
 class LoginNotifier extends ChangeNotifier {
-  final auth = FirebaseAuth.instance;
+  final auth = FirebaseAuthHelper();
   bool _obscureText = true;
   bool _loader = false;
   bool _entrypoint = false;
@@ -69,8 +69,13 @@ class LoginNotifier extends ChangeNotifier {
     }
     List<dynamic> wasSuccessful = [false];
     await AuthHelper.login(model).then(
-      (response) {
+      (response) async {
         wasSuccessful = response;
+        if (wasSuccessful.first) {
+          var originalModel = loginModelFromJson(model);
+          await auth.signIn(
+              email: originalModel.email, password: originalModel.password);
+        }
       },
     );
     if (notSocialAuth) {
@@ -88,8 +93,13 @@ class LoginNotifier extends ChangeNotifier {
     }
     List<dynamic> wasSuccessful = [false];
     await AuthHelper.influencersLogin(model).then(
-      (response) {
+      (response) async {
         wasSuccessful = response;
+        if (wasSuccessful.first) {
+          var originalModel = influencerLoginModelFromJson(model);
+          await auth.signIn(
+              email: originalModel.email, password: originalModel.password);
+        }
       },
     );
     if (notSocialAuth) {
@@ -189,16 +199,6 @@ class LoginNotifier extends ChangeNotifier {
       prefs.setString('apple_userId', jwt.payload["sub"]);
       prefs.setString('apple_mail', jwt.payload["email"]);
       prefs.setString('apple_idToken', appleCredential.identityToken ?? '');
-
-      // final AuthCredential appleAuthCredential =
-      //     OAuthProvider('apple.com').credential(
-      //   idToken: appleCredential.identityToken,
-      //   rawNonce: Platform.isIOS ? rawNonce : null,
-      //   accessToken: Platform.isIOS ? null : appleCredential.authorizationCode,
-      // );
-      // UserCredential userCredential =
-      //     await FirebaseAuth.instance.signInWithCredential(appleAuthCredential);
-
       if (isClient) {
         LoginModel model = LoginModel(
             email: '${prefs.getString('apple_mail')}',

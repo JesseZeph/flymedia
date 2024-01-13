@@ -11,7 +11,6 @@ class ForgotPasswordHelper extends ChangeNotifier {
   bool _isloading = false;
   bool get isloading => _isloading;
   String? recoveryMail;
-
   String? get mail => recoveryMail;
   set recoverMail(String? mail) {
     recoveryMail = mail;
@@ -90,13 +89,14 @@ class ForgotPasswordHelper extends ChangeNotifier {
     _isloading = !_isloading;
     notifyListeners();
     String userType = '';
+    String? respMessage;
     try {
       final response = await http.patch(
           Uri.https(Config.apiUrl, Config.resetPassword),
           body: {"email": recoveryMail, "newPassword": newPassword});
 
       final decodedResponse = jsonDecode(response.body);
-
+      respMessage = decodedResponse['message'];
       if (response.statusCode == 200) {
         userType = decodedResponse['userType'];
         int container = decodedResponse['userType'] == 'Influencer' ? 2 : 1;
@@ -114,7 +114,7 @@ class ForgotPasswordHelper extends ChangeNotifier {
       notifyListeners();
       return [
         response.statusCode == 200,
-        decodedResponse['message'],
+        respMessage,
         userType == 'Influencer'
       ];
     } catch (e, s) {
@@ -123,6 +123,10 @@ class ForgotPasswordHelper extends ChangeNotifier {
     }
     _isloading = !_isloading;
     notifyListeners();
-    return [false, 'An error occured.', userType == 'Influencer'];
+    return [
+      false,
+      respMessage ?? 'An error occured.',
+      userType == 'Influencer'
+    ];
   }
 }

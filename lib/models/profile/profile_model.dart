@@ -69,8 +69,8 @@ class ProfileModel {
       'email': email ?? '',
       'tikTokLink': profileLink ?? '',
       'bio': bio ?? '',
-      // 'niches': niches.toString()
-      ...{for (var element in niches ?? []) 'niches[]': element}
+      'niches': niches?.join(",") ?? ''
+      // ...{for (var element in niches ?? []) 'niches[]': element}
     };
   }
 
