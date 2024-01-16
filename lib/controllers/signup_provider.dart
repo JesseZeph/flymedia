@@ -86,7 +86,7 @@ class SignUpNotifier extends ChangeNotifier {
       wasSuccessful = response;
       if (wasSuccessful) {
         var originalModel = signupModelFromJson(model);
-        await auth.signIn(
+        await auth.signUp(
             email: originalModel.email, password: originalModel.password);
       }
     });

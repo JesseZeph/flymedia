@@ -150,7 +150,6 @@ class AuthHelper {
         var user = loginResponseModelFromJson(response.body);
         await prefs.setString('token', user.userToken);
         await prefs.setString('userId', user.id);
-        await prefs.setString('uid', user.uid);
         await prefs.setString('profile', user.profile);
         await prefs.setString('email', user.email);
         await prefs.setString('fullname', user.fullname);
@@ -182,7 +181,6 @@ class AuthHelper {
         var user = influencerLoginResponseModelFromJson(response.body);
         await prefs.setString('token', user.userToken);
         await prefs.setString('userId', user.id);
-        await prefs.setString('uid', user.uid);
         await prefs.setString('profile', user.profile);
         await prefs.setString('fullname', user.fullname);
 
