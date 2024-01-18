@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flymedia_app/controllers/chat_provider.dart';
-import 'package:flymedia_app/controllers/profile_provider.dart';
+import 'package:flymedia_app/providers/chat_provider.dart';
+import 'package:flymedia_app/providers/profile_provider.dart';
 import 'package:flymedia_app/models/chats/chat_model.dart';
 import 'package:flymedia_app/models/profile/profile_model.dart';
 import 'package:flymedia_app/src/influencerDashboard/screens/chat_page.dart';
@@ -10,7 +10,7 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants/colors.dart';
-import '../../../controllers/login_provider.dart';
+import '../../../providers/login_provider.dart';
 import '../../../utils/modal.dart';
 import '../../../utils/widgets/divider.dart';
 import '../../../utils/widgets/subheadings.dart';

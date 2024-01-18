@@ -1,9 +1,9 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flymedia_app/controllers/campaign_provider.dart';
-import 'package:flymedia_app/controllers/chat_provider.dart';
-import 'package:flymedia_app/controllers/profile_provider.dart';
+import 'package:flymedia_app/providers/campaign_provider.dart';
+import 'package:flymedia_app/providers/chat_provider.dart';
+import 'package:flymedia_app/providers/profile_provider.dart';
 import 'package:flymedia_app/firebase_options.dart';
 import 'package:flymedia_app/services/helpers/applications_helper.dart';
 import 'package:flymedia_app/services/helpers/forgot_password_helper.dart';
@@ -16,9 +16,9 @@ import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'controllers/login_provider.dart';
-import 'controllers/onboarding_provider.dart';
-import 'controllers/signup_provider.dart';
+import 'providers/login_provider.dart';
+import 'providers/onboarding_provider.dart';
+import 'providers/signup_provider.dart';
 import 'src/clientdashboard/screens/verificationinprogress.dart';
 
 void main() async {

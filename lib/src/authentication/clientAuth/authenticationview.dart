@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flymedia_app/controllers/login_provider.dart';
-import 'package:flymedia_app/controllers/signup_provider.dart';
+import 'package:flymedia_app/providers/login_provider.dart';
+import 'package:flymedia_app/providers/signup_provider.dart';
 import 'package:flymedia_app/utils/widgets/alert_loader.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';

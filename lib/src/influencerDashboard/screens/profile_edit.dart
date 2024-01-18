@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/colors.dart';
-import 'package:flymedia_app/controllers/login_provider.dart';
+import 'package:flymedia_app/providers/login_provider.dart';
 import 'package:flymedia_app/models/profile/profile_model.dart';
 import 'package:flymedia_app/src/influencerDashboard/widgets/imagepicker.dart';
 import 'package:flymedia_app/utils/extensions/context_extension.dart';
 import 'package:flymedia_app/utils/widgets/alert_loader.dart';
 import 'package:provider/provider.dart';
 
-import '../../../controllers/profile_provider.dart';
+import '../../../providers/profile_provider.dart';
 import '../../../route/route.dart';
 import '../../../utils/widgets/subheadings.dart';
 import '../../authentication/components/text_input_field.dart';

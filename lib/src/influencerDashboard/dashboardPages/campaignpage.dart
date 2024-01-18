@@ -1,7 +1,7 @@
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flymedia_app/controllers/campaign_provider.dart';
+import 'package:flymedia_app/providers/campaign_provider.dart';
 import 'package:flymedia_app/models/response/campaign_upload_response.dart';
 import 'package:flymedia_app/src/search/search.dart';
 import 'package:flymedia_app/utils/widgets/archery_refresh.dart';
@@ -10,7 +10,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../constants/colors.dart';
-import '../../../controllers/profile_provider.dart';
+import '../../../providers/profile_provider.dart';
 import '../../clientdashboard/screens/widgets/appbar.dart';
 import '../../clientdashboard/screens/widgets/welcome_widget.dart';
 import '../screens/campaignlisting.dart';

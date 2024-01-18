@@ -6,8 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
 
-import '../../../controllers/chat_provider.dart';
-import '../../../controllers/login_provider.dart';
+import '../../../providers/chat_provider.dart';
+import '../../../providers/login_provider.dart';
 import '../../../utils/modal.dart';
 import '../../../utils/widgets/alert_loader.dart';
 import '../../../utils/widgets/search_msg_delegate.dart';

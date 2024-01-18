@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flymedia_app/controllers/signup_provider.dart';
+import 'package:flymedia_app/providers/signup_provider.dart';
 import 'package:flymedia_app/models/requests/auth/signup.dart';
 import 'package:flymedia_app/src/authentication/clientAuth/sign_up/emailfield.dart';
 import 'package:flymedia_app/src/authentication/clientAuth/sign_up/namefield.dart';

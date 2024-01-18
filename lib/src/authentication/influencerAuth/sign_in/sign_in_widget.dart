@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flymedia_app/controllers/login_provider.dart';
+import 'package:flymedia_app/providers/login_provider.dart';
 import 'package:flymedia_app/models/requests/auth/influencer_login_model.dart';
 import 'package:flymedia_app/src/authentication/components/text_input_field.dart';
 import 'package:flymedia_app/utils/extensions/context_extension.dart';

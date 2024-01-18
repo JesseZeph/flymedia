@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/utils/widgets/custom_back_button.dart';
 import 'package:flymedia_app/utils/widgets/custom_text.dart';
-import 'package:get/get.dart';
 
 class TierListingsPage extends StatefulWidget {
   const TierListingsPage({super.key});

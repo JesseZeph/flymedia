@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:flymedia_app/controllers/chat_provider.dart';
-import 'package:flymedia_app/controllers/login_provider.dart';
+import 'package:flymedia_app/providers/chat_provider.dart';
+import 'package:flymedia_app/providers/login_provider.dart';
 import 'package:flymedia_app/services/helpers/applications_helper.dart';
 import 'package:flymedia_app/src/clientdashboard/dashboardPages/campaign.dart';
 import 'package:flymedia_app/utils/extensions/context_extension.dart';
@@ -11,7 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constants/colors.dart';
-import '../../controllers/campaign_provider.dart';
+import '../../providers/campaign_provider.dart';
 import '../../route/route.dart';
 import '../accountoption/view.dart';
 import 'dashboardPages/help.dart';

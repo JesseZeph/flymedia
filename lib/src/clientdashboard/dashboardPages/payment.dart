@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/colors.dart';
 import 'package:provider/provider.dart';
 
-import '../../../controllers/login_provider.dart';
+import '../../../providers/login_provider.dart';
 import '../../../utils/modal.dart';
 
 class Payment extends StatelessWidget {

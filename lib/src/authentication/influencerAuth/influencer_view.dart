@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flymedia_app/controllers/login_provider.dart';
+import 'package:flymedia_app/providers/login_provider.dart';
 import 'package:flymedia_app/src/authentication/influencerAuth/sign_in/sign_in_widget.dart';
 import 'package:flymedia_app/src/authentication/influencerAuth/sign_up/signup.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
 
-import '../../../controllers/signup_provider.dart';
+import '../../../providers/signup_provider.dart';
 import '../../../utils/widgets/alert_loader.dart';
 import '../components/auth_switch_button.dart';
 import '../components/slidefadeswitcher.dart';
