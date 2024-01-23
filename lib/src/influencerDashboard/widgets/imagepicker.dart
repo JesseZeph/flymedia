@@ -71,35 +71,9 @@ class ProfilePicturePickerState extends State<ProfilePicturePicker> {
                         ),
                 ),
               ))
-          // Column(
-          //     children: [
-          //       Container(
-          //         width: 325.w,
-          //         padding: EdgeInsets.symmetric(vertical: 5.w),
-          //         decoration: BoxDecoration(
-          //           color: AppColors.dialogColor.withOpacity(0.5),
-          //           borderRadius: BorderRadius.circular(8.r),
-          //         ),
-          //         child: SizedBox(
-          //           height: 100.h,
-          //           width: 100.w,
-          //           child: widget.isEdit
-          //               ? Image.network(
-          //                   _image ?? '',
-          //                   fit: BoxFit.contain,
-          //                 )
-          //               : Image.file(
-          //                   File(_image ?? ''),
-          //                   fit: BoxFit.contain,
-          //                 ),
-          //         ),
-          //       ),
-          //     ],
-          //   )
           : Container(
               width: 325.w,
               margin: EdgeInsets.only(top: 15.h, left: 18.h, right: 18.h),
-              // padding: EdgeInsets.symmetric(vertical: 40.w),
               child: Stack(
                 alignment: Alignment.center,
                 children: [

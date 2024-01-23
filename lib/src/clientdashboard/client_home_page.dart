@@ -4,6 +4,7 @@ import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flymedia_app/providers/chat_provider.dart';
 import 'package:flymedia_app/providers/login_provider.dart';
+import 'package:flymedia_app/providers/subscription_provider.dart';
 import 'package:flymedia_app/services/helpers/applications_helper.dart';
 import 'package:flymedia_app/src/clientdashboard/dashboardPages/campaign.dart';
 import 'package:flymedia_app/utils/extensions/context_extension.dart';
@@ -16,7 +17,7 @@ import '../../route/route.dart';
 import '../accountoption/view.dart';
 import 'dashboardPages/help.dart';
 import 'dashboardPages/messages.dart';
-import 'dashboardPages/payment.dart';
+import 'dashboardPages/menu.dart';
 
 class ClientHomePage extends StatefulWidget {
   const ClientHomePage({
@@ -34,7 +35,7 @@ class _ClientHomePageState extends State<ClientHomePage> {
     const Campaign(),
     const ClientMessagePage(),
     const ClientHelp(),
-    const Payment(),
+    const Menu(),
   ];
 
   Timer? timer;
@@ -52,6 +53,7 @@ class _ClientHomePageState extends State<ClientHomePage> {
   }
 
   fetchData() async {
+    context.read<SubscriptionProvider>().fetchSubscriptions();
     await context.read<LoginNotifier>().getPref().then((_) {
       context
           .read<CampaignsNotifier>()
@@ -115,9 +117,9 @@ class _ClientHomePageState extends State<ClientHomePage> {
                     Icon(FluentSystemIcons.ic_fluent_help_circle_filled),
                 label: 'Help'),
             BottomNavigationBarItem(
-                icon: Icon(Icons.credit_card),
-                activeIcon: Icon(Icons.credit_score),
-                label: 'Payment'),
+                icon: Icon(Icons.menu),
+                activeIcon: Icon(Icons.menu_open),
+                label: 'Menu'),
           ]),
     );
   }

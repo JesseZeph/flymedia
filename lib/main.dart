@@ -19,6 +19,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'providers/login_provider.dart';
 import 'providers/onboarding_provider.dart';
 import 'providers/signup_provider.dart';
+import 'providers/subscription_provider.dart';
 import 'src/clientdashboard/screens/verificationinprogress.dart';
 
 void main() async {
@@ -57,6 +58,7 @@ void main() async {
     runApp(MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (context) => OnBoardNotifier()),
+        ChangeNotifierProvider(create: (context) => SubscriptionProvider()),
         ChangeNotifierProvider(create: (context) => ApplicationsHelper()),
         ChangeNotifierProvider(create: (context) => ForgotPasswordHelper()),
         ChangeNotifierProvider(create: (context) => LoginNotifier()),

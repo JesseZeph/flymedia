@@ -45,8 +45,14 @@ class _SignInWidgetState extends State<SignInWidget> {
         return Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            SizedBox(
+              height: 40.h,
+            ),
+            GestureDetector(
+                onTap: () => Get.back(),
+                child: const Icon(Icons.arrow_back_ios_new)),
             Container(
-              margin: EdgeInsets.only(top: 50.h, bottom: 32.h),
+              margin: EdgeInsets.only(top: 10.h, bottom: 32.h),
               child: const HeadingAndSubText(
                 heading: AppTexts.welcomeBackHeader,
                 subText: AppTexts.welcomeBackSubText,

@@ -25,4 +25,5 @@ class Config {
   static const String validateToken = "/api/confirm/token";
   static const String validateCompany = "/api/confirm/company";
   static const String chats = "/api/chats";
+  static const String subscription = "/api/subscriptions";
 }

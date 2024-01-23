@@ -28,6 +28,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_chat_bubble: ^2.0.2
+  flutter_custom_tabs: ^1.2.1
   flutter_file_dialog: ^3.0.2
   flutter_launcher_icons: ^0.13.1
   flutter_screenutil: ^5.9.0
