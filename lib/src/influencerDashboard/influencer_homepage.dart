@@ -2,8 +2,8 @@ import 'dart:async';
 
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
-import 'package:flymedia_app/controllers/login_provider.dart';
-import 'package:flymedia_app/controllers/profile_provider.dart';
+import 'package:flymedia_app/providers/login_provider.dart';
+import 'package:flymedia_app/providers/profile_provider.dart';
 import 'package:flymedia_app/src/influencerDashboard/dashboardPages/campaignpage.dart';
 import 'package:flymedia_app/src/influencerDashboard/dashboardPages/messagespage.dart';
 import 'package:flymedia_app/src/influencerDashboard/dashboardPages/profile.dart';
@@ -12,7 +12,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constants/colors.dart';
-import '../../controllers/chat_provider.dart';
+import '../../providers/chat_provider.dart';
 import '../../route/route.dart';
 import '../../services/helpers/applications_helper.dart';
 import '../accountoption/view.dart';

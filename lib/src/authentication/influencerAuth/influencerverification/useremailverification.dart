@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../constants/colors.dart';
-import '../../../../controllers/signup_provider.dart';
+import '../../../../providers/signup_provider.dart';
 import '../../../../models/requests/auth/verification_code.dart';
 import '../../../../services/helpers/forgot_password_helper.dart';
 import '../../../../utils/widgets/alert_loader.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/textstring.dart';
-import 'package:flymedia_app/controllers/login_provider.dart';
+import 'package:flymedia_app/providers/login_provider.dart';
 import 'package:flymedia_app/src/authentication/components/animated_button.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/widgets/welcome_widget.dart';
 import 'package:flymedia_app/utils/widgets/headings.dart';

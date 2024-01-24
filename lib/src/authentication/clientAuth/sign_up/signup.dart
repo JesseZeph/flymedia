@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flymedia_app/controllers/signup_provider.dart';
+import 'package:flymedia_app/providers/signup_provider.dart';
 import 'package:flymedia_app/models/requests/auth/signup.dart';
 import 'package:flymedia_app/src/authentication/clientAuth/sign_up/emailfield.dart';
 import 'package:flymedia_app/src/authentication/clientAuth/sign_up/namefield.dart';
@@ -43,8 +43,17 @@ class _SignUpState extends State<SignUp> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
+        SizedBox(
+          height: 40.h,
+        ),
+        Align(
+          alignment: Alignment.centerLeft,
+          child: GestureDetector(
+              onTap: () => Get.back(),
+              child: const Icon(Icons.arrow_back_ios_new)),
+        ),
         Container(
-          margin: EdgeInsets.only(top: 50.h, bottom: 32.h),
+          margin: EdgeInsets.only(top: 10.h, bottom: 32.h),
           child: const HeadingAndSubText(
             heading: AppTexts.createAccountHeaderText,
             subText: AppTexts.createAccountSubText,

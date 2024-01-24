@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flymedia_app/controllers/chat_provider.dart';
+import 'package:flymedia_app/providers/chat_provider.dart';
 import 'package:flymedia_app/utils/widgets/alert_loader.dart';
 import 'package:flymedia_app/utils/widgets/chat_tile.dart';
 import 'package:flymedia_app/utils/widgets/search_msg_delegate.dart';
@@ -8,7 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
 
-import '../../../controllers/login_provider.dart';
+import '../../../providers/login_provider.dart';
 import '../../../utils/modal.dart';
 import '../../../utils/widgets/custom_text.dart';
 

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flymedia_app/controllers/chat_provider.dart';
+import 'package:flymedia_app/providers/chat_provider.dart';
 import 'package:flymedia_app/models/chats/chat_model.dart';
 import 'package:flymedia_app/utils/widgets/custom_text.dart';
 import 'package:provider/provider.dart';

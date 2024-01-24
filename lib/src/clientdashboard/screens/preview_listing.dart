@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flymedia_app/controllers/campaign_provider.dart';
+import 'package:flymedia_app/providers/campaign_provider.dart';
 import 'package:flymedia_app/models/requests/campaign/campain_upload.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/widgets/appbar.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/widgets/fly_button.dart';
@@ -14,7 +14,7 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants/colors.dart';
-import '../../../controllers/login_provider.dart';
+import '../../../providers/login_provider.dart';
 import '../../../utils/widgets/headings.dart';
 import 'campaign_live.dart';
 

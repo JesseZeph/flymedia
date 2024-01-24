@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flymedia_app/controllers/chat_provider.dart';
-import 'package:flymedia_app/controllers/profile_provider.dart';
+import 'package:flymedia_app/providers/chat_provider.dart';
+import 'package:flymedia_app/providers/profile_provider.dart';
 import 'package:flymedia_app/models/chats/chat_model.dart';
 import 'package:flymedia_app/models/profile/profile_model.dart';
 import 'package:flymedia_app/src/influencerDashboard/screens/chat_page.dart';
 import 'package:flymedia_app/src/influencerDashboard/screens/profile_edit.dart';
+import 'package:flymedia_app/utils/extensions/context_extension.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 import '../../../constants/colors.dart';
-import '../../../controllers/login_provider.dart';
+import '../../../providers/login_provider.dart';
 import '../../../utils/modal.dart';
 import '../../../utils/widgets/divider.dart';
 import '../../../utils/widgets/subheadings.dart';
@@ -41,6 +43,33 @@ class _ProfilePageState extends State<ProfilePage> {
     if (!widget.isPersonalView) {
       chatModel = await context.read<ChatProvider>().fetchSpecificChat(
           context.read<LoginNotifier>().userId, widget.userProfile?.id ?? '');
+    }
+  }
+
+  openSocialProfile() async {
+    try {
+      await launch(
+        'https://flutter.dev',
+        customTabsOption: const CustomTabsOption(
+          toolbarColor: AppColors.mainColor,
+          enableDefaultShare: true,
+          enableUrlBarHiding: true,
+          showPageTitle: true,
+          extraCustomTabs: <String>[
+            'org.mozilla.firefox',
+            'com.microsoft.emmx',
+          ],
+        ),
+        safariVCOption: const SafariViewControllerOption(
+          preferredBarTintColor: AppColors.mainColor,
+          preferredControlTintColor: Colors.white,
+          barCollapsingEnabled: true,
+          entersReaderIfAvailable: false,
+          dismissButtonStyle: SafariViewControllerDismissButtonStyle.close,
+        ),
+      );
+    } catch (e) {
+      context.showError('Could not launch profile');
     }
   }
 
@@ -88,25 +117,19 @@ class _ProfilePageState extends State<ProfilePage> {
                         ]
                       : [],
                 ),
-                body: Center(
+                body: SafeArea(
                   child: ListView(
                     children: [
-                      Center(
-                        child: Padding(
-                          padding: EdgeInsets.only(top: 15.h),
-                          child: CircleAvatar(
-                            radius: 37.5.w,
-                            backgroundColor: AppColors.mainColor,
-                            child: ClipOval(
-                              child: Image.network(
-                                // 'assets/images/secondOnboard.png',
-                                profile.imageUrl ?? '',
-                                width: 75.w,
-                                height: 75.w,
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
+                      Container(
+                        margin: EdgeInsets.only(bottom: 20.h),
+                        height: 80.h,
+                        width: 80.w,
+                        decoration: const BoxDecoration(shape: BoxShape.circle),
+                        child: FittedBox(
+                          fit: BoxFit.contain,
+                          child: FadeInImage.assetNetwork(
+                              placeholder: 'assets/images/sophieEllipse.png',
+                              image: profile.imageUrl ?? ''),
                         ),
                       ),
                       Container(
@@ -138,22 +161,26 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                       widget.isPersonalView
-                          ? Container(
-                              margin: EdgeInsets.only(top: 12.h, bottom: 15.h),
-                              child: Text(
-                                // 'https://www.tiktok.com/@sophielight',
-                                profile.profileLink ?? 'Nil',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyMedium
-                                    ?.copyWith(
-                                      color: AppColors.dialogBlue,
-                                      fontSize: 12.sp,
-                                      fontWeight: FontWeight.w600,
-                                    ),
-                                textAlign: TextAlign.center,
-                              ),
-                            )
+                          ? IconButton(
+                              onPressed: () => openSocialProfile(),
+                              icon: const Icon(Icons.tiktok_outlined))
+                          // Container(
+                          //     margin:
+                          //         EdgeInsets.only(top: 12.h, bottom: 15.h),
+                          //     child: Text(
+                          //       // 'https://www.tiktok.com/@sophielight',
+                          //       profile.profileLink ?? 'Nil',
+                          //       style: Theme.of(context)
+                          //           .textTheme
+                          //           .bodyMedium
+                          //           ?.copyWith(
+                          //             color: AppColors.dialogBlue,
+                          //             fontSize: 12.sp,
+                          //             fontWeight: FontWeight.w600,
+                          //           ),
+                          //       textAlign: TextAlign.center,
+                          //     ),
+                          //   )
                           : TextButton(
                               onPressed: () async {
                                 Get.to(() => ChatPage(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flymedia_app/controllers/onboarding_provider.dart';
+import 'package:flymedia_app/providers/onboarding_provider.dart';
 import 'package:flymedia_app/src/onboardingscreen/onboardpages/firstpage.dart';
 import 'package:flymedia_app/src/onboardingscreen/onboardpages/secondpage.dart';
 import 'package:flymedia_app/src/onboardingscreen/onboardpages/thirdpage.dart';
