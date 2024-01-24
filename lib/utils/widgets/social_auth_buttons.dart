@@ -8,7 +8,10 @@ class AppleGoogleButton extends StatelessWidget {
   final String imagePath;
   final VoidCallback onTap;
   const AppleGoogleButton({
-    super.key, required this.text, required this.imagePath, required this.onTap,
+    super.key,
+    required this.text,
+    required this.imagePath,
+    required this.onTap,
   });
 
   @override

@@ -79,7 +79,7 @@ class ProfilePicturePickerState extends State<ProfilePicturePicker> {
                 children: [
                   // Person's icon
                   Container(
-                    width: 120.w, // Adjust the size of the container
+                    width: 120.w,
                     height: 120.h,
                     decoration: BoxDecoration(
                       color: AppColors.lightHintTextColor.withOpacity(0.2),

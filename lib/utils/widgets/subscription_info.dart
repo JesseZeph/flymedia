@@ -1,12 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:flymedia_app/src/tier_listings/tier_listings_page.dart';
 import 'package:get/get.dart';
 
-import '../../constants/colors.dart';
-
 class SubscriptionInfo extends StatelessWidget {
-  const SubscriptionInfo({super.key});
+  final String headerText;
+  final String subText;
+  final String imageUrl;
+  final String buttonText;
+  final Color buttonColor;
+  final Color containerColor;
+  const SubscriptionInfo(
+      {super.key,
+      required this.headerText,
+      required this.subText,
+      required this.imageUrl,
+      required this.buttonText,
+      required this.buttonColor,
+      required this.containerColor});
 
   @override
   Widget build(BuildContext context) {
@@ -15,9 +27,8 @@ class SubscriptionInfo extends StatelessWidget {
       child: Container(
         width: Get.width.w,
         padding: EdgeInsets.symmetric(vertical: 25.h, horizontal: 10.r),
-        decoration: const BoxDecoration(
-          color: AppColors.deepGreen,
-        ),
+        decoration: BoxDecoration(
+            color: containerColor, borderRadius: BorderRadius.circular(12.r)),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           mainAxisSize: MainAxisSize.min,
@@ -28,10 +39,10 @@ class SubscriptionInfo extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(left: 10.w),
                   child: Text(
-                    'Subscribe to a plan to',
+                    headerText,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.white,
-                          fontSize: 16.sp,
+                          color: Colors.black,
+                          fontSize: 14.sp,
                           fontWeight: FontWeight.w700,
                         ),
                   ),
@@ -40,11 +51,11 @@ class SubscriptionInfo extends StatelessWidget {
                 Padding(
                   padding: EdgeInsets.only(left: 10.w),
                   child: Text(
-                    'enjoy unique benefits.',
+                    subText,
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.white,
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w700,
+                          color: Colors.black,
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w400,
                         ),
                   ),
                 ),
@@ -56,35 +67,24 @@ class SubscriptionInfo extends StatelessWidget {
                   child: Container(
                     padding: EdgeInsets.all(10.r),
                     decoration: BoxDecoration(
-                      border: Border.all(width: 1, color: Colors.white),
+                      border: Border.all(width: 1, color: buttonColor),
                       borderRadius: BorderRadius.circular(25.r),
                     ),
                     child: Text(
-                      'Subscribe now',
+                      buttonText,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Colors.white,
-                            fontSize: 10.sp,
-                            fontWeight: FontWeight.w600,
+                            color: Colors.black,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w400,
                           ),
                     ),
                   ),
                 ),
               ],
             ),
-            Container(
-              width: 70.w,
-              height: 70.h,
-              padding: EdgeInsets.all(5.w),
-              child: CircleAvatar(
-                radius: 40.5.w,
-                backgroundColor: AppColors.lightHintTextColor,
-                child: ClipOval(
-                  child: Image.asset(
-                    'assets/images/doc.png',
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
+            SvgPicture.asset(
+              imageUrl,
+              fit: BoxFit.cover,
             ),
           ],
         ),

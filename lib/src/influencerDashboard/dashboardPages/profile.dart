@@ -124,7 +124,8 @@ class _ProfilePageState extends State<ProfilePage> {
                         margin: EdgeInsets.only(bottom: 20.h),
                         height: 80.h,
                         width: 80.w,
-                        decoration: const BoxDecoration(shape: BoxShape.circle),
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(50.w)),
                         child: FittedBox(
                           fit: BoxFit.contain,
                           child: FadeInImage.assetNetwork(

@@ -9,6 +9,9 @@ class AppColors {
   static const Color dialogColor = Color(0xFFF2F4F7);
   static const Color dialogBlue = Color(0xFF0059D2);
   static const Color lightMainText = Color(0xFF5E5D5D);
+  static const Color cardColor = Color(0x1E04C1C4);
+  static const Color cardColor2 = Color(0xFFE6D4FF);
+  static const purplePatch = Color(0xFFA45EFF);
 
   static const Color mainTextColor = Color(0xFF2D2F34);
   static const Color lightHintTextColor = Color(0xFFAEAEAE);
