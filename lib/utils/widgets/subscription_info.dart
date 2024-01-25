@@ -11,6 +11,7 @@ class SubscriptionInfo extends StatelessWidget {
   final String buttonText;
   final Color buttonColor;
   final Color containerColor;
+  final void Function() onTap;
   const SubscriptionInfo(
       {super.key,
       required this.headerText,
@@ -18,7 +19,8 @@ class SubscriptionInfo extends StatelessWidget {
       required this.imageUrl,
       required this.buttonText,
       required this.buttonColor,
-      required this.containerColor});
+      required this.containerColor,
+      required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -61,9 +63,7 @@ class SubscriptionInfo extends StatelessWidget {
                 ),
                 SizedBox(height: 10.h),
                 TextButton(
-                  onPressed: () {
-                    Get.to(() => const TierListingsPage());
-                  },
+                  onPressed: onTap,
                   child: Container(
                     padding: EdgeInsets.all(10.r),
                     decoration: BoxDecoration(
