@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 
 import '../../constants/colors.dart';
 
@@ -80,6 +81,48 @@ class DashHeadingAndSubText extends StatelessWidget {
                   color: AppColors.lightMainText,
                   fontWeight: FontWeight.w100,
                   fontSize: 12.sp,
+                  height: 1.6,
+                ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+class CustomHeader extends StatelessWidget {
+  final String heading;
+  final String subText;
+  const CustomHeader({
+    super.key,
+    required this.heading,
+    required this.subText,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
+          child: Text(
+            heading,
+            style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                  color: AppColors.mainTextColor,
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16.sp,
+                ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w),
+          child: Text(
+            subText,
+            style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                  color: AppColors.lightMainText,
+                  fontWeight: FontWeight.w300,
+                  fontSize: 14.sp,
                   height: 1.6,
                 ),
           ),

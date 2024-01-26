@@ -25,9 +25,11 @@ class CustomKarlaText extends StatelessWidget {
       textAlign: align ?? TextAlign.center,
       overflow: overflow ?? TextOverflow.clip,
       style: GoogleFonts.karla(
-          fontSize: size?.sp ?? 12.sp,
-          fontWeight: weight ?? FontWeight.normal,
-          color: color ?? Colors.black),
+        fontSize: size?.sp ?? 12.sp,
+        fontWeight: weight ?? FontWeight.normal,
+        color: color ?? Colors.black,
+      ),
+      softWrap: true,
     );
   }
 }

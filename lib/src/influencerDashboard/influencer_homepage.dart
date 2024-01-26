@@ -7,6 +7,7 @@ import 'package:flymedia_app/providers/profile_provider.dart';
 import 'package:flymedia_app/src/influencerDashboard/dashboardPages/campaignpage.dart';
 import 'package:flymedia_app/src/influencerDashboard/dashboardPages/messagespage.dart';
 import 'package:flymedia_app/src/influencerDashboard/dashboardPages/profile.dart';
+import 'package:flymedia_app/src/influencerDashboard/screens/influencer_menu.dart';
 import 'package:flymedia_app/utils/extensions/context_extension.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -32,6 +33,7 @@ class _InfluencerHomePage extends State<InfluencerHomePage> {
     const CampaignPage(),
     const MessagePage(),
     const ProfilePage(),
+    const InfluencerMenu()
   ];
 
   @override
@@ -112,6 +114,10 @@ class _InfluencerHomePage extends State<InfluencerHomePage> {
                 activeIcon:
                     Icon(FluentSystemIcons.ic_fluent_person_accounts_filled),
                 label: 'Profile'),
+            BottomNavigationBarItem(
+                icon: Icon(Icons.menu),
+                activeIcon: Icon(Icons.menu_open),
+                label: 'Menu'),
           ]),
     );
   }

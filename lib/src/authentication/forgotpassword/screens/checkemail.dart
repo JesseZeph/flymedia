@@ -80,7 +80,7 @@ class ImageWithTextWidget extends StatelessWidget {
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     color: AppColors.mainTextColor.withOpacity(0.8),
                     fontSize: 14.sp,
-                    fontWeight: FontWeight.w300,
+                    fontWeight: FontWeight.w400,
                   ),
               textAlign: TextAlign.center,
             ),
