@@ -23,7 +23,8 @@ class Subscriptions {
         description: map['description'] ?? '',
         name: map['name'] ?? '',
         price: map['price'] ?? '',
-        features: List<String>.from((map['features'] as String).split(',')));
+        features:
+            List<String>.from((map['features'] as String).split('\u{000A}')));
   }
 
   @override

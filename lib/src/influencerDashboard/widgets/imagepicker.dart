@@ -53,24 +53,13 @@ class ProfilePicturePickerState extends State<ProfilePicturePicker> {
         selectImage();
       },
       child: _image != null
-          ? SizedBox(
-              height: 80.h,
-              width: 80.w,
-              child: FittedBox(
-                fit: BoxFit.contain,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(100).r,
-                  child: isEdits
-                      ? Image.network(
-                          _image ?? '',
-                          fit: BoxFit.contain,
-                        )
-                      : Image.file(
-                          File(_image ?? ''),
-                          fit: BoxFit.contain,
-                        ),
-                ),
-              ))
+          ? isEdits
+              ? CircleAvatar(
+                  radius: 55.r, backgroundImage: NetworkImage(_image ?? ''))
+              : CircleAvatar(
+                  radius: 55.r,
+                  backgroundImage: FileImage(File(_image ?? '')),
+                )
           : Container(
               width: 325.w,
               margin: EdgeInsets.only(top: 15.h, left: 18.h, right: 18.h),

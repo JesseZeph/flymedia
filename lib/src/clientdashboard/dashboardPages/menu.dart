@@ -48,11 +48,11 @@ class Menu extends StatelessWidget {
                     },
                   ),
                   SizedBox(
-                    height: 25.h,
+                    height: 35.h,
                   ),
                   SubscriptionInfo(
                     containerColor: AppColors.cardColor2,
-                    headerText: 'Your contacts',
+                    headerText: 'Your contracts',
                     subText:
                         'Access and review ongoing and\ncompleted contracts with influencers',
                     imageUrl: 'assets/images/bro.svg',

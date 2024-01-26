@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:flymedia_app/src/tier_listings/tier_listings_page.dart';
 import 'package:get/get.dart';
 
 class SubscriptionInfo extends StatelessWidget {
@@ -52,13 +51,16 @@ class SubscriptionInfo extends StatelessWidget {
                 SizedBox(height: 10.h),
                 Padding(
                   padding: EdgeInsets.only(left: 10.w),
-                  child: Text(
-                    subText,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.black,
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w400,
-                        ),
+                  child: SizedBox(
+                    width: 230.w,
+                    child: Text(
+                      subText,
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: Colors.black,
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w400,
+                          ),
+                    ),
                   ),
                 ),
                 SizedBox(height: 10.h),

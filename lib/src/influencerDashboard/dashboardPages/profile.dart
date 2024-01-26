@@ -120,18 +120,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 body: SafeArea(
                   child: ListView(
                     children: [
-                      Container(
-                        margin: EdgeInsets.only(bottom: 20.h),
-                        height: 80.h,
-                        width: 80.w,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50.w)),
-                        child: FittedBox(
-                          fit: BoxFit.contain,
-                          child: FadeInImage.assetNetwork(
-                              placeholder: 'assets/images/sophieEllipse.png',
-                              image: profile.imageUrl ?? ''),
-                        ),
+                      CircleAvatar(
+                        radius: 55.r,
+                        backgroundImage:
+                            NetworkImage(profile.imageUrl ?? '', scale: 1.0),
                       ),
                       Container(
                         margin: EdgeInsets.only(top: 15.h),
