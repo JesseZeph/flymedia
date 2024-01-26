@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/colors.dart';
-import 'package:flymedia_app/src/clientdashboard/contracts/view_contract.dart';
 import 'package:flymedia_app/src/clientdashboard/contracts/widget/contract_card.dart';
 import 'package:flymedia_app/src/influencerDashboard/contracts/view_contract.dart';
 import 'package:get/get.dart';

@@ -6,7 +6,6 @@ import 'package:flymedia_app/src/search/widget/custom_field.dart';
 import 'package:flymedia_app/src/tier_listings/tier_listings_page.dart';
 import 'package:flymedia_app/utils/widgets/subscription_info.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:provider/provider.dart';
 
 import '../../../providers/login_provider.dart';

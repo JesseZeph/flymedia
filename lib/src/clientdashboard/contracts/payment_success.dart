@@ -1,13 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flymedia_app/models/chats/chat_model.dart';
-import 'package:flymedia_app/route/route.dart';
-import 'package:flymedia_app/src/authentication/clientAuth/authenticationview.dart';
+
 import 'package:flymedia_app/src/authentication/components/roundedbutton.dart';
 import 'package:flymedia_app/src/authentication/forgotpassword/screens/checkemail.dart';
-import 'package:flymedia_app/src/authentication/influencerAuth/influencer_view.dart';
-import 'package:flymedia_app/utils/widgets/chat_tile.dart';
-import 'package:get/get.dart';
 
 class PaymentSuccess extends StatelessWidget {
   const PaymentSuccess({Key? key}) : super(key: key);

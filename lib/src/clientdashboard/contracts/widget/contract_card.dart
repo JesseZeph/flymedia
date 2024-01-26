@@ -4,7 +4,6 @@ import 'package:flymedia_app/constants/colors.dart';
 import 'package:flymedia_app/src/authentication/components/animated_button.dart';
 import 'package:flymedia_app/utils/widgets/custom_text.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class ContractCardWidget extends StatelessWidget {
   final String heading;

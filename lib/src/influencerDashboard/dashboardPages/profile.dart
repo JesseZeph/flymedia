@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_custom_tabs/flutter_custom_tabs.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/providers/chat_provider.dart';
 import 'package:flymedia_app/providers/profile_provider.dart';
 import 'package:flymedia_app/models/chats/chat_model.dart';
 import 'package:flymedia_app/models/profile/profile_model.dart';
-import 'package:flymedia_app/src/influencerDashboard/screens/chat_page.dart';
 import 'package:flymedia_app/src/influencerDashboard/screens/profile_edit.dart';
 import 'package:flymedia_app/utils/extensions/context_extension.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../constants/colors.dart';
 import '../../../providers/login_provider.dart';
@@ -47,29 +46,18 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   openSocialProfile() async {
+    // var isIos = Platform.isIOS;
+    // var link = Uri.parse('https://www.google.com');
+    var link = Uri.parse(profile?.profileLink ?? "");
     try {
-      await launch(
-        'https://flutter.dev',
-        customTabsOption: const CustomTabsOption(
-          toolbarColor: AppColors.mainColor,
-          enableDefaultShare: true,
-          enableUrlBarHiding: true,
-          showPageTitle: true,
-          extraCustomTabs: <String>[
-            'org.mozilla.firefox',
-            'com.microsoft.emmx',
-          ],
-        ),
-        safariVCOption: const SafariViewControllerOption(
-          preferredBarTintColor: AppColors.mainColor,
-          preferredControlTintColor: Colors.white,
-          barCollapsingEnabled: true,
-          entersReaderIfAvailable: false,
-          dismissButtonStyle: SafariViewControllerDismissButtonStyle.close,
-        ),
-      );
-    } catch (e) {
-      context.showError('Could not launch profile');
+      if (!await launchUrl(
+        link,
+        mode: LaunchMode.externalApplication,
+      )) {
+        throw Exception('Could not launch profile');
+      }
+    } on Exception catch (e) {
+      context.showError(e.toString());
     }
   }
 
@@ -153,62 +141,65 @@ class _ProfilePageState extends State<ProfilePage> {
                           textAlign: TextAlign.center,
                         ),
                       ),
-                      widget.isPersonalView
-                          ? IconButton(
-                              onPressed: () => openSocialProfile(),
-                              icon: const Icon(Icons.tiktok_outlined))
-                          // Container(
-                          //     margin:
-                          //         EdgeInsets.only(top: 12.h, bottom: 15.h),
-                          //     child: Text(
-                          //       // 'https://www.tiktok.com/@sophielight',
-                          //       profile.profileLink ?? 'Nil',
-                          //       style: Theme.of(context)
-                          //           .textTheme
-                          //           .bodyMedium
-                          //           ?.copyWith(
-                          //             color: AppColors.dialogBlue,
-                          //             fontSize: 12.sp,
-                          //             fontWeight: FontWeight.w600,
-                          //           ),
-                          //       textAlign: TextAlign.center,
-                          //     ),
-                          //   )
-                          : TextButton(
-                              onPressed: () async {
-                                Get.to(() => ChatPage(
-                                      model: chatModel ??
-                                          ChatModel(
-                                              id: '',
-                                              companyOwnerId: context
-                                                  .read<LoginNotifier>()
-                                                  .userId,
-                                              influencerId: profile.toMap(),
-                                              lastMessage: '',
-                                              newMessagesCount: 0),
-                                      isClientView: true,
-                                    ));
-                              },
-                              child: Container(
-                                padding: EdgeInsets.all(10.r),
-                                decoration: BoxDecoration(
-                                    border: Border.all(
-                                      width: 1,
-                                      color: AppColors.mainColor,
-                                    ),
-                                    borderRadius: BorderRadius.circular(25.r)),
-                                child: Text(
-                                  'Send Message',
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .bodyMedium
-                                      ?.copyWith(
-                                        color: AppColors.mainColor,
-                                        fontSize: 12.sp,
-                                        fontWeight: FontWeight.w400,
-                                      ),
-                                ),
-                              )),
+                      IconButton(
+                          onPressed: () => openSocialProfile(),
+                          icon: const Icon(Icons.tiktok_outlined)),
+                      // widget.isPersonalView
+                      //     ? IconButton(
+                      //         onPressed: () => openSocialProfile(),
+                      //         icon: const Icon(Icons.tiktok_outlined))
+                      // Container(
+                      //     margin:
+                      //         EdgeInsets.only(top: 12.h, bottom: 15.h),
+                      //     child: Text(
+                      //       // 'https://www.tiktok.com/@sophielight',
+                      //       profile.profileLink ?? 'Nil',
+                      //       style: Theme.of(context)
+                      //           .textTheme
+                      //           .bodyMedium
+                      //           ?.copyWith(
+                      //             color: AppColors.dialogBlue,
+                      //             fontSize: 12.sp,
+                      //             fontWeight: FontWeight.w600,
+                      //           ),
+                      //       textAlign: TextAlign.center,
+                      //     ),
+                      //   )
+                      // : TextButton(
+                      //     onPressed: () async {
+                      //       Get.to(() => ChatPage(
+                      //             model: chatModel ??
+                      //                 ChatModel(
+                      //                     id: '',
+                      //                     companyOwnerId: context
+                      //                         .read<LoginNotifier>()
+                      //                         .userId,
+                      //                     influencerId: profile.toMap(),
+                      //                     lastMessage: '',
+                      //                     newMessagesCount: 0),
+                      //             isClientView: true,
+                      //           ));
+                      //     },
+                      //     child: Container(
+                      //       padding: EdgeInsets.all(10.r),
+                      //       decoration: BoxDecoration(
+                      //           border: Border.all(
+                      //             width: 1,
+                      //             color: AppColors.mainColor,
+                      //           ),
+                      //           borderRadius: BorderRadius.circular(25.r)),
+                      //       child: Text(
+                      //         'Send Message',
+                      //         style: Theme.of(context)
+                      //             .textTheme
+                      //             .bodyMedium
+                      //             ?.copyWith(
+                      //               color: AppColors.mainColor,
+                      //               fontSize: 12.sp,
+                      //               fontWeight: FontWeight.w400,
+                      //             ),
+                      //       ),
+                      //     )),
                       Padding(
                         padding: EdgeInsets.only(top: 12.h),
                         child: const FullDivider(),

@@ -15,9 +15,6 @@ class SubscriptionProvider extends ChangeNotifier {
       List initList = response.data;
       allSubscription =
           initList.map((item) => Subscriptions.fromMap(item)).toList();
-      for (var element in allSubscription) {
-        print(element);
-      }
       notifyListeners();
     }
   }

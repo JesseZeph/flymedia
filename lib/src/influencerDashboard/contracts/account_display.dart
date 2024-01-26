@@ -6,7 +6,6 @@ import 'package:flymedia_app/src/influencerDashboard/contracts/widget/delete_dia
 import 'package:flymedia_app/src/influencerDashboard/contracts/widget/rounded_button.dart';
 import 'package:flymedia_app/utils/widgets/custom_text.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class DisplayAccountInfo extends StatelessWidget {
   const DisplayAccountInfo({super.key});

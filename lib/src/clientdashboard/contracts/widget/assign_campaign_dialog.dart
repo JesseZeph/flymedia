@@ -1,10 +1,8 @@
 import 'package:fluentui_icons/fluentui_icons.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/colors.dart';
 import 'package:flymedia_app/src/clientdashboard/contracts/payment_page.dart';
-import 'package:flymedia_app/src/tier_listings/tier_payment.dart';
 import 'package:flymedia_app/utils/widgets/custom_text.dart';
 import 'package:get/get.dart';
 
