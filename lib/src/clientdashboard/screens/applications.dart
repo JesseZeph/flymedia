@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/models/profile/profile_model.dart';
 import 'package:flymedia_app/services/helpers/applications_helper.dart';
+import 'package:flymedia_app/src/clientdashboard/contracts/widget/assign_campaign_dialog.dart';
 import 'package:flymedia_app/src/influencerDashboard/dashboardPages/profile.dart';
 import 'package:flymedia_app/utils/extensions/string_extensions.dart';
 import 'package:flymedia_app/utils/widgets/alert_loader.dart';
@@ -91,6 +92,7 @@ class _ApplicationsState extends State<Applications> {
 
 class _ApplicantsTile extends StatelessWidget {
   final ProfileModel profile;
+
   const _ApplicantsTile(this.profile);
 
   @override
@@ -98,71 +100,114 @@ class _ApplicantsTile extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ProfilePage(
-                userProfile: profile,
-                isPersonalView: false,
-              ),
-            ));
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProfilePage(
+              userProfile: profile,
+              isPersonalView: false,
+            ),
+          ),
+        );
       },
       child: Container(
         padding: EdgeInsets.only(left: 10.w, bottom: 15.h),
         decoration: BoxDecoration(
-            border: Border(
-                bottom: BorderSide(
-          color: AppColors.lightHintTextColor.withOpacity(0.4),
-          width: 1,
-        ))),
+          border: Border(
+            bottom: BorderSide(
+              color: AppColors.lightHintTextColor.withOpacity(0.4),
+              width: 1,
+            ),
+          ),
+        ),
         child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Container(
-              width: 50.w,
-              height: 50.h,
-              padding: EdgeInsets.all(5.w),
-              child: CircleAvatar(
-                radius: 37.5.w,
-                backgroundColor: AppColors.mainColor,
-                child: ClipOval(
-                  child: Image.network(
-                    profile.imageUrl ?? '',
-                    width: 75.w,
-                    height: 75.w,
-                    fit: BoxFit.cover,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  width: 50.w,
+                  height: 50.h,
+                  padding: EdgeInsets.all(5.w),
+                  child: CircleAvatar(
+                    radius: 37.5.w,
+                    backgroundColor: AppColors.mainColor,
+                    child: ClipOval(
+                      child: Image.network(
+                        profile.imageUrl ?? '',
+                        width: 75.w,
+                        height: 75.w,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-            SizedBox(width: 10.w),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  profile.firstAndLastName ?? '',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.mainTextColor,
-                        fontWeight: FontWeight.w700,
-                        fontSize: 14.sp,
-                      ),
-                  overflow: TextOverflow.clip,
+                SizedBox(width: 10.w),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      profile.firstAndLastName ?? '',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: AppColors.mainTextColor,
+                            fontWeight: FontWeight.w700,
+                            fontSize: 14.sp,
+                          ),
+                      overflow: TextOverflow.clip,
+                    ),
+                    SizedBox(height: 5.h),
+                    Text(
+                      '${profile.noOfTikTokFollowers?.formatFigures()} Followers',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: AppColors.lightMainText,
+                            fontWeight: FontWeight.w200,
+                            fontSize: 12.sp,
+                          ),
+                      overflow: TextOverflow.clip,
+                    ),
+                    SizedBox(height: 5.h),
+                  ],
                 ),
-                SizedBox(height: 5.h),
-                Text(
-                  '${profile.noOfTikTokFollowers?.formatFigures()} Followers',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.lightMainText,
-                        fontWeight: FontWeight.w200,
-                        fontSize: 12.sp,
-                      ),
-                  overflow: TextOverflow.clip,
-                ),
-                SizedBox(height: 5.h),
               ],
+            ),
+            PopupMenuButton<String>(
+              elevation: 1,
+              offset: const Offset(0, 30),
+              icon: const Icon(Icons.more_horiz),
+              onSelected: (String value) {
+                if (value == 'account_campaign') {
+                  _showAccountCampaignDialog(context);
+                }
+              },
+              itemBuilder: (BuildContext context) {
+                return <PopupMenuEntry<String>>[
+                  PopupMenuItem<String>(
+                    value: 'account_campaign',
+                    child: Row(
+                      children: [
+                        const Icon(Icons.person_add_alt_outlined, size: 18),
+                        SizedBox(
+                          width: 12.w,
+                        ),
+                        const Text('Assign Campaign'),
+                      ],
+                    ),
+                  ),
+                ];
+              },
             ),
           ],
         ),
       ),
+    );
+  }
+
+  void _showAccountCampaignDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return const AssignCampaignDialog();
+      },
     );
   }
 }

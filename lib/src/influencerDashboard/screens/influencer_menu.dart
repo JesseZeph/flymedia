@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/colors.dart';
-import 'package:flymedia_app/src/clientdashboard/contracts/contracts_list.dart';
+import 'package:flymedia_app/providers/login_provider.dart';
+import 'package:flymedia_app/src/influencerDashboard/contracts/account_information.dart';
+import 'package:flymedia_app/src/influencerDashboard/contracts/contracts_list.dart';
 import 'package:flymedia_app/src/search/widget/custom_field.dart';
-import 'package:flymedia_app/src/tier_listings/tier_listings_page.dart';
+import 'package:flymedia_app/utils/modal.dart';
 import 'package:flymedia_app/utils/widgets/subscription_info.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:provider/provider.dart';
 
-import '../../../providers/login_provider.dart';
-import '../../../utils/modal.dart';
-
-class Menu extends StatelessWidget {
-  const Menu({super.key});
+class InfluencerMenu extends StatelessWidget {
+  const InfluencerMenu({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,15 +35,15 @@ class Menu extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SubscriptionInfo(
-                    headerText: 'Get Premium',
+                    headerText: 'Account Information',
                     subText:
-                        'Explore our pricing plans tailored\nto suit your needs',
-                    imageUrl: 'assets/images/pricing-plan.svg',
+                        'Provide your account information\nto ensure seemless and timely\npayments',
+                    imageUrl: 'assets/images/coins.svg',
                     buttonText: 'Subscribe now',
                     buttonColor: AppColors.mainColor,
                     containerColor: AppColors.cardColor,
                     onTap: () {
-                      Get.to(() => const TierListingsPage());
+                      Get.to(() => const AccountInformation());
                     },
                   ),
                   SizedBox(
@@ -59,7 +58,7 @@ class Menu extends StatelessWidget {
                     buttonText: 'View contracts',
                     buttonColor: AppColors.purplePatch,
                     onTap: () {
-                      Get.to(() => const Contracts());
+                      Get.to(() => const InfluencerContracts());
                     },
                   )
                 ],
