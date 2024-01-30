@@ -84,10 +84,14 @@ class TierFeatures extends StatelessWidget {
             ),
             Expanded(
                 child: ListView.separated(
-                    itemBuilder: (context, index) => CustomKarlaText(
-                        size: 14,
-                        weight: FontWeight.w400,
-                        text: '\u{2022} ${sub.features[index]}'),
+                    itemBuilder: (context, index) => Padding(
+                          padding: EdgeInsets.only(left: 20.w),
+                          child: CustomKarlaText(
+                              align: TextAlign.start,
+                              size: 14,
+                              weight: FontWeight.w400,
+                              text: '\u{2022} ${sub.features[index]}'),
+                        ),
                     separatorBuilder: (context, index) => SizedBox(
                           height: 50.h,
                         ),

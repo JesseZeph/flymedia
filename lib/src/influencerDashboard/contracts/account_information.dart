@@ -31,9 +31,9 @@ class _AccountInformationState extends State<AccountInformation> {
           weight: FontWeight.w700,
         ),
       ),
-      body: Center(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 25.w),
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 25.w),
+        child: SingleChildScrollView(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
