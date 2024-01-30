@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/app_constants.dart';
 import 'package:flymedia_app/services/helpers/verify_company.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/verificationinprogress.dart';
+import 'package:flymedia_app/src/clientdashboard/screens/widgets/country_dropdown.dart';
 import 'package:flymedia_app/utils/extensions/context_extension.dart';
 import 'package:flymedia_app/utils/widgets/alert_loader.dart';
 import 'package:flymedia_app/utils/widgets/headings.dart';
@@ -25,10 +26,12 @@ class ClientVerificationDetails extends StatefulWidget {
 
 class _ClientVerificationDetailsState extends State<ClientVerificationDetails> {
   var companyName = TextEditingController();
-  var companyHq = TextEditingController();
   var website = TextEditingController();
   var companyEmail = TextEditingController();
   var memberContact = TextEditingController();
+
+  String? companyHq;
+  String? code;
 
   GlobalKey<FormState> formKey = GlobalKey();
 
@@ -37,7 +40,6 @@ class _ClientVerificationDetailsState extends State<ClientVerificationDetails> {
   @override
   void dispose() {
     companyName.dispose();
-    companyHq.dispose();
     website.dispose();
     companyEmail.dispose();
     memberContact.dispose();
@@ -47,7 +49,6 @@ class _ClientVerificationDetailsState extends State<ClientVerificationDetails> {
   bool isValidForm() {
     List<String> fields = [
       companyEmail.text,
-      companyHq.text,
       companyName.text,
       website.text,
       memberContact.text
@@ -62,10 +63,8 @@ class _ClientVerificationDetailsState extends State<ClientVerificationDetails> {
       progressIndicator: const AlertLoader(message: 'Please wait'),
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: SingleChildScrollView(
-            child: Form(
-          key: formKey,
-          child: Column(
+        body: Center(
+          child: ListView(
             children: [
               Container(
                 margin: EdgeInsets.only(top: 30.h, bottom: 30.h),
@@ -74,119 +73,126 @@ class _ClientVerificationDetailsState extends State<ClientVerificationDetails> {
                   subText: "Fill in your company details to be verified.",
                 ),
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 25.w, bottom: 5.h),
-                    child: Text(
-                      'Company name',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.mainTextColor,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w700,
-                          ),
+              Padding(
+                padding: EdgeInsets.only(left: 25.w, bottom: 5.h),
+                child: Text(
+                  'Company name',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppColors.mainTextColor,
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w700,
+                      ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 25.w),
+                child: TextInputField(
+                  controller: companyName,
+                  hintText: 'Enter your company name',
+                  onChanged: (_) {},
+                  validator: (val) {
+                    if (val == null || val.isEmpty) return '';
+                    return null;
+                  },
+                ),
+              ),
+              SizedBox(height: 30.h),
+              Padding(
+                padding: EdgeInsets.only(left: 25.w, bottom: 5.h),
+                child: Text(
+                  'Company HQ',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppColors.mainTextColor,
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w700,
+                      ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.symmetric(horizontal: 25.w),
+                child: DropDowView(
+                  onSelect: (countries) {
+                    companyHq = countries;
+                  },
+                  items: countriesList,
+                ),
+              ),
+              SizedBox(height: 30.h),
+              Padding(
+                padding: EdgeInsets.only(left: 25.w, bottom: 5.h),
+                child: Text(
+                  'Company website',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppColors.mainTextColor,
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w700,
+                      ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 25.w),
+                child: TextInputField(
+                  controller: website,
+                  hintText: 'e.g. https://companyname.com',
+                  onChanged: (_) {},
+                  validator: (val) {
+                    if (val == null || val.isEmpty) return '';
+                    return null;
+                  },
+                ),
+              ),
+              SizedBox(height: 30.h),
+              Padding(
+                padding: EdgeInsets.only(left: 25.w, bottom: 5.h),
+                child: Text(
+                  'Company email',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppColors.mainTextColor,
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w700,
+                      ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 25.w),
+                child: TextInputField(
+                  controller: companyEmail,
+                  hintText: 'Please use your official email address',
+                  onChanged: (_) {},
+                  validator: (val) {
+                    if (val == null || val.isEmpty) return '';
+                    return null;
+                  },
+                ),
+              ),
+              SizedBox(height: 30.h),
+              Padding(
+                padding: EdgeInsets.only(left: 25.w, bottom: 5.h),
+                child: Text(
+                  'Contact number of internal member',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: AppColors.mainTextColor,
+                        fontSize: 12.sp,
+                        fontWeight: FontWeight.w700,
+                      ),
+                ),
+              ),
+              Padding(
+                padding: EdgeInsets.symmetric(horizontal: 25.w),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SizedBox(
+                      child: CountryCode(
+                        onSelect: (selectedCode) {
+                          code = selectedCode;
+                        },
+                        items: countryCode,
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 25.w),
-                    child: TextInputField(
-                      controller: companyName,
-                      hintText: 'Enter your company name',
-                      onChanged: (_) {},
-                      validator: (val) {
-                        if (val == null || val.isEmpty) return '';
-                        return null;
-                      },
-                    ),
-                  ),
-                  SizedBox(height: 30.h),
-                  Padding(
-                    padding: EdgeInsets.only(left: 25.w, bottom: 5.h),
-                    child: Text(
-                      'Company HQ',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.mainTextColor,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w700,
-                          ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 25.w),
-                    child: TextInputField(
-                      controller: companyHq,
-                      hintText: 'Where is your company located?',
-                      onChanged: (_) {},
-                      validator: (val) {
-                        if (val == null || val.isEmpty) return '';
-                        return null;
-                      },
-                    ),
-                  ),
-                  SizedBox(height: 30.h),
-                  Padding(
-                    padding: EdgeInsets.only(left: 25.w, bottom: 5.h),
-                    child: Text(
-                      'Company website',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.mainTextColor,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w700,
-                          ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 25.w),
-                    child: TextInputField(
-                      controller: website,
-                      hintText: 'e.g. https://companyname.com',
-                      onChanged: (_) {},
-                      validator: (val) {
-                        if (val == null || val.isEmpty) return '';
-                        return null;
-                      },
-                    ),
-                  ),
-                  SizedBox(height: 30.h),
-                  Padding(
-                    padding: EdgeInsets.only(left: 25.w, bottom: 5.h),
-                    child: Text(
-                      'Company email',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.mainTextColor,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w700,
-                          ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 25.w),
-                    child: TextInputField(
-                      controller: companyEmail,
-                      hintText: 'Please use your official email address',
-                      onChanged: (_) {},
-                      validator: (val) {
-                        if (val == null || val.isEmpty) return '';
-                        return null;
-                      },
-                    ),
-                  ),
-                  SizedBox(height: 30.h),
-                  Padding(
-                    padding: EdgeInsets.only(left: 25.w, bottom: 5.h),
-                    child: Text(
-                      'Contact number of internal member',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: AppColors.mainTextColor,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w700,
-                          ),
-                    ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 25.w),
-                    child: TextInputField(
+                    SizedBox(width: 10.w),
+                    TextInputField(
+                      width: 240.w,
                       controller: memberContact,
                       inputType: const TextInputType.numberWithOptions(),
                       hintText: 'Who can we get in touch with?',
@@ -196,76 +202,76 @@ class _ClientVerificationDetailsState extends State<ClientVerificationDetails> {
                         return null;
                       },
                     ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(
-                      top: 30.h,
-                      left: 25.h,
-                    ),
-                    child: AnimatedButton(
-                      onTap: () async {
-                        if (isValidForm()) {
-                          setState(() {
-                            loading = !loading;
-                          });
-                          VerifyCompanyRequest rawModel = VerifyCompanyRequest(
-                              companyName: companyName.text,
-                              companyHq: companyHq.text,
-                              website: website.text,
-                              companyEmail: companyEmail.text,
-                              memberContact: memberContact.text,
-                              userId: userUid);
-                          var model = verifyCompanyToJson(rawModel);
+                  ],
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(
+                  top: 30.h,
+                ),
+                child: AnimatedButton(
+                  onTap: () async {
+                    if (isValidForm()) {
+                      setState(() {
+                        loading = !loading;
+                      });
 
-                          await VerifyCompanyHelper.verifyCompany(model)
-                              .then((result) {
-                            setState(() {
-                              loading = !loading;
-                            });
-                            if (result) {
-                              Get.offAll(() => const VerificationInProgress());
-                            } else {
-                              context
-                                  .showError('Error occured, try again later.');
-                            }
-                          });
+                      String fullPhoneNumber = '$code${memberContact.text}';
+
+                      VerifyCompanyRequest rawModel = VerifyCompanyRequest(
+                          companyName: companyName.text,
+                          website: website.text,
+                          companyEmail: companyEmail.text,
+                          memberContact: fullPhoneNumber,
+                          userId: userUid,
+                          companyHq: companyHq!);
+                      var model = verifyCompanyToJson(rawModel);
+
+                      await VerifyCompanyHelper.verifyCompany(model)
+                          .then((result) {
+                        setState(() {
+                          loading = !loading;
+                        });
+                        if (result) {
+                          Get.offAll(() => const VerificationInProgress());
                         } else {
-                          context.showError('One or more fields are empty');
+                          context.showError('Error occured, try again later.');
                         }
-                      },
-                      child: const RoundedButtonWidget(
-                        title: 'Submit',
-                      ),
+                      });
+                    } else {
+                      context.showError('One or more fields are empty');
+                    }
+                  },
+                  child: const RoundedButtonWidget(
+                    title: 'Submit',
+                  ),
+                ),
+              ),
+              Container(
+                margin: EdgeInsets.only(
+                  top: 20.h,
+                ),
+                child: TextButton(
+                  onPressed: () {
+                    Get.back();
+                  },
+                  child: Align(
+                    alignment: Alignment.center,
+                    child: Text(
+                      'Cancel',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: AppColors.mainTextColor,
+                            fontSize: 12.sp,
+                            fontWeight: FontWeight.w600,
+                          ),
+                      textAlign: TextAlign.center,
                     ),
                   ),
-                  Container(
-                    margin: EdgeInsets.only(
-                      top: 20.h,
-                    ),
-                    child: TextButton(
-                      onPressed: () {
-                        Get.back();
-                      },
-                      child: Align(
-                        alignment: Alignment.center,
-                        child: Text(
-                          'Cancel',
-                          style:
-                              Theme.of(context).textTheme.bodySmall?.copyWith(
-                                    color: AppColors.mainTextColor,
-                                    fontSize: 12.sp,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               )
             ],
           ),
-        )),
+        ),
       ),
     );
   }

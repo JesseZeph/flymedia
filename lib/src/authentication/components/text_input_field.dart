@@ -11,6 +11,8 @@ class TextInputField extends StatelessWidget {
   final TextEditingController? controller;
   final TextInputType? inputType;
   final String? Function(String?)? validator;
+  final double? width;
+
   const TextInputField({
     super.key,
     required this.hintText,
@@ -20,6 +22,7 @@ class TextInputField extends StatelessWidget {
     this.obscureText = false,
     this.validator,
     this.inputType,
+    this.width,
   });
 
   @override
@@ -29,7 +32,7 @@ class TextInputField extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          width: 325.w,
+          width: width ?? 325.w,
           padding: EdgeInsets.symmetric(horizontal: 10.w),
           decoration: BoxDecoration(
               border: Border.all(

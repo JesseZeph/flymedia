@@ -104,7 +104,7 @@ class ContractCardWidget extends StatelessWidget {
               ),
               SizedBox(height: 15.h),
               Container(
-                width: 100.w,
+                width: 130.w,
                 padding: EdgeInsets.all(12.w),
                 decoration: BoxDecoration(
                   color: buttonColor,

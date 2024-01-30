@@ -248,6 +248,7 @@ class _ProfilePageState extends State<EditProfile> {
                       child: DropDowView(
                         initialValue: widget.profile?.postsViews,
                         onSelect: (p0) => averageViews = p0,
+                        items: viewsList,
                       ),
                     ),
                     Container(

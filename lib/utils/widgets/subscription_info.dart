@@ -25,70 +25,72 @@ class SubscriptionInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {},
-      child: Container(
-        width: Get.width.w,
-        padding: EdgeInsets.symmetric(vertical: 25.h, horizontal: 10.r),
-        decoration: BoxDecoration(
-            color: containerColor, borderRadius: BorderRadius.circular(12.r)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: 10.w),
-                  child: Text(
-                    headerText,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          color: Colors.black,
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w700,
-                        ),
-                  ),
-                ),
-                SizedBox(height: 10.h),
-                Padding(
-                  padding: EdgeInsets.only(left: 10.w),
-                  child: SizedBox(
-                    width: 230.w,
+      child: FittedBox(
+        child: Container(
+          width: Get.width.w,
+          padding: EdgeInsets.symmetric(vertical: 25.h, horizontal: 10.r),
+          decoration: BoxDecoration(
+              color: containerColor, borderRadius: BorderRadius.circular(12.r)),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: 10.w),
                     child: Text(
-                      subText,
+                      headerText,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             color: Colors.black,
                             fontSize: 14.sp,
-                            fontWeight: FontWeight.w400,
+                            fontWeight: FontWeight.w700,
                           ),
                     ),
                   ),
-                ),
-                SizedBox(height: 10.h),
-                TextButton(
-                  onPressed: onTap,
-                  child: Container(
-                    padding: EdgeInsets.all(10.r),
-                    decoration: BoxDecoration(
-                      border: Border.all(width: 1, color: buttonColor),
-                      borderRadius: BorderRadius.circular(25.r),
-                    ),
-                    child: Text(
-                      buttonText,
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Colors.black,
-                            fontSize: 12.sp,
-                            fontWeight: FontWeight.w400,
-                          ),
+                  SizedBox(height: 10.h),
+                  Padding(
+                    padding: EdgeInsets.only(left: 10.w),
+                    child: SizedBox(
+                      width: 230.w,
+                      child: Text(
+                        subText,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: Colors.black,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w400,
+                            ),
+                      ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            SvgPicture.asset(
-              imageUrl,
-              fit: BoxFit.cover,
-            ),
-          ],
+                  SizedBox(height: 10.h),
+                  TextButton(
+                    onPressed: onTap,
+                    child: Container(
+                      padding: EdgeInsets.all(10.r),
+                      decoration: BoxDecoration(
+                        border: Border.all(width: 1, color: buttonColor),
+                        borderRadius: BorderRadius.circular(25.r),
+                      ),
+                      child: Text(
+                        buttonText,
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: Colors.black,
+                              fontSize: 12.sp,
+                              fontWeight: FontWeight.w400,
+                            ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              SvgPicture.asset(
+                imageUrl,
+                fit: BoxFit.cover,
+              ),
+            ],
+          ),
         ),
       ),
     );

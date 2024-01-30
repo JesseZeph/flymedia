@@ -44,12 +44,12 @@ class _CompanyDetailsState extends State<CompanyDetails> {
 
   TextEditingController companyDescriptionCtrl = TextEditingController();
   TextEditingController jobTitleCtrl = TextEditingController();
-  TextEditingController countryCtrl = TextEditingController();
   TextEditingController rateFromCtrl = TextEditingController();
   TextEditingController rateToCtrl = TextEditingController();
   TextEditingController jobDescriptionCtrl = TextEditingController();
 
   String? viewsRequired;
+  String? country;
   String? filePath;
   bool hasPickedFile = false;
 
@@ -60,7 +60,6 @@ class _CompanyDetailsState extends State<CompanyDetails> {
     rateFromCtrl.dispose();
     rateToCtrl.dispose();
     jobDescriptionCtrl.dispose();
-    countryCtrl.dispose();
     super.dispose();
   }
 
@@ -73,8 +72,7 @@ class _CompanyDetailsState extends State<CompanyDetails> {
         jobDescriptionCtrl.text.isEmpty ||
         jobTitleCtrl.text.isEmpty ||
         rateFromCtrl.text.isEmpty ||
-        rateToCtrl.text.isEmpty ||
-        countryCtrl.text.isEmpty) {
+        rateToCtrl.text.isEmpty) {
       return [false, 'One or more fields are empty!'];
     }
     return [true, 'Form is valid'];
@@ -188,12 +186,14 @@ class _CompanyDetailsState extends State<CompanyDetails> {
               ),
             ),
             Container(
-                padding: EdgeInsets.symmetric(horizontal: 20.h),
-                child: TextInputField(
-                  hintText: 'Singapore',
-                  onChanged: (_) {},
-                  controller: countryCtrl,
-                )),
+              margin: EdgeInsets.symmetric(horizontal: 20.w),
+              child: DropDowView(
+                onSelect: (countries) {
+                  country = countries;
+                },
+                items: countriesList,
+              ),
+            ),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 20.w),
               child: const CHeadingAndSubText(
@@ -237,6 +237,7 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                 onSelect: (views) {
                   viewsRequired = views;
                 },
+                items: viewsList,
               ),
             ),
             Container(
@@ -274,7 +275,7 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                         imageUrl: filePath ?? '',
                         companyDescription: companyDescriptionCtrl.text,
                         jobTitle: jobTitleCtrl.text,
-                        country: countryCtrl.text,
+                        country: country ?? 'Nil',
                         rateFrom: rateFromCtrl.text,
                         rateTo: rateToCtrl.text,
                         viewsRequired: viewsRequired ?? 'Nil',
