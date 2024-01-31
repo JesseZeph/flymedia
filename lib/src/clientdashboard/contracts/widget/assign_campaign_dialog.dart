@@ -2,19 +2,30 @@ import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/colors.dart';
-import 'package:flymedia_app/src/clientdashboard/contracts/payment_page.dart';
 import 'package:flymedia_app/utils/widgets/custom_text.dart';
-import 'package:get/get.dart';
 
 class AssignCampaignDialog extends StatefulWidget {
-  const AssignCampaignDialog({Key? key}) : super(key: key);
+  const AssignCampaignDialog(
+      {Key? key,
+      required this.influencerName,
+      required this.imageUrl,
+      required this.showTwoBtns})
+      : super(key: key);
+  final String influencerName, imageUrl;
+  final bool showTwoBtns;
 
   @override
   State<AssignCampaignDialog> createState() => _AssignCampaignDialogState();
 }
 
 class _AssignCampaignDialogState extends State<AssignCampaignDialog> {
-  bool showTwoButtons = true;
+  late bool showTwoButtons;
+
+  @override
+  void initState() {
+    super.initState();
+    showTwoButtons = widget.showTwoBtns;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -35,8 +46,8 @@ class _AssignCampaignDialogState extends State<AssignCampaignDialog> {
                     ? CircleAvatar(
                         radius: 35.sp,
                         backgroundColor: AppColors.mainColor,
-                        backgroundImage: const AssetImage(
-                            'assets/images/sophieEllipse.png'), // Your image asset
+                        backgroundImage:
+                            NetworkImage(widget.imageUrl), // Your image asset
                       )
                     : Icon(
                         FluentSystemIcons.ic_fluent_checkmark_circle_regular,
@@ -48,7 +59,7 @@ class _AssignCampaignDialogState extends State<AssignCampaignDialog> {
             SizedBox(height: 16.h),
             if (showTwoButtons)
               CustomKarlaText(
-                text: 'Assign Campaign to Lexy Chang',
+                text: 'Assign Campaign to ${widget.influencerName}',
                 size: 14.sp,
                 weight: FontWeight.w700,
               ),
@@ -56,7 +67,7 @@ class _AssignCampaignDialogState extends State<AssignCampaignDialog> {
             Text(
               showTwoButtons
                   ? 'Once Assigned, the campaign cannot be reassigned to another person. Are you sure you want to proceed?'
-                  : "This campaign has been successfully assigned to Lexy Chang. Please proceed with the payment to begin your contract.",
+                  : "This campaign has been successfully assigned to ${widget.influencerName}. Please proceed with the payment to begin your contract.",
               style: Theme.of(context)
                   .textTheme
                   .bodySmall
@@ -76,9 +87,7 @@ class _AssignCampaignDialogState extends State<AssignCampaignDialog> {
                         ),
                         child: TextButton(
                           onPressed: () {
-                            setState(() {
-                              showTwoButtons = false;
-                            });
+                            Navigator.pop(context, true);
                             // Handle 'Yes' button logic
                           },
                           style: TextButton.styleFrom(
@@ -108,7 +117,7 @@ class _AssignCampaignDialogState extends State<AssignCampaignDialog> {
                         ),
                         child: TextButton(
                           onPressed: () {
-                            Navigator.of(context).pop();
+                            Navigator.pop(context, false);
                           },
                           child: Text(
                             'No',
@@ -129,7 +138,9 @@ class _AssignCampaignDialogState extends State<AssignCampaignDialog> {
                     ),
                     child: TextButton(
                       onPressed: () {
-                        Get.to(() => const CampaignPayment());
+                        // Get.to(() => const CampaignPayment());
+                        Navigator.pop(context, true);
+
                         // Handle 'Make Payment' button logic
                       },
                       style: TextButton.styleFrom(

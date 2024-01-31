@@ -53,7 +53,7 @@ class _ClientHomePageState extends State<ClientHomePage> {
   }
 
   fetchData() async {
-    context.read<SubscriptionProvider>().fetchSubscriptions();
+    context.read<SubscriptionProvider>().init();
     await context.read<LoginNotifier>().getPref().then((_) {
       context
           .read<CampaignsNotifier>()

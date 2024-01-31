@@ -1,7 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flymedia_app/models/network_response.dart';
 import 'package:flymedia_app/models/profile/profile_model.dart';
+import 'package:flymedia_app/utils/global_variables.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -75,6 +77,20 @@ class ApplicationsHelper extends ChangeNotifier {
     var decodedResponse = jsonDecode(response.body);
 
     return decodedResponse["is_verified"];
+  }
+
+  Future<NetworkResponse> assignInfluencer(
+      {String? campaignId, String? name, String? mail}) async {
+    _isLoading = !_isLoading;
+    notifyListeners();
+    NetworkResponse resp = await repository.postRequest(body: {
+      "campaign_id": campaignId ?? '',
+      "influencer_name": name ?? '',
+      "influencer_mail": mail ?? ''
+    }, endpoint: '${Config.campaignUpload}/assign');
+    _isLoading = !_isLoading;
+    notifyListeners();
+    return resp;
   }
 
   Future<Map<String, String>> getHeaders() async {

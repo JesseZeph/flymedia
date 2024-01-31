@@ -5,6 +5,7 @@ import 'package:flymedia_app/src/authentication/components/animated_button.dart'
 import 'package:flymedia_app/src/authentication/components/roundedbutton.dart';
 import 'package:flymedia_app/src/clientdashboard/contracts/payment_success.dart';
 import 'package:flymedia_app/src/tier_listings/components/payment_methods.dart';
+import 'package:flymedia_app/utils/extensions/string_extensions.dart';
 import 'package:flymedia_app/utils/widgets/custom_back_button.dart';
 import 'package:flymedia_app/utils/widgets/custom_text.dart';
 import 'package:get/get.dart';
@@ -13,7 +14,12 @@ import 'package:google_fonts/google_fonts.dart';
 class CampaignPayment extends StatefulWidget {
   const CampaignPayment({
     super.key,
+    required this.imageUrl,
+    required this.influencerName,
+    required this.amount,
+    required this.title,
   });
+  final String imageUrl, influencerName, amount, title;
 
   @override
   State<CampaignPayment> createState() => _CampaignPaymentState();
@@ -54,15 +60,15 @@ class _CampaignPaymentState extends State<CampaignPayment> {
                 child: CircleAvatar(
               radius: 35.sp,
               backgroundColor: AppColors.mainColor,
-              backgroundImage: const AssetImage(
-                  'assets/images/sophieEllipse.png'), // Your image asset
+              backgroundImage:
+                  NetworkImage(widget.imageUrl), // Your image asset
             )),
             SizedBox(
               height: 10.h,
             ),
-            const CustomKarlaText(
-              text: 'Tiktok Influencer for a Skincare Brand',
-              color: Color(0xff5f5d5d),
+            CustomKarlaText(
+              text: widget.title,
+              color: const Color(0xff5f5d5d),
               size: 16,
               weight: FontWeight.w500,
             ),
@@ -70,7 +76,7 @@ class _CampaignPaymentState extends State<CampaignPayment> {
               height: 10.h,
             ),
             Text(
-              '\$10,000',
+              '\$${widget.amount.formatComma()}',
               style: GoogleFonts.karla(
                   color: const Color(0xff0f1521),
                   fontSize: 22.sp,
@@ -99,7 +105,8 @@ class _CampaignPaymentState extends State<CampaignPayment> {
             ),
             AnimatedButton(
               onTap: () {
-                Get.to(() => const PaymentSuccess());
+                // Get.to(() => const PaymentSuccess());
+                Get.back(result: true);
               },
               child: const RoundedButtonWidget(
                 title: 'Make Payment',
