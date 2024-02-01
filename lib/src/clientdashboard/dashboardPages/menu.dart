@@ -7,6 +7,7 @@ import 'package:flymedia_app/src/tier_listings/tier_listings_page.dart';
 import 'package:flymedia_app/utils/widgets/subscription_info.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../providers/login_provider.dart';
 import '../../../utils/modal.dart';
@@ -57,8 +58,12 @@ class Menu extends StatelessWidget {
                     imageUrl: 'assets/images/bro.svg',
                     buttonText: 'View contracts',
                     buttonColor: AppColors.purplePatch,
-                    onTap: () {
-                      Get.to(() => const Contracts());
+                    onTap: () async {
+                      final prefs = await SharedPreferences.getInstance();
+                      Get.to(() => Contracts(
+                            userType: 'Client',
+                            userId: prefs.getString('userId') ?? '',
+                          ));
                     },
                   )
                 ],

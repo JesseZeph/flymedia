@@ -105,8 +105,7 @@ class _CampaignPaymentState extends State<CampaignPayment> {
             ),
             AnimatedButton(
               onTap: () {
-                // Get.to(() => const PaymentSuccess());
-                Get.back(result: true);
+                Get.to(() => const PaymentSuccess());
               },
               child: const RoundedButtonWidget(
                 title: 'Make Payment',
