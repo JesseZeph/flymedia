@@ -5,7 +5,6 @@ import 'package:flymedia_app/providers/profile_provider.dart';
 import 'package:flymedia_app/models/chats/chat_model.dart';
 import 'package:flymedia_app/models/profile/profile_model.dart';
 import 'package:flymedia_app/src/influencerDashboard/screens/profile_edit.dart';
-import 'package:flymedia_app/utils/extensions/context_extension.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -57,7 +56,7 @@ class _ProfilePageState extends State<ProfilePage> {
         throw Exception('Could not launch profile');
       }
     } on Exception catch (e) {
-      context.showError(e.toString());
+      debugPrint(e.toString());
     }
   }
 

@@ -1,18 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flymedia_app/constants/colors.dart';
 import 'package:flymedia_app/src/clientdashboard/contracts/widget/contract_card.dart';
-import 'package:flymedia_app/src/influencerDashboard/contracts/view_contract.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
+
+import '../../../models/active_campaigns.dart';
+import '../../../providers/campaign_provider.dart';
+import '../../../utils/widgets/alert_loader.dart';
+import '../../../utils/widgets/custom_text.dart';
 
 class InfluencerContracts extends StatefulWidget {
-  const InfluencerContracts({super.key});
-
+  const InfluencerContracts(
+      {super.key, required this.userType, required this.userId});
+  final String userType;
+  final String userId;
   @override
   State<InfluencerContracts> createState() => _InfluencerContractsState();
 }
 
 class _InfluencerContractsState extends State<InfluencerContracts> {
+  late Future<List<ActiveCampaignModel>> contracts;
+
+  @override
+  void initState() {
+    super.initState();
+    contracts = context
+        .read<CampaignsNotifier>()
+        .fetchActiveCampaigns(userType: widget.userType, id: widget.userId);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,40 +49,35 @@ class _InfluencerContractsState extends State<InfluencerContracts> {
       ),
       backgroundColor: Colors.white,
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 20.w),
-        child: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          child: Center(
-            child: Column(
-              children: [
-                ContractCardWidget(
-                  heading: 'Tiktok Influencer for a Skincare Brand',
-                  amount: '\$10,000',
-                  name: 'Facebook',
-                  buttonText: 'In Progress',
-                  buttonColor: Colors.green,
-                  status: 'This listing has not been completed',
-                  onTap: () {
-                    Get.to(() => const InfluencerCampaignContract());
-                  },
+          padding: EdgeInsets.symmetric(horizontal: 20.w),
+          child: FutureBuilder<List<ActiveCampaignModel>>(
+            future: contracts,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const AlertLoader(message: 'Fetching contracts');
+              } else if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                return ListView.separated(
+                    itemBuilder: (context, index) {
+                      var contract = snapshot.data![index];
+                      return ContractCardWidget(
+                        contract: contract,
+                        isClient: widget.userType == 'Client',
+                      );
+                    },
+                    separatorBuilder: (context, index) => SizedBox(
+                          height: 20.h,
+                        ),
+                    itemCount: snapshot.data?.length ?? 0);
+              }
+              return const Center(
+                child: CustomKarlaText(
+                  text: 'No ongoing contracts found',
+                  size: 20,
+                  weight: FontWeight.w500,
                 ),
-                SizedBox(height: 30.h),
-                ContractCardWidget(
-                  heading: 'Looking for a Content Creator for a Food Brand',
-                  amount: '\$10,000',
-                  name: 'Hao Foods',
-                  buttonText: 'Completed',
-                  buttonColor: AppColors.green,
-                  status: 'This listing has been completed',
-                  onTap: () {
-                    Get.to(() => const InfluencerCampaignContract());
-                  },
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
+              );
+            },
+          )),
     );
   }
 }

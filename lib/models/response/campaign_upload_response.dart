@@ -14,6 +14,7 @@ class CampaignUploadResponse {
   final String rateTo;
   final String viewsRequired;
   final String jobDescription;
+  final String? assigned;
 
   CampaignUploadResponse({
     required this.id,
@@ -25,6 +26,7 @@ class CampaignUploadResponse {
     required this.rateTo,
     required this.viewsRequired,
     required this.jobDescription,
+    this.assigned,
   });
 
   factory CampaignUploadResponse.fromJson(Map<String, dynamic> json) =>
@@ -38,6 +40,7 @@ class CampaignUploadResponse {
         rateTo: json["rateTo"],
         viewsRequired: json["viewsRequired"],
         jobDescription: json["jobDescription"],
+        assigned: json["assigned"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -50,5 +53,6 @@ class CampaignUploadResponse {
         "rateTo": rateTo,
         "viewsRequired": viewsRequired,
         "jobDescription": jobDescription,
+        "assigned": assigned,
       };
 }

@@ -99,29 +99,33 @@ class _ViewCampaignState extends State<ViewCampaign> {
                   ),
                 ),
                 SizedBox(height: 15.h),
-                TextButton(
-                    onPressed: () {
-                      Get.to(() => Applications(
-                            campaignId: campaign.id,
-                          ));
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(10.r),
-                      decoration: BoxDecoration(
-                          border: Border.all(
-                            width: 1,
-                            color: AppColors.mainColor,
-                          ),
-                          borderRadius: BorderRadius.circular(25.r)),
-                      child: Text(
-                        'View Applications',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                if (campaign.assigned == null)
+                  TextButton(
+                      onPressed: () {
+                        Get.to(() => Applications(
+                              campaignId: campaign.id,
+                              amount: campaign.rateTo,
+                              title: campaign.jobTitle,
+                            ));
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(10.r),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1,
                               color: AppColors.mainColor,
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w400,
                             ),
-                      ),
-                    )),
+                            borderRadius: BorderRadius.circular(25.r)),
+                        child: Text(
+                          'View Applications',
+                          style:
+                              Theme.of(context).textTheme.bodyMedium?.copyWith(
+                                    color: AppColors.mainColor,
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                        ),
+                      )),
                 Padding(
                   padding: EdgeInsets.only(top: 12.h),
                   child: const FullDivider(),

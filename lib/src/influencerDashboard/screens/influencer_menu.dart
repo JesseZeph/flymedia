@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/colors.dart';
 import 'package:flymedia_app/providers/login_provider.dart';
-import 'package:flymedia_app/src/influencerDashboard/contracts/account_display.dart';
 import 'package:flymedia_app/src/influencerDashboard/contracts/account_information.dart';
 import 'package:flymedia_app/src/influencerDashboard/contracts/contracts_list.dart';
 import 'package:flymedia_app/src/search/widget/custom_field.dart';
@@ -58,7 +57,14 @@ class InfluencerMenu extends StatelessWidget {
                     buttonText: 'View contracts',
                     buttonColor: AppColors.purplePatch,
                     onTap: () {
-                      Get.to(() => const InfluencerContracts());
+                      Get.to(() => InfluencerContracts(
+                            userType: 'Influencer',
+                            userId: context
+                                    .read<ProfileProvider>()
+                                    .userProfile
+                                    ?.id ??
+                                '',
+                          ));
                     },
                   )
                 ],
