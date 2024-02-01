@@ -1,7 +1,5 @@
 class Config {
   static const apiUrl = "flymediabackend-production.up.railway.app";
-  // static const apiUrl = " localhost:6002";
-
   static const String signupUrl = "/api/register";
   static const String signupApple = "/apple/sign_up_with_apple";
   static const String appleCallback = "/apple/callbacks/sign_up_with_apple";
@@ -26,4 +24,5 @@ class Config {
   static const String validateCompany = "/api/confirm/company";
   static const String chats = "/api/chats";
   static const String subscription = "/api/subscriptions";
+  static const String addAccount = "/api/account";
 }

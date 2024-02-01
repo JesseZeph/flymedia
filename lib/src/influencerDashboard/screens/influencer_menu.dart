@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/colors.dart';
 import 'package:flymedia_app/providers/login_provider.dart';
+import 'package:flymedia_app/src/influencerDashboard/contracts/account_display.dart';
 import 'package:flymedia_app/src/influencerDashboard/contracts/account_information.dart';
 import 'package:flymedia_app/src/influencerDashboard/contracts/contracts_list.dart';
 import 'package:flymedia_app/src/search/widget/custom_field.dart';
@@ -38,7 +39,7 @@ class InfluencerMenu extends StatelessWidget {
                     subText:
                         'Provide your account information\nto ensure seemless and timely\npayments',
                     imageUrl: 'assets/images/coins.svg',
-                    buttonText: 'Subscribe now',
+                    buttonText: 'Add account',
                     buttonColor: AppColors.mainColor,
                     containerColor: AppColors.cardColor,
                     onTap: () {

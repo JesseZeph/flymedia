@@ -1,77 +1,104 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flymedia_app/constants/app_constants.dart';
 import 'package:flymedia_app/constants/colors.dart';
+import 'package:flymedia_app/models/response/get_accountdetails_res.dart';
+import 'package:flymedia_app/providers/influencer_add_account.dart';
 import 'package:flymedia_app/src/authentication/components/animated_button.dart';
 import 'package:flymedia_app/src/influencerDashboard/contracts/widget/delete_dialog.dart';
 import 'package:flymedia_app/src/influencerDashboard/contracts/widget/rounded_button.dart';
 import 'package:flymedia_app/utils/widgets/custom_text.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
-class DisplayAccountInfo extends StatelessWidget {
-  const DisplayAccountInfo({super.key});
+class DisplayAccountInfo extends StatefulWidget {
+  const DisplayAccountInfo({Key? key}) : super(key: key);
+
+  @override
+  _DisplayAccountInfoState createState() => _DisplayAccountInfoState();
+}
+
+class _DisplayAccountInfoState extends State<DisplayAccountInfo> {
+  late Data id;
 
   @override
   Widget build(BuildContext context) {
+    final influencerAccountDetailsProvider =
+        context.watch<InfluencerAccountDetailsProvider>();
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new),
-          onPressed: () {
+          onPressed: () async {
             Get.back();
           },
         ),
-        title: CustomKarlaText(
+        title: const CustomKarlaText(
           text: 'Account Information',
-          size: 16.sp,
+          size: 16,
           weight: FontWeight.w700,
         ),
       ),
       backgroundColor: Colors.white,
-      body: Center(
-        child: Column(
-          children: [
-            Padding(
-              padding: EdgeInsets.only(top: 20.h),
-              child: const DisplayAccountWidget(
-                heading: 'Account name',
-                subText: 'Sophie Light Chan',
-              ),
-            ),
-            SizedBox(height: 30.h),
-            const DisplayAccountWidget(
-              heading: 'Receiving bank',
-              subText: 'United Overseas Bank Limited',
-            ),
-            SizedBox(height: 30.h),
-            const DisplayAccountWidget(
-              heading: 'Account number',
-              subText: '65526292026',
-            ),
-            SizedBox(height: 40.h),
-            Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 22.w,
-              ),
-              child: AnimatedButton(
-                  onTap: () {},
-                  child: const RoundedButtonsWidget(
-                    text: 'Edit',
-                  )),
-            ),
-            SizedBox(height: 10.h),
-            TextButton(
-                onPressed: () {
-                  _showDialog(context);
-                },
-                child: CustomKarlaText(
-                  text: 'Delete',
-                  size: 14.sp,
-                  weight: FontWeight.w500,
-                  color: AppColors.errorColor,
-                ))
-          ],
-        ),
+      body: FutureBuilder(
+        future: influencerAccountDetailsProvider.getAccountdetails(userUid),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (influencerAccountDetailsProvider.accountdetails == null) {
+            return const Center(child: Text('No account details available.'));
+          } else {
+            return Column(
+              children: [
+                DisplayAccountWidget(
+                  heading: 'Account name',
+                  subText: influencerAccountDetailsProvider
+                      .accountdetails!.accountName,
+                ),
+                SizedBox(height: 30.h),
+                DisplayAccountWidget(
+                  heading: 'Receiving bank',
+                  subText:
+                      influencerAccountDetailsProvider.accountdetails!.bankName,
+                ),
+                SizedBox(height: 30.h),
+                DisplayAccountWidget(
+                  heading: 'Account number',
+                  subText: influencerAccountDetailsProvider
+                      .accountdetails!.accountNumber,
+                ),
+                SizedBox(height: 40.h),
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 22.w),
+                  child: AnimatedButton(
+                    onTap: () {
+                      // Handle the 'Edit' button tap
+                    },
+                    child: const RoundedButtonsWidget(
+                      text: 'Edit',
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10.h),
+                TextButton(
+                  onPressed: () {
+                    _showDialog(context);
+                  },
+                  child: CustomKarlaText(
+                    text: 'Delete',
+                    size: 14.sp,
+                    weight: FontWeight.w500,
+                    color: AppColors.errorColor,
+                  ),
+                ),
+              ],
+            );
+          }
+        },
       ),
     );
   }
@@ -81,10 +108,10 @@ class DisplayAccountWidget extends StatelessWidget {
   final String heading;
   final String subText;
   const DisplayAccountWidget({
-    super.key,
+    Key? key,
     required this.heading,
     required this.subText,
-  });
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -95,16 +122,21 @@ class DisplayAccountWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          CustomKarlaText(text: heading, size: 14.sp, weight: FontWeight.w500),
+          CustomKarlaText(
+            text: heading,
+            size: 14.sp,
+            weight: FontWeight.w500,
+          ),
           SizedBox(height: 5.h),
           Container(
             width: Get.width.w,
             decoration: BoxDecoration(
-                border: Border.all(
-                  width: 1,
-                  color: AppColors.lightMainText.withOpacity(0.1),
-                ),
-                borderRadius: BorderRadius.circular(6.w)),
+              border: Border.all(
+                width: 1,
+                color: AppColors.lightMainText.withOpacity(0.1),
+              ),
+              borderRadius: BorderRadius.circular(6.w),
+            ),
             padding: EdgeInsets.symmetric(horizontal: 20.w, vertical: 15.w),
             child: CustomKarlaText(
               text: subText,

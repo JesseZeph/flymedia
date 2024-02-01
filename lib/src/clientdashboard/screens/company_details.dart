@@ -19,7 +19,6 @@ import 'package:image_picker/image_picker.dart';
 import '../../../constants/colors.dart';
 import '../../../route/route.dart';
 import '../../../utils/widgets/subheadings.dart';
-import '../../authentication/components/text_input_field.dart';
 
 class CompanyDetails extends StatefulWidget {
   const CompanyDetails({super.key});
