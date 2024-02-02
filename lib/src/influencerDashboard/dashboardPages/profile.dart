@@ -44,14 +44,12 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  openSocialProfile() async {
-    // var isIos = Platform.isIOS;
-    // var link = Uri.parse('https://www.google.com');
-    var link = Uri.parse(profile?.profileLink ?? "");
+  openSocialProfile(ProfileModel profileC) async {
+    var link = Uri.parse(profileC.profileLink ?? "");
     try {
       if (!await launchUrl(
         link,
-        mode: LaunchMode.externalApplication,
+        mode: LaunchMode.inAppBrowserView,
       )) {
         throw Exception('Could not launch profile');
       }
@@ -72,6 +70,7 @@ class _ProfilePageState extends State<ProfilePage> {
         : profileComplete
             ? Scaffold(
                 appBar: AppBar(
+                  scrolledUnderElevation: 0,
                   automaticallyImplyLeading: false,
                   leading: widget.isPersonalView
                       ? null
@@ -141,7 +140,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                       IconButton(
-                          onPressed: () => openSocialProfile(),
+                          onPressed: () => openSocialProfile(profile),
                           icon: const Icon(Icons.tiktok_outlined)),
                       // widget.isPersonalView
                       //     ? IconButton(

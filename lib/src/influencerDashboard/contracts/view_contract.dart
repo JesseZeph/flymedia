@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/models/response/campaign_upload_response.dart';
 import 'package:flymedia_app/src/authentication/components/animated_button.dart';
-import 'package:flymedia_app/src/influencerDashboard/contracts/widget/dialogs.dart';
 import 'package:flymedia_app/utils/widgets/alert_loader.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 
@@ -136,10 +135,10 @@ class _InfluencerCampaignContractState
 }
 
 void _showDialog(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return const InfluencerDialogWidget();
-    },
-  );
+  // showDialog(
+  //   context: context,
+  //   builder: (BuildContext context) {
+  //     return const InfluencerDialogWidget();
+  //   },
+  // );
 }

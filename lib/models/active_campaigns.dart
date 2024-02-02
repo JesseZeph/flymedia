@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:flymedia_app/constants/colors.dart';
 
 class ActiveCampaignModel {
@@ -22,6 +23,30 @@ class ActiveCampaignModel {
     required this.verified,
     required this.completedDate,
   });
+
+  ActiveCampaignModel copyWith({
+    String? id,
+    dynamic campaign,
+    dynamic client,
+    dynamic influencer,
+    String? message,
+    String? status,
+    bool? completed,
+    bool? verified,
+    String? completedDate,
+  }) {
+    return ActiveCampaignModel(
+      id: id ?? this.id,
+      campaign: campaign ?? this.campaign,
+      client: client ?? this.client,
+      influencer: influencer ?? this.influencer,
+      message: message ?? this.message,
+      status: status ?? this.status,
+      completed: completed ?? this.completed,
+      verified: verified ?? this.verified,
+      completedDate: completedDate ?? this.completedDate,
+    );
+  }
 
   factory ActiveCampaignModel.fromMap(Map<String, dynamic> map) {
     return ActiveCampaignModel(
@@ -53,5 +78,16 @@ class ActiveCampaignModel {
         return Colors.black;
     }
     return Colors.green;
+  }
+
+  String actionCommand(bool isClient) {
+    if (isClient) {
+      return verified ? 'Contract complete' : 'Complete contract';
+    }
+    return completed ? 'Contract complete' : 'Complete contract';
+  }
+
+  bool checkIfMarkedComplete(bool isClient) {
+    return isClient ? verified : completed;
   }
 }

@@ -16,6 +16,7 @@ class FlyAppBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
+      scrolledUnderElevation: 0,
       actions: [
         Padding(
           padding: EdgeInsets.only(right: 5.w),

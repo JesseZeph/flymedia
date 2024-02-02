@@ -40,7 +40,7 @@ class InfluencerMenu extends StatelessWidget {
                     subText:
                         'Provide your account information\nto ensure seemless and timely\npayments',
                     imageUrl: 'assets/images/coins.svg',
-                    buttonText: 'Add account',
+                    buttonText: 'Get started',
                     buttonColor: AppColors.mainColor,
                     containerColor: AppColors.cardColor,
                     onTap: () {
