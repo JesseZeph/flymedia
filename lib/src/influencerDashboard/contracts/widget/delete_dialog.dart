@@ -3,17 +3,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/colors.dart';
+import 'package:get/get.dart';
 
 class DeleteDialog extends StatefulWidget {
-  const DeleteDialog({Key? key}) : super(key: key);
+  const DeleteDialog({Key? key, required this.isConfirm}) : super(key: key);
+  final bool isConfirm;
 
   @override
   State<DeleteDialog> createState() => _DeleteDialogState();
 }
 
 class _DeleteDialogState extends State<DeleteDialog> {
-  bool showTwoButtons = true;
-
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -29,7 +29,7 @@ class _DeleteDialogState extends State<DeleteDialog> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                showTwoButtons
+                widget.isConfirm
                     ? Icon(
                         CupertinoIcons.delete_simple,
                         color: AppColors.errorColor,
@@ -44,7 +44,7 @@ class _DeleteDialogState extends State<DeleteDialog> {
             ),
             SizedBox(height: 16.h),
             Text(
-              showTwoButtons
+              widget.isConfirm
                   ? 'This would delete the account details saved on Flymedia. Would you like to proceed?'
                   : "Your account details have been successfully deleted. You can input new account information whenever you are ready to facilitate future payments.",
               style: Theme.of(context)
@@ -54,7 +54,7 @@ class _DeleteDialogState extends State<DeleteDialog> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 16.h),
-            showTwoButtons
+            widget.isConfirm
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -66,10 +66,7 @@ class _DeleteDialogState extends State<DeleteDialog> {
                         ),
                         child: TextButton(
                           onPressed: () {
-                            setState(() {
-                              showTwoButtons = false;
-                            });
-                            // Handle 'Yes' button logic
+                            Get.back(result: true);
                           },
                           style: TextButton.styleFrom(
                             foregroundColor: Colors.white,
@@ -98,7 +95,7 @@ class _DeleteDialogState extends State<DeleteDialog> {
                         ),
                         child: TextButton(
                           onPressed: () {
-                            Navigator.of(context).pop();
+                            Get.back(result: false);
                           },
                           child: Text(
                             'No',
@@ -121,8 +118,7 @@ class _DeleteDialogState extends State<DeleteDialog> {
                     ),
                     child: TextButton(
                       onPressed: () {
-                        Navigator.of(context).pop();
-                        // Handle 'Make Payment' button logic
+                        Get.back(result: false);
                       },
                       style: TextButton.styleFrom(
                         foregroundColor: Colors.white,

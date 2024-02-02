@@ -65,7 +65,6 @@ class _ViewCampaignContractState extends State<ViewCampaignContract> {
                 userType: widget.isClient ? 'Client' : 'Influencer',
                 id: userId ?? '',
                 campaignId: campaign.id);
-        print("action response ==========> $response");
         if (response.status) {
           var updatedCampaign = ActiveCampaignModel.fromMap(response.data);
           campaign = updatedCampaign.copyWith(

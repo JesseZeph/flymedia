@@ -17,14 +17,15 @@ class InfluencerMenu extends StatefulWidget {
   const InfluencerMenu({Key? key}) : super(key: key);
 
   @override
-  _InfluencerMenuState createState() => _InfluencerMenuState();
+  State<InfluencerMenu> createState() => _InfluencerMenuState();
 }
 
 class _InfluencerMenuState extends State<InfluencerMenu> {
   @override
   void initState() {
     super.initState();
-    context.read<InfluencerAccountDetailsProvider>().getAccountDetails();
+    context.read<InfluencerAccountDetailsProvider>().getAccountDetails(
+        context.read<ProfileProvider>().userProfile?.id ?? '');
   }
 
   @override
