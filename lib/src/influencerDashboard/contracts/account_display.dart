@@ -12,95 +12,107 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class DisplayAccountInfo extends StatefulWidget {
-  const DisplayAccountInfo({Key? key}) : super(key: key);
+  const DisplayAccountInfo({
+    Key? key,
+  }) : super(key: key);
 
   @override
   _DisplayAccountInfoState createState() => _DisplayAccountInfoState();
 }
 
 class _DisplayAccountInfoState extends State<DisplayAccountInfo> {
-  late Data id;
+  late Future<GetAccountResponse> getAccount;
+
+  @override
+  void initState() {
+    super.initState();
+    accountDetails();
+  }
+
+  accountDetails() async {
+    await getAccountDetails();
+    setState(() {
+      getAccount = InfluencerAccountDetailsProvider().getAccountResponse;
+    });
+  }
+
+  // _initData() async {
+  //   await getAccountDetails();
+  //   setState(() {
+  //     getAccount = InfluencerAccountDetailsProvider().getAccountResponse!;
+  //   });
+  // }
+
+  Future<void> getAccountDetails() async {
+    await InfluencerAccountDetailsProvider().getAccountDetails();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final influencerAccountDetailsProvider =
-        context.watch<InfluencerAccountDetailsProvider>();
-
     return Scaffold(
-      appBar: AppBar(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new),
+            onPressed: () async {
+              Get.back();
+            },
+          ),
+          title: const CustomKarlaText(
+            text: 'Account Information',
+            size: 16,
+            weight: FontWeight.w700,
+          ),
+        ),
         backgroundColor: Colors.white,
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new),
-          onPressed: () async {
-            Get.back();
-          },
-        ),
-        title: const CustomKarlaText(
-          text: 'Account Information',
-          size: 16,
-          weight: FontWeight.w700,
-        ),
-      ),
-      backgroundColor: Colors.white,
-      body: FutureBuilder(
-        future: influencerAccountDetailsProvider.getAccountdetails(userUid),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (influencerAccountDetailsProvider.accountdetails == null) {
-            return const Center(child: Text('No account details available.'));
-          } else {
-            return Column(
-              children: [
-                DisplayAccountWidget(
-                  heading: 'Account name',
-                  subText: influencerAccountDetailsProvider
-                      .accountdetails!.accountName,
-                ),
-                SizedBox(height: 30.h),
-                DisplayAccountWidget(
-                  heading: 'Receiving bank',
-                  subText:
-                      influencerAccountDetailsProvider.accountdetails!.bankName,
-                ),
-                SizedBox(height: 30.h),
-                DisplayAccountWidget(
-                  heading: 'Account number',
-                  subText: influencerAccountDetailsProvider
-                      .accountdetails!.accountNumber,
-                ),
-                SizedBox(height: 40.h),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 22.w),
-                  child: AnimatedButton(
-                    onTap: () {
-                      // Handle the 'Edit' button tap
-                    },
-                    child: const RoundedButtonsWidget(
-                      text: 'Edit',
+        body: FutureBuilder(
+          future: getAccount,
+          builder: ((context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator.adaptive());
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else {
+              final getAccount = snapshot.data!;
+              return Column(
+                children: [
+                  DisplayAccountWidget(
+                      heading: 'Account name', subText: getAccount.accountName),
+                  SizedBox(height: 30.h),
+                  DisplayAccountWidget(
+                      heading: 'Receiving bank', subText: getAccount.bankName),
+                  SizedBox(height: 30.h),
+                  DisplayAccountWidget(
+                      heading: 'Account number', subText: getAccount.bankName),
+                  SizedBox(height: 40.h),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 22.w),
+                    child: AnimatedButton(
+                      onTap: () {
+                        // Handle the 'Edit' button tap
+                      },
+                      child: const RoundedButtonsWidget(
+                        text: 'Edit',
+                      ),
                     ),
                   ),
-                ),
-                SizedBox(height: 10.h),
-                TextButton(
-                  onPressed: () {
-                    _showDialog(context);
-                  },
-                  child: CustomKarlaText(
-                    text: 'Delete',
-                    size: 14.sp,
-                    weight: FontWeight.w500,
-                    color: AppColors.errorColor,
+                  SizedBox(height: 10.h),
+                  TextButton(
+                    onPressed: () {
+                      _showDialog(context);
+                    },
+                    child: CustomKarlaText(
+                      text: 'Delete',
+                      size: 14.sp,
+                      weight: FontWeight.w500,
+                      color: AppColors.errorColor,
+                    ),
                   ),
-                ),
-              ],
-            );
-          }
-        },
-      ),
-    );
+                ],
+              );
+            }
+          }),
+        ));
   }
 }
 

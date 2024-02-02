@@ -13,7 +13,7 @@ String getAccountDetailsResToJson(GetAccountDetailsRes data) =>
 class GetAccountDetailsRes {
   final bool status;
   final String message;
-  final Data data;
+  final GetAccountResponse data;
 
   GetAccountDetailsRes({
     required this.status,
@@ -25,7 +25,7 @@ class GetAccountDetailsRes {
       GetAccountDetailsRes(
         status: json["status"],
         message: json["message"],
-        data: Data.fromJson(json["data"]),
+        data: GetAccountResponse.fromJson(json["data"]),
       );
 
   Map<String, dynamic> toJson() => {
@@ -35,38 +35,35 @@ class GetAccountDetailsRes {
       };
 }
 
-class Data {
+class GetAccountResponse {
   final String influencer;
   final String accountName;
   final String accountNumber;
   final String bankName;
   final String id;
-  final int v;
 
-  Data({
+  GetAccountResponse({
     required this.influencer,
     required this.accountName,
     required this.accountNumber,
     required this.bankName,
     required this.id,
-    required this.v,
   });
 
-  factory Data.fromJson(Map<String, dynamic> json) => Data(
+  factory GetAccountResponse.fromJson(Map<String, dynamic> json) =>
+      GetAccountResponse(
         influencer: json["influencer"],
         accountName: json["account_name"],
         accountNumber: json["account_number"],
         bankName: json["bank_name"],
         id: json["_id"],
-        v: json["__v"],
       );
 
-  Map<String, dynamic> toJson() => {
+  Map<String, String> toJson() => {
         "influencer": influencer,
         "account_name": accountName,
         "account_number": accountNumber,
         "bank_name": bankName,
         "_id": id,
-        "__v": v,
       };
 }

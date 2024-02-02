@@ -8,12 +8,14 @@ import 'package:flymedia_app/src/authentication/components/animated_button.dart'
 import 'package:flymedia_app/src/authentication/components/text_input_field.dart';
 import 'package:flymedia_app/src/influencerDashboard/contracts/account_display.dart';
 import 'package:flymedia_app/src/influencerDashboard/contracts/widget/rounded_button.dart';
+import 'package:flymedia_app/src/influencerDashboard/influencer_homepage.dart';
 import 'package:flymedia_app/utils/extensions/context_extension.dart';
 import 'package:flymedia_app/utils/global_variables.dart';
 import 'package:flymedia_app/utils/widgets/alert_loader.dart';
 import 'package:flymedia_app/utils/widgets/custom_text.dart';
 import 'package:get/get.dart';
 import 'package:loading_overlay/loading_overlay.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AccountInformation extends StatefulWidget {
   const AccountInformation({super.key});
@@ -23,6 +25,8 @@ class AccountInformation extends StatefulWidget {
 }
 
 class _AccountInformationState extends State<AccountInformation> {
+  final influencerAccountDetailsProvider = InfluencerAccountDetailsProvider();
+
   TextEditingController accountName = TextEditingController();
   TextEditingController accountNumber = TextEditingController();
   TextEditingController bankName = TextEditingController();
@@ -124,35 +128,37 @@ class _AccountInformationState extends State<AccountInformation> {
                 SizedBox(height: 30.h),
                 AnimatedButton(
                   onTap: () async {
-                    InfluencerAddAccount? accountDetails;
-
                     if (isValidForm()) {
                       setState(() {
                         loading = true;
                       });
-                      accountDetails = InfluencerAddAccount(
-                        influencerId: userUid,
-                        accountName: accountName.text,
-                        accountNumber: accountNumber.text,
-                        bankName: bankName.text,
-                      );
-                    }
 
-                    bool success = false;
+                      try {
+                        final SharedPreferences prefs =
+                            await SharedPreferences.getInstance();
 
-                    if (accountDetails != null) {
-                      success = await InfluencerAccountDetailsProvider()
-                          .postAccountDetails(accountDetails);
-                    }
+                        String influencerId = prefs.getString('userId') ?? '';
+                        final response = await influencerAccountDetailsProvider
+                            .postAccountDetails(
+                          id: influencerId,
+                          name: accountName.text,
+                          accountNumber: accountNumber.text,
+                          bankName: bankName.text,
+                        );
 
-                    setState(() {
-                      loading = false;
-                    });
+                        if (response.status) {
+                          Get.off(const InfluencerHomePage());
+                        } else {
+                          context.showError(
+                              'Error adding account details: ${response.message}');
+                        }
+                      } catch (e) {
+                        context.showError('Error adding account details: $e');
+                      }
 
-                    if (success) {
-                      Get.to(() => const DisplayAccountInfo());
-                    } else {
-                      context.showError('An error occurred');
+                      setState(() {
+                        loading = false;
+                      });
                     }
                   },
                   child: const RoundedButtonsWidget(
