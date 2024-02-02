@@ -2,25 +2,27 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/colors.dart';
 import 'package:flymedia_app/models/active_campaigns.dart';
-import 'package:flymedia_app/src/authentication/components/animated_button.dart';
+import 'package:flymedia_app/src/clientdashboard/contracts/view_contract.dart';
+import 'package:flymedia_app/utils/extensions/string_extensions.dart';
 import 'package:flymedia_app/utils/widgets/custom_text.dart';
 import 'package:get/get.dart';
 
 class ContractCardWidget extends StatelessWidget {
-  final void Function()? onTap;
   final ActiveCampaignModel contract;
   final bool isClient;
   const ContractCardWidget({
     super.key,
-    this.onTap,
     required this.contract,
     required this.isClient,
   });
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedButton(
-      onTap: onTap,
+    return GestureDetector(
+      onTap: () => Get.to(() => ViewCampaignContract(
+            contract: contract,
+            isClient: isClient,
+          )),
       child: FittedBox(
         child: Container(
           width: Get.width.w,
@@ -52,7 +54,7 @@ class ContractCardWidget extends StatelessWidget {
                     width: 10.w,
                     height: 10.w,
                     decoration: const ShapeDecoration(
-                        shape: OvalBorder(), color: AppColors.mainColor),
+                        shape: OvalBorder(), color: AppColors.cardColor2),
                   ),
                   SizedBox(
                     width: 10.w,
@@ -60,7 +62,7 @@ class ContractCardWidget extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.only(bottom: 2.w),
                     child: Text(
-                      '\$${contract.campaign['rateTo']}',
+                      '${isClient ? contract.influencer['firstAndLastName'] : contract.campaign['company']['companyName']}',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w700,
@@ -78,7 +80,7 @@ class ContractCardWidget extends StatelessWidget {
                     width: 10.w,
                     height: 10.w,
                     decoration: const ShapeDecoration(
-                        shape: OvalBorder(), color: AppColors.cardColor2),
+                        shape: OvalBorder(), color: AppColors.mainColor),
                   ),
                   SizedBox(
                     width: 10.w,
@@ -86,7 +88,7 @@ class ContractCardWidget extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.only(bottom: 2.w),
                     child: Text(
-                      '${isClient ? contract.influencer['firstAndLastName'] : contract.influencer['firstAndLastName']}',
+                      '\$${(contract.campaign['rateTo'] as String).formatComma()}',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w700,

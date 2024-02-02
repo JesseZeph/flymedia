@@ -5,15 +5,15 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/colors.dart';
 
 class ContractDialogWidget extends StatefulWidget {
-  const ContractDialogWidget({Key? key}) : super(key: key);
+  const ContractDialogWidget({Key? key, required this.isConfirmAction})
+      : super(key: key);
+  final bool isConfirmAction;
 
   @override
   State<ContractDialogWidget> createState() => _ContractDialogWidgetState();
 }
 
 class _ContractDialogWidgetState extends State<ContractDialogWidget> {
-  bool showTwoButtons = true;
-
   @override
   Widget build(BuildContext context) {
     return Dialog(
@@ -29,7 +29,7 @@ class _ContractDialogWidgetState extends State<ContractDialogWidget> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                showTwoButtons
+                widget.isConfirmAction
                     ? Icon(
                         CupertinoIcons.question_circle,
                         color: Colors.green,
@@ -44,7 +44,7 @@ class _ContractDialogWidgetState extends State<ContractDialogWidget> {
             ),
             SizedBox(height: 16.h),
             Text(
-              showTwoButtons
+              widget.isConfirmAction
                   ? 'Are you sure you want to proceed and complete your contract? Your action will complete the service agreement'
                   : "Contract completed! We'll now proceed with the payment to the influencer for the successful fulfillment of the contract. Thank you for your collaboration",
               style: Theme.of(context)
@@ -54,7 +54,7 @@ class _ContractDialogWidgetState extends State<ContractDialogWidget> {
               textAlign: TextAlign.center,
             ),
             SizedBox(height: 16.h),
-            showTwoButtons
+            widget.isConfirmAction
                 ? Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
@@ -66,10 +66,7 @@ class _ContractDialogWidgetState extends State<ContractDialogWidget> {
                         ),
                         child: TextButton(
                           onPressed: () {
-                            setState(() {
-                              showTwoButtons = false;
-                            });
-                            // Handle 'Yes' button logic
+                            Navigator.pop(context, true);
                           },
                           style: TextButton.styleFrom(
                             foregroundColor: Colors.white,
@@ -98,7 +95,7 @@ class _ContractDialogWidgetState extends State<ContractDialogWidget> {
                         ),
                         child: TextButton(
                           onPressed: () {
-                            Navigator.of(context).pop();
+                            Navigator.pop(context, false);
                           },
                           child: Text(
                             'No',
@@ -126,7 +123,7 @@ class _ContractDialogWidgetState extends State<ContractDialogWidget> {
                         foregroundColor: Colors.white,
                       ),
                       child: Text(
-                        'Make Payment',
+                        'Done',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             fontSize: 12.sp,
                             color: Colors.white,

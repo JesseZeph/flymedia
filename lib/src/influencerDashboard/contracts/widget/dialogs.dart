@@ -4,7 +4,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/colors.dart';
 
 class InfluencerDialogWidget extends StatefulWidget {
-  const InfluencerDialogWidget({Key? key}) : super(key: key);
+  const InfluencerDialogWidget({Key? key, required this.isConfirmAction})
+      : super(key: key);
+  final bool isConfirmAction;
 
   @override
   State<InfluencerDialogWidget> createState() => _InfluencerDialogWidgetState();
@@ -53,7 +55,9 @@ class _InfluencerDialogWidgetState extends State<InfluencerDialogWidget> {
                     borderRadius: BorderRadius.circular(50.r),
                   ),
                   child: TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pop(context, true);
+                    },
                     style: TextButton.styleFrom(
                       foregroundColor: Colors.white,
                     ),
@@ -78,7 +82,7 @@ class _InfluencerDialogWidgetState extends State<InfluencerDialogWidget> {
                   ),
                   child: TextButton(
                     onPressed: () {
-                      Navigator.of(context).pop();
+                      Navigator.pop(context, false);
                     },
                     child: Text(
                       'No',

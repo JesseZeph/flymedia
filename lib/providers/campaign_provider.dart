@@ -71,7 +71,7 @@ class CampaignsNotifier extends ChangeNotifier {
       required String id,
       required String campaignId}) async {
     var response = await repository.putRequest(
-        endpoint: Config.campaignUpload,
+        endpoint: '${Config.campaignUpload}/assign',
         body: {
           "active_campaign_id": campaignId,
           "id": id,
