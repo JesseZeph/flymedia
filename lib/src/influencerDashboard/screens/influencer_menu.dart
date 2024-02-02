@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/colors.dart';
+import 'package:flymedia_app/providers/influencer_add_account.dart';
 import 'package:flymedia_app/providers/login_provider.dart';
 import 'package:flymedia_app/providers/profile_provider.dart';
 import 'package:flymedia_app/src/influencerDashboard/contracts/account_display.dart';
@@ -12,12 +13,25 @@ import 'package:flymedia_app/utils/widgets/subscription_info.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
-class InfluencerMenu extends StatelessWidget {
-  const InfluencerMenu({super.key});
+class InfluencerMenu extends StatefulWidget {
+  const InfluencerMenu({Key? key}) : super(key: key);
+
+  @override
+  _InfluencerMenuState createState() => _InfluencerMenuState();
+}
+
+class _InfluencerMenuState extends State<InfluencerMenu> {
+  @override
+  void initState() {
+    super.initState();
+    context.read<InfluencerAccountDetailsProvider>().getAccountDetails();
+  }
 
   @override
   Widget build(BuildContext context) {
     var loginNotifier = Provider.of<LoginNotifier>(context);
+    var influencerBankAccount =
+        context.watch<InfluencerAccountDetailsProvider>().getAccountResponse;
     return loginNotifier.loggedIn == false
         ? ModalWidget(context: context)
         : Scaffold(
@@ -32,45 +46,51 @@ class InfluencerMenu extends StatelessWidget {
               padding:
                   const EdgeInsets.symmetric(horizontal: 16, vertical: 20).r,
               child: SafeArea(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  SubscriptionInfo(
-                    headerText: 'Account Information',
-                    subText:
-                        'Provide your account information\nto ensure seemless and timely\npayments',
-                    imageUrl: 'assets/images/coins.svg',
-                    buttonText: 'Get started',
-                    buttonColor: AppColors.mainColor,
-                    containerColor: AppColors.cardColor,
-                    onTap: () {
-                      Get.to(() => const DisplayAccountInfo());
-                    },
-                  ),
-                  SizedBox(
-                    height: 25.h,
-                  ),
-                  SubscriptionInfo(
-                    containerColor: AppColors.cardColor2,
-                    headerText: 'Your Contracts',
-                    subText:
-                        'Access and review ongoing and\ncompleted contracts with influencers',
-                    imageUrl: 'assets/images/bro.svg',
-                    buttonText: 'View contracts',
-                    buttonColor: AppColors.purplePatch,
-                    onTap: () {
-                      Get.to(() => InfluencerContracts(
-                            userType: 'Influencer',
-                            userId: context
-                                    .read<ProfileProvider>()
-                                    .userProfile
-                                    ?.id ??
-                                '',
-                          ));
-                    },
-                  )
-                ],
-              )),
-            ));
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    SubscriptionInfo(
+                      headerText: 'Account Information',
+                      subText:
+                          'Provide your account information\nto ensure seamless and timely\npayments',
+                      imageUrl: 'assets/images/coins.svg',
+                      buttonText: 'Get started',
+                      buttonColor: AppColors.mainColor,
+                      containerColor: AppColors.cardColor,
+                      onTap: () {
+                        Get.to(() => influencerBankAccount != null
+                            ? DisplayAccountInfo(
+                                getAccountDetails: influencerBankAccount,
+                              )
+                            : const AccountInformation());
+                      },
+                    ),
+                    SizedBox(
+                      height: 25.h,
+                    ),
+                    SubscriptionInfo(
+                      containerColor: AppColors.cardColor2,
+                      headerText: 'Your Contracts',
+                      subText:
+                          'Access and review ongoing and\ncompleted contracts with influencers',
+                      imageUrl: 'assets/images/bro.svg',
+                      buttonText: 'View contracts',
+                      buttonColor: AppColors.purplePatch,
+                      onTap: () {
+                        Get.to(() => InfluencerContracts(
+                              userType: 'Influencer',
+                              userId: context
+                                      .read<ProfileProvider>()
+                                      .userProfile
+                                      ?.id ??
+                                  '',
+                            ));
+                      },
+                    )
+                  ],
+                ),
+              ),
+            ),
+          );
   }
 }

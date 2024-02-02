@@ -7,7 +7,7 @@ import 'package:flymedia_app/utils/global_variables.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class InfluencerAccountDetailsProvider extends ChangeNotifier {
-  late Future<GetAccountResponse> getAccountResponse;
+  GetAccountResponse? getAccountResponse;
 
   Future<NetworkResponse> postAccountDetails(
       {required String id,
@@ -24,10 +24,16 @@ class InfluencerAccountDetailsProvider extends ChangeNotifier {
           "bank_name": bankName
         },
       );
+      if (response.status) {
+        getAccountResponse = GetAccountResponse.fromJson(response.data);
+        notifyListeners();
+      }
+      notifyListeners();
+
       return response;
     } catch (e, s) {
       debugPrintStack(stackTrace: s);
-      throw Error();
+      throw Exception();
     }
   }
 
@@ -49,7 +55,7 @@ class InfluencerAccountDetailsProvider extends ChangeNotifier {
       return response;
     } catch (e, s) {
       debugPrintStack(stackTrace: s);
-      throw Error();
+      throw Exception();
     }
   }
 
@@ -59,7 +65,7 @@ class InfluencerAccountDetailsProvider extends ChangeNotifier {
         endpoint: '${Config.addAccount}/${prefs.getString('userId')}');
     print('-->> $response');
     if (response.status) {
-      getAccountResponse = Future.value(response.data); // Initialize the field
+      getAccountResponse = GetAccountResponse.fromJson(response.data);
       notifyListeners();
     }
   }

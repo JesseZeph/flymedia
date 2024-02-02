@@ -12,8 +12,10 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 
 class DisplayAccountInfo extends StatefulWidget {
+  final GetAccountResponse getAccountDetails;
   const DisplayAccountInfo({
     Key? key,
+    required this.getAccountDetails,
   }) : super(key: key);
 
   @override
@@ -21,30 +23,13 @@ class DisplayAccountInfo extends StatefulWidget {
 }
 
 class _DisplayAccountInfoState extends State<DisplayAccountInfo> {
-  late Future<GetAccountResponse> getAccount;
+  late GetAccountResponse getAccount;
 
   @override
   void initState() {
     super.initState();
-    accountDetails();
-  }
-
-  accountDetails() async {
-    await getAccountDetails();
-    setState(() {
-      getAccount = InfluencerAccountDetailsProvider().getAccountResponse;
-    });
-  }
-
-  // _initData() async {
-  //   await getAccountDetails();
-  //   setState(() {
-  //     getAccount = InfluencerAccountDetailsProvider().getAccountResponse!;
-  //   });
-  // }
-
-  Future<void> getAccountDetails() async {
-    await InfluencerAccountDetailsProvider().getAccountDetails();
+    getAccount = widget.getAccountDetails;
+    context.read<InfluencerAccountDetailsProvider>().getAccountDetails();
   }
 
   @override
@@ -65,53 +50,41 @@ class _DisplayAccountInfoState extends State<DisplayAccountInfo> {
           ),
         ),
         backgroundColor: Colors.white,
-        body: FutureBuilder(
-          future: getAccount,
-          builder: ((context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator.adaptive());
-            } else if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            } else {
-              final getAccount = snapshot.data!;
-              return Column(
-                children: [
-                  DisplayAccountWidget(
-                      heading: 'Account name', subText: getAccount.accountName),
-                  SizedBox(height: 30.h),
-                  DisplayAccountWidget(
-                      heading: 'Receiving bank', subText: getAccount.bankName),
-                  SizedBox(height: 30.h),
-                  DisplayAccountWidget(
-                      heading: 'Account number', subText: getAccount.bankName),
-                  SizedBox(height: 40.h),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 22.w),
-                    child: AnimatedButton(
-                      onTap: () {
-                        // Handle the 'Edit' button tap
-                      },
-                      child: const RoundedButtonsWidget(
-                        text: 'Edit',
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10.h),
-                  TextButton(
-                    onPressed: () {
-                      _showDialog(context);
-                    },
-                    child: CustomKarlaText(
-                      text: 'Delete',
-                      size: 14.sp,
-                      weight: FontWeight.w500,
-                      color: AppColors.errorColor,
-                    ),
-                  ),
-                ],
-              );
-            }
-          }),
+        body: Column(
+          children: [
+            DisplayAccountWidget(
+                heading: 'Account name', subText: getAccount.accountName),
+            SizedBox(height: 30.h),
+            DisplayAccountWidget(
+                heading: 'Receiving bank', subText: getAccount.bankName),
+            SizedBox(height: 30.h),
+            DisplayAccountWidget(
+                heading: 'Account number', subText: getAccount.accountNumber),
+            SizedBox(height: 40.h),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 22.w),
+              child: AnimatedButton(
+                onTap: () {
+                  getAccount;
+                },
+                child: const RoundedButtonsWidget(
+                  text: 'Edit',
+                ),
+              ),
+            ),
+            SizedBox(height: 10.h),
+            TextButton(
+              onPressed: () {
+                _showDialog(context);
+              },
+              child: CustomKarlaText(
+                text: 'Delete',
+                size: 14.sp,
+                weight: FontWeight.w500,
+                color: AppColors.errorColor,
+              ),
+            ),
+          ],
         ));
   }
 }
