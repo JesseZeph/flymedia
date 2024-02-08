@@ -7,6 +7,7 @@ import 'package:flymedia_app/src/clientdashboard/screens/preview_listing.dart';
 import 'package:flymedia_app/utils/extensions/context_extension.dart';
 import 'package:flymedia_app/utils/extensions/string_extensions.dart';
 import 'package:flymedia_app/utils/widgets/alert_loader.dart';
+import 'package:flymedia_app/utils/widgets/custom_text.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
 
@@ -41,6 +42,7 @@ class _ViewCampaignListingState extends State<ViewCampaignListing> {
       progressIndicator: const AlertLoader(message: 'Sending application'),
       child: Scaffold(
           appBar: AppBar(
+            scrolledUnderElevation: 0,
             leading: IconButton(
               onPressed: () {
                 Navigator.pop(context);
@@ -88,7 +90,8 @@ class _ViewCampaignListingState extends State<ViewCampaignListing> {
                 Container(
                   margin: EdgeInsets.only(top: 12.h),
                   child: Text(
-                    '${campaign.rateFrom.formatComma()} - ${campaign.rateTo.formatComma()} USD',
+                    // '${campaign.rateFrom.formatComma()} - ${campaign.rateTo.formatComma()} USD',
+                    '${campaign.rate.formatComma()} USD',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: AppColors.mainTextColor,
                           fontSize: 16.sp,
@@ -127,32 +130,51 @@ class _ViewCampaignListingState extends State<ViewCampaignListing> {
                 HeadingAndSubText(
                     heading: 'Job Description',
                     subText: campaign.jobDescription),
+                HeadingAndSubText(
+                    heading: 'Minimum Followers Required',
+                    subText: campaign.minFollowers.toString().formatFigures()),
                 Padding(
-                  padding: EdgeInsets.all(22.r),
-                  child: AnimatedButton(
-                      onTap: () async {
-                        if (profile == null) {
-                          context.showError(
-                              'You must verify your profile to apply.');
-                          return;
-                        } else {
-                          await context
-                              .read<ApplicationsHelper>()
-                              .applyToCampaign(
-                                  userId: profile.id, campaignId: campaign.id)
-                              .then((resp) {
-                            if (resp.first) {
-                              context.showSuccess(resp.last);
-                            } else {
-                              context.showError(resp.last);
-                            }
-                          });
-                        }
-                      },
-                      child: const RoundedButtonWidget(
-                        title: 'Apply Now',
-                      )),
-                )
+                    padding: EdgeInsets.all(22.r),
+                    child: campaign.checkInfluencerEligibility(
+                            int.tryParse(profile?.noOfTikTokFollowers ?? '') ??
+                                0)
+                        ? AnimatedButton(
+                            onTap: () async {
+                              if (profile == null) {
+                                context.showError(
+                                    'You must verify your profile to apply.');
+                                return;
+                              } else {
+                                await context
+                                    .read<ApplicationsHelper>()
+                                    .applyToCampaign(
+                                        userId: profile.id,
+                                        campaignId: campaign.id)
+                                    .then((resp) {
+                                  if (resp.first) {
+                                    context.showSuccess(resp.last);
+                                  } else {
+                                    context.showError(resp.last);
+                                  }
+                                });
+                              }
+                            },
+                            child: const RoundedButtonWidget(
+                              title: 'Apply Now',
+                            ))
+                        : Container(
+                            padding: const EdgeInsets.all(10).r,
+                            decoration: BoxDecoration(
+                                color: AppColors.mainTextColor,
+                                borderRadius: BorderRadius.circular(10).r),
+                            child: const CustomKarlaText(
+                              text:
+                                  'You are ineligible to apply for this campaign',
+                              color: Colors.white,
+                              size: 18,
+                              align: TextAlign.center,
+                            ),
+                          ))
               ],
             ),
           )),

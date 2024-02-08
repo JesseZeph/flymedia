@@ -65,7 +65,7 @@ class _DropDowViewState<T> extends State<DropDowView<T>> {
           if (isMenuOpen)
             Container(
               constraints: BoxConstraints(
-                maxHeight: Get.height.h * 0.1,
+                maxHeight: Get.height.h * 0.3,
               ),
               child: ListView(
                 children: [

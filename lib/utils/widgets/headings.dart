@@ -36,7 +36,7 @@ class HeadingAndSubText extends StatelessWidget {
             style: Theme.of(context).textTheme.displaySmall?.copyWith(
                   color: AppColors.lightMainText,
                   fontWeight: FontWeight.w300,
-                  fontSize: 12.sp,
+                  fontSize: 16.sp,
                   height: 1.6,
                 ),
           ),

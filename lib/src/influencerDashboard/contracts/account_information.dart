@@ -231,10 +231,7 @@ class _AccountInformationState extends State<AccountInformation> {
 
 class _FieldInput extends StatelessWidget {
   const _FieldInput(
-      {super.key,
-      required this.controller,
-      this.validator,
-      required this.type});
+      {required this.controller, this.validator, required this.type});
   final TextEditingController controller;
   final String? Function(String?)? validator;
   final TextInputType type;

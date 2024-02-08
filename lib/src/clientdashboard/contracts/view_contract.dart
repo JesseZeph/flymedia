@@ -141,7 +141,7 @@ class _ViewCampaignContractState extends State<ViewCampaignContract> {
                 Container(
                   margin: EdgeInsets.only(top: 5.h),
                   child: Text(
-                    '\$${(campaign.campaign['rateTo'] as String).formatComma()}',
+                    '\$${(campaign.campaign['rate'] as String).formatComma()}',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: AppColors.mainTextColor,
                           fontSize: 16.sp,

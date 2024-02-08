@@ -89,7 +89,8 @@ class _ViewCampaignState extends State<ViewCampaign> {
                 Container(
                   margin: EdgeInsets.only(top: 12.h),
                   child: Text(
-                    '${campaign.rateFrom.formatComma()} - ${campaign.rateTo.formatComma()} USD',
+                    // '${campaign.rateFrom.formatComma()} - ${campaign.rateTo.formatComma()} USD',
+                    '${campaign.rate.formatComma()} USD',
                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: AppColors.mainTextColor,
                           fontSize: 16.sp,
@@ -104,7 +105,7 @@ class _ViewCampaignState extends State<ViewCampaign> {
                       onPressed: () {
                         Get.to(() => Applications(
                               campaignId: campaign.id,
-                              amount: campaign.rateTo,
+                              amount: campaign.rate,
                               title: campaign.jobTitle,
                             ));
                       },

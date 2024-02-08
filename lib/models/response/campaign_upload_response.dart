@@ -10,8 +10,10 @@ class CampaignUploadResponse {
   final String companyDescription;
   final String jobTitle;
   final String country;
-  final String rateFrom;
-  final String rateTo;
+  final int maxApplicants;
+  final int minFollowers;
+  // final String rateFrom;
+  final String rate;
   final String viewsRequired;
   final String jobDescription;
   final String? assigned;
@@ -22,8 +24,10 @@ class CampaignUploadResponse {
     required this.companyDescription,
     required this.jobTitle,
     required this.country,
-    required this.rateFrom,
-    required this.rateTo,
+    required this.maxApplicants,
+    required this.minFollowers,
+    // required this.rateFrom,
+    required this.rate,
     required this.viewsRequired,
     required this.jobDescription,
     this.assigned,
@@ -36,8 +40,10 @@ class CampaignUploadResponse {
         companyDescription: json["companyDescription"],
         jobTitle: json["jobTitle"],
         country: json["country"],
-        rateFrom: json["rateFrom"],
-        rateTo: json["rateTo"],
+        maxApplicants: json["maxApplicants"],
+        minFollowers: json["minFollowers"],
+        // rateFrom: json["rateFrom"],
+        rate: json["rate"],
         viewsRequired: json["viewsRequired"],
         jobDescription: json["jobDescription"],
         assigned: json["assigned"],
@@ -49,10 +55,17 @@ class CampaignUploadResponse {
         "companyDescription": companyDescription,
         "jobTitle": jobTitle,
         "country": country,
-        "rateFrom": rateFrom,
-        "rateTo": rateTo,
+        "maxApplicants": maxApplicants,
+        "minFollowers": minFollowers,
+        // "rateFrom": rateFrom,
+        "rate": rate,
         "viewsRequired": viewsRequired,
         "jobDescription": jobDescription,
         "assigned": assigned,
       };
+
+  bool checkInfluencerEligibility(int? influencerFollowers) {
+    if (influencerFollowers == null) return false;
+    return influencerFollowers >= minFollowers ? true : false;
+  }
 }

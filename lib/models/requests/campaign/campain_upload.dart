@@ -8,8 +8,10 @@ class CampaignUploadRequest {
   final String companyDescription;
   final String jobTitle;
   final String country;
-  final String rateFrom;
-  final String rateTo;
+  final int maxApplicants;
+  final int minFollowers;
+  final String rate;
+  // final String rateFrom;
   final String viewsRequired;
   final String jobDescription;
 
@@ -18,8 +20,10 @@ class CampaignUploadRequest {
     required this.companyDescription,
     required this.jobTitle,
     required this.country,
-    required this.rateFrom,
-    required this.rateTo,
+    required this.maxApplicants,
+    required this.minFollowers,
+    required this.rate,
+    // required this.rateTo,
     required this.viewsRequired,
     required this.jobDescription,
   });
@@ -30,8 +34,10 @@ class CampaignUploadRequest {
         companyDescription: json["companyDescription"],
         jobTitle: json["jobTitle"],
         country: json["country"],
-        rateFrom: json["rateFrom"],
-        rateTo: json["rateTo"],
+        maxApplicants: json["maxApplicants"],
+        minFollowers: json["minFollowers"],
+        // rateFrom: json["rateFrom"],
+        rate: json["rate"],
         viewsRequired: json["viewsRequired"],
         jobDescription: json["jobDescription"],
       );
@@ -41,8 +47,10 @@ class CampaignUploadRequest {
         "companyDescription": companyDescription,
         "jobTitle": jobTitle,
         "country": country,
-        "rateFrom": rateFrom,
-        "rateTo": rateTo,
+        "maxApplicants": maxApplicants.toString(),
+        "minFollowers": minFollowers.toString(),
+        // "rateFrom": rateFrom,
+        "rate": rate,
         "viewsRequired": viewsRequired,
         "jobDescription": jobDescription,
       };

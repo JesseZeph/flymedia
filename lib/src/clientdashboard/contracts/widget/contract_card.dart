@@ -88,7 +88,7 @@ class ContractCardWidget extends StatelessWidget {
                   Padding(
                     padding: EdgeInsets.only(bottom: 2.w),
                     child: Text(
-                      '\$${(contract.campaign['rateTo'] as String).formatComma()}',
+                      '\$${(contract.campaign['rate'] as String).formatComma()}',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                             fontSize: 14.sp,
                             fontWeight: FontWeight.w700,

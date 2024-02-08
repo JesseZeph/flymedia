@@ -4,17 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/textstring.dart';
 import 'package:flymedia_app/models/requests/campaign/campain_upload.dart';
+import 'package:flymedia_app/providers/subscription_provider.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/preview_listing.dart';
-import 'package:flymedia_app/src/clientdashboard/screens/widgets/appbar.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/widgets/country_dropdown.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/widgets/custom_text_field.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/widgets/fly_button.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/widgets/salary_input.dart';
 import 'package:flymedia_app/utils/extensions/context_extension.dart';
+import 'package:flymedia_app/utils/extensions/string_extensions.dart';
 import 'package:flymedia_app/utils/widgets/headings.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:provider/provider.dart';
 
 import '../../../constants/colors.dart';
 import '../../../route/route.dart';
@@ -43,8 +45,8 @@ class _CompanyDetailsState extends State<CompanyDetails> {
 
   TextEditingController companyDescriptionCtrl = TextEditingController();
   TextEditingController jobTitleCtrl = TextEditingController();
-  TextEditingController rateFromCtrl = TextEditingController();
-  TextEditingController rateToCtrl = TextEditingController();
+  TextEditingController rate = TextEditingController();
+  TextEditingController minFollowers = TextEditingController();
   TextEditingController jobDescriptionCtrl = TextEditingController();
 
   String? viewsRequired;
@@ -56,8 +58,8 @@ class _CompanyDetailsState extends State<CompanyDetails> {
   void dispose() {
     companyDescriptionCtrl.dispose();
     jobTitleCtrl.dispose();
-    rateFromCtrl.dispose();
-    rateToCtrl.dispose();
+    rate.dispose();
+    minFollowers.dispose();
     jobDescriptionCtrl.dispose();
     super.dispose();
   }
@@ -70,8 +72,9 @@ class _CompanyDetailsState extends State<CompanyDetails> {
     } else if (companyDescriptionCtrl.text.isEmpty ||
         jobDescriptionCtrl.text.isEmpty ||
         jobTitleCtrl.text.isEmpty ||
-        rateFromCtrl.text.isEmpty ||
-        rateToCtrl.text.isEmpty) {
+        minFollowers.text.isEmpty ||
+        // rateFromCtrl.text.isEmpty ||
+        rate.text.isEmpty) {
       return [false, 'One or more fields are empty!'];
     }
     return [true, 'Form is valid'];
@@ -80,9 +83,9 @@ class _CompanyDetailsState extends State<CompanyDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: PreferredSize(
-          preferredSize: Size.fromHeight(50.h), child: const FlyAppBar()),
-      body: Center(
+      // appBar: PreferredSize(
+      //     preferredSize: Size.fromHeight(50.h), child: const FlyAppBar()),
+      body: SafeArea(
         child: ListView(
           children: [
             Container(
@@ -203,21 +206,33 @@ class _CompanyDetailsState extends State<CompanyDetails> {
             ),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 15.h),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  CustomField(
-                      inputType: TextInputType.number,
-                      textController: rateFromCtrl,
-                      text: 'From'),
-                  SizedBox(
-                    width: 45.w,
-                  ),
-                  CustomField(
-                      inputType: TextInputType.number,
-                      textController: rateToCtrl,
-                      text: 'To'),
-                ],
+              child: SizedBox(
+                width: Get.width,
+                child: CustomField(
+                    inputType: TextInputType.number,
+                    textController: rate,
+                    text: 'Amount'),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 20.w),
+              child: const CHeadingAndSubText(
+                heading: 'Minimum followers',
+                subText: "Mininum number of followers inflencer must have.",
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 20.w, vertical: 0.h),
+              child: SizedBox(
+                width: Get.width,
+                child: CustomField(
+                    inputType: TextInputType.number,
+                    textController: minFollowers,
+                    formatText: (text) {
+                      text.formatComma();
+                      setState(() {});
+                    },
+                    text: 'Followers'),
               ),
             ),
             Container(
@@ -275,8 +290,14 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                         companyDescription: companyDescriptionCtrl.text,
                         jobTitle: jobTitleCtrl.text,
                         country: country ?? 'Nil',
-                        rateFrom: rateFromCtrl.text,
-                        rateTo: rateToCtrl.text,
+                        maxApplicants: context
+                                .read<SubscriptionProvider>()
+                                .userCurrentSub
+                                ?.maxApplicants ??
+                            0,
+                        minFollowers: int.tryParse(minFollowers.text) ?? 0,
+                        // rateFrom: rateFromCtrl.text,
+                        rate: rate.text,
                         viewsRequired: viewsRequired ?? 'Nil',
                         jobDescription: jobDescriptionCtrl.text);
 

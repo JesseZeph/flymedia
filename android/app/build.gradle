@@ -68,11 +68,11 @@ android {
         debug {
             signingConfig signingConfigs.debug
         }
-        release {
-            minifyEnabled true
-            shrinkResources true
-            signingConfig signingConfigs.release
-        }
+        // release {
+        //     minifyEnabled true
+        //     shrinkResources true
+        //     signingConfig signingConfigs.release
+        // }
    }
 }
 
