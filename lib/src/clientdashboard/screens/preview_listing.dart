@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/providers/campaign_provider.dart';
 import 'package:flymedia_app/models/requests/campaign/campain_upload.dart';
+import 'package:flymedia_app/providers/subscription_provider.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/widgets/fly_button.dart';
 import 'package:flymedia_app/utils/extensions/context_extension.dart';
 import 'package:flymedia_app/utils/extensions/string_extensions.dart';
@@ -203,10 +204,25 @@ class PreviewListing extends StatelessWidget {
                                   if (isLoading) {
                                     return;
                                   }
+                                  if (context
+                                          .read<SubscriptionProvider>()
+                                          .userCurrentSub ==
+                                      null) {
+                                    context.showError(
+                                        'Subscribe to a plan to begin posting campaigns');
+
+                                    return;
+                                  }
                                   await context
                                       .read<CampaignsNotifier>()
-                                      .postCampaign(campaignDetails,
-                                          context.read<LoginNotifier>().userId)
+                                      .postCampaign(
+                                          campaignDetails,
+                                          context.read<LoginNotifier>().userId,
+                                          context
+                                                  .read<SubscriptionProvider>()
+                                                  .userCurrentSub
+                                                  ?.maxCampaigns ??
+                                              0)
                                       .then((resp) {
                                     if (resp.first as bool) {
                                       context
@@ -214,7 +230,6 @@ class PreviewListing extends StatelessWidget {
                                           .getClientCampaigns(context
                                               .read<LoginNotifier>()
                                               .userId);
-                                      // context.showSuccess(resp.last as String);
                                       Get.to(() => const CampaignLive());
                                     } else {
                                       context.showError(resp.last as String);

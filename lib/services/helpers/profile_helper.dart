@@ -7,7 +7,7 @@ import 'package:flymedia_app/services/config.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
-class ProfileHelper {
+mixin ProfileHelper {
   Future<ProfileModel?> getUserProfile(String userId) async {
     ProfileModel? profile;
 

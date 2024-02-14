@@ -49,7 +49,7 @@ class CampaignHelper {
   }
 
   static Future<List<Object>> uploadCampaign(
-      CampaignUploadRequest requestDetails) async {
+      CampaignUploadRequest requestDetails, int maxCampaigns) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
       File fileToUpload = File(requestDetails.imageUrl);
@@ -57,6 +57,7 @@ class CampaignHelper {
           'POST', Uri.https(Config.apiUrl, Config.campaignUpload))
         ..fields.addAll({
           "user_id": "${prefs.getString("userId")}",
+          "max_campaigns": maxCampaigns.toString(),
           ...requestDetails.toJson()
         })
         ..headers

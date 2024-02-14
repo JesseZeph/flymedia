@@ -1,5 +1,8 @@
 // ignore_for_file: use_build_context_synchronously
 
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:dart_jsonwebtoken/dart_jsonwebtoken.dart';
 import 'package:flutter/material.dart';
 import 'package:flymedia_app/services/firebase/auth_helper.dart';
@@ -8,11 +11,13 @@ import 'package:flymedia_app/utils/apple_auth_handler.dart';
 import 'package:flymedia_app/utils/extensions/context_extension.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../constants/app_constants.dart';
 import '../models/requests/auth/influencer_login_model.dart';
 import '../models/requests/auth/login_model.dart';
+import '../services/config.dart';
 import '../src/authentication/clientAuth/clientverification/useremailverification.dart';
 import '../src/authentication/influencerAuth/influencerverification/useremailverification.dart';
 import '../src/clientdashboard/client_home_page.dart';
@@ -258,4 +263,91 @@ class LoginNotifier extends ChangeNotifier {
     await prefs.setBool('loggedIn', false);
     await prefs.setInt('selectedContainer', 3);
   }
+
+  var sessionId = '';
+  var state = PaymentState.initial;
+  Future<String> makepayment({String? plan}) async {
+    state = PaymentState.loading;
+
+    notifyListeners();
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    try {
+      Map<String, String> requestHeaders = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${prefs.getString("token")}',
+      };
+      var body = {"plan": 'price_1Og4MHFVGuxznuspRxJ8HnES', "userId": _userId};
+      var url = Uri.https(Config.apiUrl, Config.stripemakePayment);
+      log(url.toString());
+
+      var response =
+          await post(url, headers: requestHeaders, body: jsonEncode(body));
+      log(body.toString());
+      var decodedResponse = jsonDecode(response.body);
+      log(response.statusCode.toString());
+      if (response.statusCode == 200) {
+        log(response.body.toString());
+        state = PaymentState.loaded;
+        notifyListeners();
+        sessionId = decodedResponse['data']['sessionId'];
+        log(sessionId);
+        return decodedResponse['data']['redirectUrl'];
+      } else {
+        state = PaymentState.error;
+        notifyListeners();
+        return decodedResponse['message'];
+      }
+    } catch (e, s) {
+      debugPrint("==> login error: ${e.toString()}");
+      debugPrintStack(stackTrace: s);
+    }
+    state = PaymentState.error;
+    notifyListeners();
+    return 'An error occured. Try again later.';
+  }
+
+  // var state = PaymentState.initial;
+  Future<PaymentState> confirmPayment() async {
+    state = PaymentState.loading;
+
+    notifyListeners();
+
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    try {
+      Map<String, String> requestHeaders = {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ${prefs.getString("token")}',
+      };
+      var body = {"sessionId": sessionId, "userId": _userId};
+      var url = Uri.https(Config.apiUrl, Config.stripeConfirmPayment);
+      log(url.toString());
+      var response =
+          await post(url, headers: requestHeaders, body: jsonEncode(body));
+      log(body.toString());
+      var decodedResponse = jsonDecode(response.body);
+      log(decodedResponse.toString());
+      log(response.statusCode.toString());
+      if (response.statusCode == 200) {
+        log(response.body.toString());
+        state = PaymentState.loaded;
+        notifyListeners();
+        // return decodedResponse['data']['redirectUrl'];
+      } else {
+        state = PaymentState.error;
+        notifyListeners();
+        // return decodedResponse['message'];
+      }
+    } catch (e, s) {
+      state = PaymentState.error;
+      notifyListeners();
+      debugPrint("==> login error: ${e.toString()}");
+      debugPrintStack(stackTrace: s);
+    }
+
+    return state;
+    // return 'An error occured. Try again later.';
+  }
 }
+
+enum PaymentState { initial, loading, loaded, error }

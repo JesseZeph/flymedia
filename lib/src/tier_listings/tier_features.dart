@@ -44,13 +44,12 @@ class TierFeatures extends StatelessWidget {
               height: 20.h,
             ),
             SizedBox(
-              height: 70.h,
-              width: 70.w,
-              child: FittedBox(
-                fit: BoxFit.contain,
-                child: SvgPicture.asset(imagePaths[sub.imagePathKey()] ?? ''),
-              ),
-            ),
+                height: 70.h,
+                width: 70.w,
+                child: FittedBox(
+                    fit: BoxFit.contain,
+                    child: SvgPicture.asset(
+                        imagePaths[sub.imagePathKey()] ?? ''))),
             SizedBox(
               height: 10.h,
             ),
@@ -100,17 +99,13 @@ class TierFeatures extends StatelessWidget {
               height: 20.h,
             ),
             GestureDetector(
-              onTap: () => Get.to(() => TierPaymentPage(
-                  image: imagePaths[sub.imagePathKey()] ?? '',
-                  name: sub.name,
-                  price: sub.price)),
-              child: const RoundedButtonWidget(
-                title: 'Choose Plan',
-              ),
-            ),
-            SizedBox(
-              height: 20.h,
-            ),
+                onTap: () => Get.to(() => TierPaymentPage(
+                    image: imagePaths[sub.imagePathKey()] ?? '',
+                    name: sub.name,
+                    planId: sub.id,
+                    price: sub.price)),
+                child: const RoundedButtonWidget(title: 'Choose Plan')),
+            SizedBox(height: 20.h),
           ],
         )),
       ),

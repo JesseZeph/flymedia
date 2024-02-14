@@ -25,4 +25,6 @@ class Config {
   static const String chats = "/api/chats";
   static const String subscription = "/api/subscriptions";
   static const String addAccount = "/api/account";
+  static const String stripemakePayment = "/api/checkout/subscription-checkout";
+  static const String stripeConfirmPayment = "/api/checkout/payment-success";
 }

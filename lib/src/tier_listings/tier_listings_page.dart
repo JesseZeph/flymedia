@@ -38,9 +38,7 @@ class _TierListingsPageState extends State<TierListingsPage> {
                 itemBuilder: (context, index) => TierListingsTile(
                     subscriptionPlan: tierLists[index],
                     textColor: index == 0 ? null : AppColors.lightMain),
-                separatorBuilder: (context, index) => SizedBox(
-                      height: 40.h,
-                    ),
+                separatorBuilder: (context, index) => SizedBox(height: 40.h),
                 itemCount: tierLists.length)),
       ),
     );
