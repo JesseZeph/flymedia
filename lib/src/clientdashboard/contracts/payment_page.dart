@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/colors.dart';
+import 'package:flymedia_app/providers/login_provider.dart';
 import 'package:flymedia_app/src/authentication/components/animated_button.dart';
 import 'package:flymedia_app/src/authentication/components/roundedbutton.dart';
 import 'package:flymedia_app/src/clientdashboard/contracts/payment_success.dart';
 import 'package:flymedia_app/src/tier_listings/components/payment_methods.dart';
+import 'package:flymedia_app/utils/extensions/context_extension.dart';
 import 'package:flymedia_app/utils/extensions/string_extensions.dart';
 import 'package:flymedia_app/utils/widgets/custom_back_button.dart';
 import 'package:flymedia_app/utils/widgets/custom_text.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+
+import '../client_home_page.dart';
+import '../screens/verification_screen.dart';
 
 class CampaignPayment extends StatefulWidget {
   const CampaignPayment({
@@ -104,8 +110,10 @@ class _CampaignPaymentState extends State<CampaignPayment> {
               height: 20.h,
             ),
             AnimatedButton(
-              onTap: () {
-                Get.to(() => const PaymentSuccess());
+              onTap: () async {
+                // await loginNotifier.login(newModel).then((success));
+                // context.read<LoginNotifier>().makepayment();
+                // Get.to(() => const PaymentSuccess());
               },
               child: const RoundedButtonWidget(
                 title: 'Make Payment',

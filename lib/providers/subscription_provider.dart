@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -16,6 +18,7 @@ class SubscriptionProvider extends ChangeNotifier {
     var response = await repository.getRequest(endpoint: Config.subscription);
     if (response.status) {
       List initList = response.data;
+      log(initList.toString());
       allSubscription =
           initList.map((item) => Subscriptions.fromMap(item)).toList();
       notifyListeners();
