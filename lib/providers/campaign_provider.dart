@@ -30,10 +30,11 @@ class CampaignsNotifier extends ChangeNotifier {
   }
 
   Future<List<Object>> postCampaign(
-      CampaignUploadRequest details, String userId) async {
+      CampaignUploadRequest details, String userId, int maxCampaigns) async {
     _isUploading = !_isUploading;
     notifyListeners();
-    List<Object> response = await CampaignHelper.uploadCampaign(details);
+    List<Object> response =
+        await CampaignHelper.uploadCampaign(details, maxCampaigns);
     getClientCampaigns(userId);
     _isUploading = !_isUploading;
     notifyListeners();
