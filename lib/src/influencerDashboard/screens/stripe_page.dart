@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flymedia_app/providers/login_provider.dart';
+import 'package:flymedia_app/providers/payment_provider.dart';
 import 'package:flymedia_app/src/clientdashboard/contracts/payment_success.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
@@ -15,7 +16,7 @@ class StripeWebView extends StatelessWidget {
     late final WebViewController controller;
     return Scaffold(
       body: SafeArea(
-        child: context.watch<LoginNotifier>().state == PaymentState.loading
+        child: context.watch<PaymentNotifier>().state == PaymentState.loading
             ? const Center(
                 child: CircularProgressIndicator.adaptive(
                     valueColor: AlwaysStoppedAnimation(Colors.blue)))
@@ -23,7 +24,7 @@ class StripeWebView extends StatelessWidget {
                 onPageFinished: (url) {
                   if (url.contains('success')) {
                     context
-                        .read<LoginNotifier>()
+                        .read<PaymentNotifier>()
                         .confirmPayment()
                         .then((state) {
                       if (state == PaymentState.loaded) {

@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:flymedia_app/providers/login_provider.dart';
+import 'package:flymedia_app/providers/payment_provider.dart';
 import 'package:flymedia_app/src/influencerDashboard/screens/stripe_page.dart';
 import 'package:flymedia_app/src/tier_listings/components/payment_methods.dart';
 import 'package:get/get.dart';
@@ -53,7 +53,7 @@ class _TierPaymentPageState extends State<TierPaymentPage> {
         children: [
           AbsorbPointer(
             absorbing:
-                context.watch<LoginNotifier>().state == PaymentState.loading,
+                context.watch<PaymentNotifier>().state == PaymentState.loading,
             child: Padding(
               padding: const EdgeInsets.all(16).r,
               child: SafeArea(
@@ -113,7 +113,7 @@ class _TierPaymentPageState extends State<TierPaymentPage> {
                       onTap: () {
                         log(widget.planId);
                         context
-                            .read<LoginNotifier>()
+                            .read<PaymentNotifier>()
                             .makepayment()
                             .then((value) {
                           if (value.isNotEmpty) {
@@ -131,7 +131,7 @@ class _TierPaymentPageState extends State<TierPaymentPage> {
               )),
             ),
           ),
-          context.watch<LoginNotifier>().state == PaymentState.loading
+          context.watch<PaymentNotifier>().state == PaymentState.loading
               ? const Center(
                   child: CircularProgressIndicator(
                       valueColor: AlwaysStoppedAnimation(Colors.blue)))
