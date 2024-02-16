@@ -60,12 +60,12 @@ class _TierPaymentPageState extends State<TierPaymentPage> {
                   child: Column(
                 children: [
                   SizedBox(width: Get.width.w, height: 20.h),
-                  SizedBox(
-                      height: 70.h,
-                      width: 70.w,
-                      child: FittedBox(
-                          fit: BoxFit.contain,
-                          child: SvgPicture.asset(widget.image))),
+                  // SizedBox(
+                  //     height: 70.h,
+                  //     width: 70.w,
+                  //     child: FittedBox(
+                  //         fit: BoxFit.contain,
+                  //         child: SvgPicture.asset(widget.image))),
                   SizedBox(height: 10.h),
                   CustomKarlaText(
                     text: widget.name,
@@ -114,9 +114,10 @@ class _TierPaymentPageState extends State<TierPaymentPage> {
                         log(widget.planId);
                         context
                             .read<PaymentNotifier>()
-                            .makepayment()
+                            .makepayment(plan: widget.planId)
                             .then((value) {
                           if (value.isNotEmpty) {
+                            log("gvhdxg" + value);
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(

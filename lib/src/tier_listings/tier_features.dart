@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flymedia_app/models/all_plan_model.dart';
 import 'package:flymedia_app/models/subscription_model.dart';
 import 'package:flymedia_app/src/authentication/components/roundedbutton.dart';
 import 'package:flymedia_app/src/tier_listings/tier_payment.dart';
@@ -12,7 +13,7 @@ import '../../utils/widgets/custom_text.dart';
 
 class TierFeatures extends StatelessWidget {
   const TierFeatures({super.key, required this.sub});
-  final Subscriptions sub;
+  final AllPlanModel sub;
   final Map<String, String> imagePaths = const {
     "basic": "assets/images/basic_tier.svg",
     "pro": "assets/images/pro_tier.svg",
@@ -43,18 +44,17 @@ class TierFeatures extends StatelessWidget {
               width: Get.width.w,
               height: 20.h,
             ),
-            SizedBox(
-                height: 70.h,
-                width: 70.w,
-                child: FittedBox(
-                    fit: BoxFit.contain,
-                    child: SvgPicture.asset(
-                        imagePaths[sub.imagePathKey()] ?? ''))),
+            // SizedBox(
+            //     height: 70.h,
+            //     width: 70.w,
+            //     child: FittedBox(fit: BoxFit.contain, child: SvgPicture.asset(
+            //         // imagePaths[sub.imagePathKey()] ??
+            //         ''))),
             SizedBox(
               height: 10.h,
             ),
             CustomKarlaText(
-              text: sub.name,
+              text: sub.name!,
               color: const Color(0xff5f5d5d),
               size: 14,
               weight: FontWeight.w500,
@@ -89,21 +89,27 @@ class TierFeatures extends StatelessWidget {
                               align: TextAlign.start,
                               size: 14,
                               weight: FontWeight.w400,
-                              text: '\u{2022} ${sub.features[index]}'),
+                              text: '\u{2022}'
+                              //  ${sub.features[index]}
+                              ),
                         ),
                     separatorBuilder: (context, index) => SizedBox(
                           height: 50.h,
                         ),
-                    itemCount: sub.features.length)),
+                    itemCount: 5
+                    // sub.features.length
+                    )),
             SizedBox(
               height: 20.h,
             ),
             GestureDetector(
                 onTap: () => Get.to(() => TierPaymentPage(
-                    image: imagePaths[sub.imagePathKey()] ?? '',
-                    name: sub.name,
-                    planId: sub.id,
-                    price: sub.price)),
+                    image:
+                        // imagePaths[sub.imagePathKey()]
+                        '',
+                    name: sub.name!,
+                    planId: sub.id!,
+                    price: sub.price.toString())),
                 child: const RoundedButtonWidget(title: 'Choose Plan')),
             SizedBox(height: 20.h),
           ],

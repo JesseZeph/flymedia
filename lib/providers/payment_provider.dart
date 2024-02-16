@@ -8,38 +8,41 @@ import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PaymentNotifier extends ChangeNotifier {
-  final String _userId = '';
-  String get userId => _userId;
-
   var sessionId = '';
 
   var state = PaymentState.initial;
   Future<String> makepayment({String? plan}) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
     state = PaymentState.loading;
 
     notifyListeners();
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
     try {
       Map<String, String> requestHeaders = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ${prefs.getString("token")}',
       };
-      var body = {
-        "plan": plan ?? 'price_1Og4MHFVGuxznuspRxJ8HnES',
-        "userId": _userId
-      };
+      var body = {"plan": plan, "userId": prefs.getString('userId') ?? ''};
+      log("body" + body.toString());
       var url = Uri.https(Config.apiUrl, Config.stripemakePayment);
-
+      log(url.toString());
       var response =
           await post(url, headers: requestHeaders, body: jsonEncode(body));
+
       var decodedResponse = jsonDecode(response.body);
+      log("${response.statusCode == 200}");
+      log("status" + response.body.toString());
+
       if (response.statusCode == 200) {
+        log('message');
+        // log("response body" + decodedResponse);
         state = PaymentState.loaded;
         notifyListeners();
         sessionId = decodedResponse['data']['sessionId'];
         return decodedResponse['data']['redirectUrl'];
       } else {
         state = PaymentState.error;
+
         notifyListeners();
         return decodedResponse['message'];
       }
@@ -49,7 +52,7 @@ class PaymentNotifier extends ChangeNotifier {
     }
     state = PaymentState.error;
     notifyListeners();
-    return 'An error occurred. Try again later.';
+    return '';
   }
 
   // var state = PaymentState.initial;
@@ -65,7 +68,10 @@ class PaymentNotifier extends ChangeNotifier {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ${prefs.getString("token")}',
       };
-      var body = {"sessionId": sessionId, "userId": _userId};
+      var body = {
+        "sessionId": sessionId,
+        "userId": prefs.getString('userId') ?? ''
+      };
       var url = Uri.https(Config.apiUrl, Config.stripeConfirmPayment);
       log(url.toString());
       var response =

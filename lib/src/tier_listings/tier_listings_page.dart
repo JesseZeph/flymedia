@@ -17,7 +17,7 @@ class TierListingsPage extends StatefulWidget {
 class _TierListingsPageState extends State<TierListingsPage> {
   @override
   Widget build(BuildContext context) {
-    var tierLists = context.watch<SubscriptionProvider>().allSubscription;
+    var tierLists = context.watch<SubscriptionProvider>().allPlans;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
