@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/providers/campaign_provider.dart';
 import 'package:flymedia_app/providers/chat_provider.dart';
 import 'package:flymedia_app/providers/influencer_add_account.dart';
+import 'package:flymedia_app/providers/payment_provider.dart';
 import 'package:flymedia_app/providers/profile_provider.dart';
 import 'package:flymedia_app/firebase_options.dart';
 import 'package:flymedia_app/services/helpers/applications_helper.dart';
@@ -67,6 +68,7 @@ void main() async {
         ChangeNotifierProvider(create: (context) => SignUpNotifier()),
         ChangeNotifierProvider(create: (context) => ProfileProvider()),
         ChangeNotifierProvider(create: (context) => CampaignsNotifier()),
+        ChangeNotifierProvider(create: (context) => PaymentNotifier()),
         ChangeNotifierProvider(
             create: (context) => InfluencerAccountDetailsProvider()),
       ],
