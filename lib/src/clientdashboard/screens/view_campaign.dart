@@ -42,6 +42,7 @@ class _ViewCampaignState extends State<ViewCampaign> {
       progressIndicator: const AlertLoader(message: 'Deleting Campaign'),
       child: Scaffold(
           appBar: AppBar(
+            scrolledUnderElevation: 0,
             leading: IconButton(
               onPressed: () {
                 Navigator.pop(context);
@@ -156,6 +157,9 @@ class _ViewCampaignState extends State<ViewCampaign> {
                 HeadingAndSubText(
                     heading: 'Job Description',
                     subText: campaign.jobDescription),
+                HeadingAndSubText(
+                    heading: 'Minimum Followers required',
+                    subText: campaign.minFollowers.toString().formatFigures()),
                 Padding(
                   padding: EdgeInsets.all(50.w),
                   child: ElevatedButton(

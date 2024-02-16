@@ -278,45 +278,47 @@ class CustomPreviewField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.all(26.r),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            width: 30.w,
-            padding: EdgeInsets.all(4.w),
-            decoration: BoxDecoration(
-              color: containerColor,
-              borderRadius: BorderRadius.circular(50.r),
+    return Padding(
+      padding: EdgeInsets.all(26.r),
+      child: SizedBox(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 50.w,
+              padding: EdgeInsets.all(4.w),
+              decoration:
+                  BoxDecoration(color: containerColor, shape: BoxShape.circle
+                      // borderRadius: BorderRadius.circular(50.r),
+                      ),
+              child: Icon(
+                icon,
+                color: iconColor ?? AppColors.dialogBlue,
+              ),
             ),
-            child: Icon(
-              icon,
-              color: iconColor ?? AppColors.dialogBlue,
+            SizedBox(
+              height: 15.h,
             ),
-          ),
-          SizedBox(
-            height: 15.h,
-          ),
-          Text(
-            text,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.hintTextColor,
-                  fontSize: 12.sp,
-                ),
-          ),
-          SizedBox(
-            height: 15.h,
-          ),
-          Text(
-            headerText,
-            style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                  color: AppColors.mainTextColor,
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.w600,
-                ),
-          ),
-        ],
+            Text(
+              text,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.hintTextColor,
+                    fontSize: 12.sp,
+                  ),
+            ),
+            SizedBox(
+              height: 15.h,
+            ),
+            Text(
+              headerText,
+              style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: AppColors.mainTextColor,
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.w600,
+                  ),
+            ),
+          ],
+        ),
       ),
     );
   }
