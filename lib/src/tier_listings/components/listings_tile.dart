@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/colors.dart';
@@ -10,39 +9,37 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class TierListingsTile extends StatelessWidget {
-  const TierListingsTile({super.key, r, this.subscriptionPlan, this.textColor});
-  final AllPlanModel? subscriptionPlan;
-
+  const TierListingsTile(
+      {super.key, r, this.plan, this.textColor, this.subscriptionPlan});
+  final AllPlanModel? plan;
+  final Subscriptions? subscriptionPlan;
   final Color? textColor;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => Get.to(() => TierFeatures(
+            plan: plan!,
             sub: subscriptionPlan!,
           )),
       child: Container(
         width: Get.width,
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(8).r, color: Colors.blue
-            //  subscriptionPlan.bgColor()
-            ),
+            borderRadius: BorderRadius.circular(8).r,
+            color: subscriptionPlan!.bgColor()),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             CustomKarlaText(
-              text: subscriptionPlan!.name!,
-              size: 14,
-              weight: FontWeight.w500,
-              color: textColor,
-            ),
-            SizedBox(
-              height: 20.h,
-            ),
+                text: plan!.name!,
+                size: 14,
+                weight: FontWeight.w500,
+                color: textColor),
+            SizedBox(height: 20.h),
             RichText(
                 text: TextSpan(
-                    text: '\$${subscriptionPlan!.price.toString()}',
+                    text: '\$${plan!.price.toString()}',
                     style: GoogleFonts.karla(
                         color: textColor ?? AppColors.mainColor,
                         fontSize: 20.sp,
@@ -60,8 +57,7 @@ class TierListingsTile extends StatelessWidget {
               height: 20.h,
             ),
             CustomKarlaText(
-              text: 'description',
-              // subscriptionPlan.description,
+              text: subscriptionPlan!.description,
               size: 14,
               weight: FontWeight.w400,
               color: textColor,

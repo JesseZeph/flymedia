@@ -36,14 +36,8 @@ class PaymentMethod extends StatelessWidget {
                 child: SvgPicture.asset(image),
               ),
             ),
-            SizedBox(
-              width: 10.w,
-            ),
-            CustomKarlaText(
-              text: name,
-              size: 14,
-              weight: FontWeight.w500,
-            )
+            SizedBox(width: 10.w),
+            CustomKarlaText(text: name, size: 14, weight: FontWeight.w500)
           ],
         ),
       ),

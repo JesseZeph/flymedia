@@ -17,6 +17,7 @@ class TierListingsPage extends StatefulWidget {
 class _TierListingsPageState extends State<TierListingsPage> {
   @override
   Widget build(BuildContext context) {
+    var subLists = context.watch<SubscriptionProvider>().allSubscription;
     var tierLists = context.watch<SubscriptionProvider>().allPlans;
     return Scaffold(
       appBar: AppBar(
@@ -36,7 +37,8 @@ class _TierListingsPageState extends State<TierListingsPage> {
         child: SafeArea(
             child: ListView.separated(
                 itemBuilder: (context, index) => TierListingsTile(
-                    subscriptionPlan: tierLists[index],
+                    subscriptionPlan: subLists[index],
+                    plan: tierLists[index],
                     textColor: index == 0 ? null : AppColors.lightMain),
                 separatorBuilder: (context, index) => SizedBox(height: 40.h),
                 itemCount: tierLists.length)),

@@ -13,9 +13,7 @@ class PaymentNotifier extends ChangeNotifier {
   var state = PaymentState.initial;
   Future<String> makepayment({String? plan}) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-
     state = PaymentState.loading;
-
     notifyListeners();
     try {
       Map<String, String> requestHeaders = {
@@ -23,26 +21,17 @@ class PaymentNotifier extends ChangeNotifier {
         'Authorization': 'Bearer ${prefs.getString("token")}',
       };
       var body = {"plan": plan, "userId": prefs.getString('userId') ?? ''};
-      log("body" + body.toString());
       var url = Uri.https(Config.apiUrl, Config.stripemakePayment);
-      log(url.toString());
       var response =
           await post(url, headers: requestHeaders, body: jsonEncode(body));
-
       var decodedResponse = jsonDecode(response.body);
-      log("${response.statusCode == 200}");
-      log("status" + response.body.toString());
-
       if (response.statusCode == 200) {
-        log('message');
-        // log("response body" + decodedResponse);
         state = PaymentState.loaded;
         notifyListeners();
         sessionId = decodedResponse['data']['sessionId'];
         return decodedResponse['data']['redirectUrl'];
       } else {
         state = PaymentState.error;
-
         notifyListeners();
         return decodedResponse['message'];
       }
@@ -55,7 +44,6 @@ class PaymentNotifier extends ChangeNotifier {
     return '';
   }
 
-  // var state = PaymentState.initial;
   Future<PaymentState> confirmPayment() async {
     state = PaymentState.loading;
 

@@ -12,12 +12,12 @@ import '../services/config.dart';
 import '../utils/global_variables.dart';
 
 class SubscriptionProvider extends ChangeNotifier {
-  // List<Subscriptions> allSubscription = [];
+  List<Subscriptions> allSubscription = [];
   List<AllPlanModel> allPlans = [];
   Subscriptions? userCurrentSub;
   String? subscriptionExpiry;
 
-  Future<void> fetchSubscriptions() async {
+  Future<void> fetchAllPlans() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
@@ -31,21 +31,25 @@ class SubscriptionProvider extends ChangeNotifier {
     log(body['data']['plans'].toString());
     for (var data in body['data']['plans']) {
       allPlans.add(AllPlanModel.fromJson(data));
-      log(allPlans.length.toString());
     }
-    log(allPlans.length.toString());
+    allPlans.sort((a, b) => a.name!.compareTo(b.name!));
+    log(allPlans.first.name.toString());
     notifyListeners();
   }
-  // var response = await repository.getRequest(endpoint: Config.allPlans);
-//     if (response.status) {
-//       final body = jsonDecode(response.data);
-//
-//       log(response.data.toString());
-//       List initList = response.data;
-//       log(initList.toString());
-// }
-  // allSubscription =
-  //     initList.map((item) => Subscriptions.fromMap(item)).toList();
+
+  Future<void> fetchSubscriptions() async {
+    var response = await repository.getRequest(endpoint: Config.subscription);
+    if (response.status) {
+      // final body = jsonDecode(response.);
+
+      List initList = response.data;
+      log(initList.toString());
+      allSubscription =
+          initList.map((item) => Subscriptions.fromMap(item)).toList();
+      log("message" + allSubscription.length.toString());
+      notifyListeners();
+    }
+  }
 
   Future<void> fetchUserSubscription() async {
     final prefs = await SharedPreferences.getInstance();
@@ -64,6 +68,7 @@ class SubscriptionProvider extends ChangeNotifier {
 
   void init() {
     fetchSubscriptions();
+    fetchAllPlans();
     fetchUserSubscription();
   }
 }

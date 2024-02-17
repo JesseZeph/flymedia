@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flymedia_app/providers/payment_provider.dart';
 import 'package:flymedia_app/src/influencerDashboard/screens/stripe_page.dart';
 import 'package:flymedia_app/src/tier_listings/components/payment_methods.dart';
@@ -60,12 +61,12 @@ class _TierPaymentPageState extends State<TierPaymentPage> {
                   child: Column(
                 children: [
                   SizedBox(width: Get.width.w, height: 20.h),
-                  // SizedBox(
-                  //     height: 70.h,
-                  //     width: 70.w,
-                  //     child: FittedBox(
-                  //         fit: BoxFit.contain,
-                  //         child: SvgPicture.asset(widget.image))),
+                  SizedBox(
+                      height: 70.h,
+                      width: 70.w,
+                      child: FittedBox(
+                          fit: BoxFit.contain,
+                          child: SvgPicture.asset(widget.image))),
                   SizedBox(height: 10.h),
                   CustomKarlaText(
                     text: widget.name,
@@ -73,9 +74,7 @@ class _TierPaymentPageState extends State<TierPaymentPage> {
                     size: 14,
                     weight: FontWeight.w500,
                   ),
-                  SizedBox(
-                    height: 10.h,
-                  ),
+                  SizedBox(height: 10.h),
                   RichText(
                       text: TextSpan(
                           text: '\$${widget.price}',
@@ -85,12 +84,11 @@ class _TierPaymentPageState extends State<TierPaymentPage> {
                               fontWeight: FontWeight.w800),
                           children: [
                         TextSpan(
-                          text: '/month',
-                          style: GoogleFonts.karla(
-                              color: const Color(0xff0f1521),
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w400),
-                        )
+                            text: '/month',
+                            style: GoogleFonts.karla(
+                                color: const Color(0xff0f1521),
+                                fontSize: 16.sp,
+                                fontWeight: FontWeight.w400))
                       ])),
                   SizedBox(height: 70.h),
                   Expanded(
@@ -109,24 +107,27 @@ class _TierPaymentPageState extends State<TierPaymentPage> {
                               ),
                           itemCount: names.length)),
                   SizedBox(height: 20.h),
-                  GestureDetector(
-                      onTap: () {
-                        log(widget.planId);
-                        context
-                            .read<PaymentNotifier>()
-                            .makepayment(plan: widget.planId)
-                            .then((value) {
-                          if (value.isNotEmpty) {
-                            log("gvhdxg" + value);
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        StripeWebView(url: value)));
-                          }
-                        });
-                      },
-                      child: const RoundedButtonWidget(title: 'Make Payment')),
+                  RoundedButtonWidget(
+                      onTap: selectedMethod == 1
+                          ? () {
+                              context
+                                  .read<PaymentNotifier>()
+                                  .makepayment(plan: widget.planId)
+                                  .then((value) {
+                                if (value.isNotEmpty) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              StripeWebView(url: value)));
+                                }
+                              });
+                            }
+                          : () {
+                              Fluttertoast.showToast(
+                                  msg: 'Select Stripe To Make payment');
+                            },
+                      title: 'Make Payment'),
                   SizedBox(height: 20.h),
                 ],
               )),
