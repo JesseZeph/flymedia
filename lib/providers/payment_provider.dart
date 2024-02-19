@@ -8,28 +8,20 @@ import 'package:http/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class PaymentNotifier extends ChangeNotifier {
-  final String _userId = '';
-  String get userId => _userId;
-
   var sessionId = '';
 
   var state = PaymentState.initial;
   Future<String> makepayment({String? plan}) async {
-    state = PaymentState.loading;
-
-    notifyListeners();
     final SharedPreferences prefs = await SharedPreferences.getInstance();
+    state = PaymentState.loading;
+    notifyListeners();
     try {
       Map<String, String> requestHeaders = {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ${prefs.getString("token")}',
       };
-      var body = {
-        "plan": plan ?? 'price_1Og4MHFVGuxznuspRxJ8HnES',
-        "userId": _userId
-      };
+      var body = {"plan": plan, "userId": prefs.getString('userId') ?? ''};
       var url = Uri.https(Config.apiUrl, Config.stripemakePayment);
-
       var response =
           await post(url, headers: requestHeaders, body: jsonEncode(body));
       var decodedResponse = jsonDecode(response.body);
@@ -49,10 +41,9 @@ class PaymentNotifier extends ChangeNotifier {
     }
     state = PaymentState.error;
     notifyListeners();
-    return 'An error occurred. Try again later.';
+    return '';
   }
 
-  // var state = PaymentState.initial;
   Future<PaymentState> confirmPayment() async {
     state = PaymentState.loading;
 
@@ -65,7 +56,10 @@ class PaymentNotifier extends ChangeNotifier {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer ${prefs.getString("token")}',
       };
-      var body = {"sessionId": sessionId, "userId": _userId};
+      var body = {
+        "sessionId": sessionId,
+        "userId": prefs.getString('userId') ?? ''
+      };
       var url = Uri.https(Config.apiUrl, Config.stripeConfirmPayment);
       log(url.toString());
       var response =
