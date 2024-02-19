@@ -82,6 +82,7 @@ class _ApplicationsState extends State<Applications> {
                               influencerProfile,
                               widget.title,
                               widget.amount,
+                              campaignId: widget.campaignId,
                               action: (name, mail) =>
                                   assignInfluencer(name, mail),
                             );
@@ -132,10 +133,10 @@ class _ApplicationsState extends State<Applications> {
 class _ApplicantsTile extends StatelessWidget {
   final ProfileModel profile;
   final void Function(String, String) action;
-  final String title, amount;
+  final String title, amount, campaignId;
 
   const _ApplicantsTile(this.profile, this.title, this.amount,
-      {required this.action});
+      {required this.action, required this.campaignId});
 
   @override
   Widget build(BuildContext context) {
@@ -221,7 +222,8 @@ class _ApplicantsTile extends StatelessWidget {
               icon: const Icon(Icons.more_horiz),
               onSelected: (String value) {
                 if (value == 'account_campaign') {
-                  _showAccountCampaignDialog(context, amount, title);
+                  _showAccountCampaignDialog(
+                      context, amount, title, campaignId);
                 }
               },
               itemBuilder: (BuildContext context) {
@@ -247,8 +249,8 @@ class _ApplicantsTile extends StatelessWidget {
     );
   }
 
-  void _showAccountCampaignDialog(
-      BuildContext context, String amount, String title) async {
+  void _showAccountCampaignDialog(BuildContext context, String amount,
+      String capaignId, String title) async {
     showDialog<bool?>(
       context: context,
       builder: (BuildContext context) {
@@ -276,6 +278,7 @@ class _ApplicantsTile extends StatelessWidget {
                   influencerName: profile.firstAndLastName ?? '',
                   amount: amount,
                   title: title,
+                  campaignId: campaignId,
                 ));
             if (paymentSuccessful ?? false) {
               action(profile.firstAndLastName ?? '', profile.email ?? '');

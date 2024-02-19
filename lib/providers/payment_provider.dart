@@ -84,24 +84,30 @@ class PaymentNotifier extends ChangeNotifier {
     // return 'An error occured. Try again later.';
   }
 
-  Future<String> influencerPayment({String? campaignFee}) async {
+  Future<String> influencerPayment(
+      {String? campaignFee, required String campaignId}) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     state = PaymentState.loading;
     notifyListeners();
     try {
       Map<String, String> requestHeaders = {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ${prefs.getString("token")}',
+        'Authorization': 'Bearer ${prefs.getString("token")}'
       };
       var body = {
         "campaignFee": campaignFee,
-        "userId": prefs.getString('userId') ?? '',
+        "userId": prefs.getString('userId'),
+        "campaignId": campaignId
       };
+      log(body.values.toString());
       var url = Uri.https(Config.apiUrl, Config.influencerPayment);
+
       var response =
           await post(url, headers: requestHeaders, body: jsonEncode(body));
       var decodedResponse = jsonDecode(response.body);
+      log(decodedResponse.toString());
       if (response.statusCode == 200) {
+        log(decodedResponse.toString());
         state = PaymentState.loaded;
         notifyListeners();
         sessionId = decodedResponse['data']['sessionId'];
@@ -122,32 +128,25 @@ class PaymentNotifier extends ChangeNotifier {
 
   Future<PaymentState> confirmCampaignPayment() async {
     state = PaymentState.loading;
-
     notifyListeners();
-
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-
     try {
       Map<String, String> requestHeaders = {
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer ${prefs.getString("token")}',
+        'Authorization': 'Bearer ${prefs.getString("token")}'
       };
-      var body = {
-        "sessionId": sessionId,
-        "userId": prefs.getString('userId') ?? ''
-      };
+      var body = {"sessionId": sessionId, "userId": prefs.getString('userId')};
       var url = Uri.https(Config.apiUrl, Config.confirmCampaignPayment);
       log(url.toString());
       var response =
           await post(url, headers: requestHeaders, body: jsonEncode(body));
       if (response.statusCode == 200) {
         state = PaymentState.loaded;
+        log(response.body.toString());
         notifyListeners();
-        // return decodedResponse['data']['redirectUrl'];
       } else {
         state = PaymentState.error;
         notifyListeners();
-        // return decodedResponse['message'];
       }
     } catch (e, s) {
       state = PaymentState.error;
@@ -155,9 +154,7 @@ class PaymentNotifier extends ChangeNotifier {
       debugPrint("==> login error: ${e.toString()}");
       debugPrintStack(stackTrace: s);
     }
-
     return state;
-    // return 'An error occured. Try again later.';
   }
 }
 
