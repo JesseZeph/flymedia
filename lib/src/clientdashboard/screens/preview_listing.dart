@@ -204,15 +204,15 @@ class PreviewListing extends StatelessWidget {
                                   if (isLoading) {
                                     return;
                                   }
-                                  if (context
-                                          .read<SubscriptionProvider>()
-                                          .userCurrentSub ==
-                                      null) {
-                                    context.showError(
-                                        'Subscribe to a plan to begin posting campaigns');
+                                  // if (context
+                                  //         .read<SubscriptionProvider>()
+                                  //         .userCurrentSub ==
+                                  //     null) {
+                                  //   context.showError(
+                                  //       'Subscribe to a plan to begin posting campaigns');
 
-                                    return;
-                                  }
+                                  //   return;
+                                  // }
                                   await context
                                       .read<CampaignsNotifier>()
                                       .postCampaign(

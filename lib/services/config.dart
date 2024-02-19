@@ -28,4 +28,8 @@ class Config {
   static const String addAccount = "/api/account";
   static const String stripemakePayment = "/api/checkout/subscription-checkout";
   static const String stripeConfirmPayment = "/api/checkout/payment-success";
+  static const String influencerPayment =
+      "/api/campaignPayment/initiate-payment";
+  static const String confirmCampaignPayment =
+      "/api/campaignPayment/payment-success";
 }

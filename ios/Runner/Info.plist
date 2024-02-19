@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>LSApplicationCategoryType</key>
+	<string></string>
 	<key>CADisableMinimumFrameDurationOnPhone</key>
 	<true/>
 	<key>CFBundleDevelopmentRegion</key>
@@ -47,9 +49,13 @@
 	<string>App needs access to photo lib for profile images</string>
 	<key>NSAppTransportSecurity</key>
 	<dict>
-    	<key>NSAllowsArbitraryLoads</key>
-    	<true/>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+		<key>NSAllowsArbitraryLoadsInWebContent</key>
+		<true/>
 	</dict>
+	<key>io.flutter.embed_views_preview</key>
+	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
 	<key>UIBackgroundModes</key>
@@ -79,7 +85,7 @@
 	<string>YES</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
-  		<string>http</string>
+		<string>http</string>
 	</array>
 </dict>
 </plist>

@@ -7,6 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flymedia_app/providers/payment_provider.dart';
 import 'package:flymedia_app/src/influencerDashboard/screens/stripe_page.dart';
 import 'package:flymedia_app/src/tier_listings/components/payment_methods.dart';
+import 'package:flymedia_app/utils/widgets/alert_loader.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -134,9 +135,7 @@ class _TierPaymentPageState extends State<TierPaymentPage> {
             ),
           ),
           context.watch<PaymentNotifier>().state == PaymentState.loading
-              ? const Center(
-                  child: CircularProgressIndicator(
-                      valueColor: AlwaysStoppedAnimation(Colors.blue)))
+              ? const Center(child: AlertLoader(message: 'Please wait'))
               : const SizedBox.shrink()
         ],
       ),
