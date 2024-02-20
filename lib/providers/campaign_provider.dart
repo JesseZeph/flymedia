@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flymedia_app/models/network_response.dart';
 import 'package:flymedia_app/models/requests/campaign/campain_upload.dart';
@@ -44,8 +46,10 @@ class CampaignsNotifier extends ChangeNotifier {
 
   Future<void> getClientCampaigns(String userId) async {
     var resp = await CampaignHelper.getSpecificClientCampaigns(userId);
+
     if (resp != null) {
       clientCampaigns = resp.campaign;
+      // log(clientCampaigns.first..toString());
     }
     _fetchedCampaigns = true;
     notifyListeners();
@@ -58,10 +62,10 @@ class CampaignsNotifier extends ChangeNotifier {
         query: {'type': userType});
     if (response.status) {
       List initList = response.data;
+      log(initList.toString());
       List<ActiveCampaignModel> campaigns = initList.map((item) {
         return ActiveCampaignModel.fromMap(item);
       }).toList();
-
       return campaigns;
     }
     return [];

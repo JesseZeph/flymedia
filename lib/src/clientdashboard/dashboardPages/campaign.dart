@@ -116,11 +116,9 @@ class _CampaignState extends State<Campaign> {
                       child: !campaignNotifier.fetchedCampaigns
                           ? Center(
                               child: Container(
-                                padding: EdgeInsets.all(20.r),
-                                child:
-                                    const CircularProgressIndicator.adaptive(),
-                              ),
-                            )
+                                  padding: EdgeInsets.all(20.r),
+                                  child: const CircularProgressIndicator
+                                      .adaptive()))
                           : campaignNotifier.clientCampaigns.isNotEmpty
                               ? ListView.builder(
                                   itemCount:
