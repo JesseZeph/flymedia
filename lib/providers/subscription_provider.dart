@@ -46,7 +46,6 @@ class SubscriptionProvider extends ChangeNotifier {
       log(initList.toString());
       allSubscription =
           initList.map((item) => Subscriptions.fromMap(item)).toList();
-      log("message" + allSubscription.length.toString());
       notifyListeners();
     }
   }

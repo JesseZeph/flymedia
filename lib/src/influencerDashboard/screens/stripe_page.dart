@@ -15,6 +15,7 @@ class StripeWebView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: unused_local_variable
     late final WebViewController controller;
     final readPaymentprovider = context.read<PaymentNotifier>();
     return Scaffold(

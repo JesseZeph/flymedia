@@ -1,6 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flymedia_app/models/response/influencer_login_response.dart';
 import 'package:http/http.dart' as https;

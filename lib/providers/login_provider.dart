@@ -174,7 +174,9 @@ class LoginNotifier extends ChangeNotifier {
     } catch (e, s) {
       debugPrint("=======> error with google sign in: $e");
       debugPrintStack(stackTrace: s);
-      context.showError('Could not authenticate');
+      if (context.mounted) {
+        context.showError('Could not authenticate');
+      }
     }
 
     _loader = !_loader;
@@ -242,7 +244,9 @@ class LoginNotifier extends ChangeNotifier {
     } catch (e, s) {
       debugPrint("=======> error with apple sign in: $e");
       debugPrintStack(stackTrace: s);
-      context.showError('Could not authenticate');
+      if (context.mounted) {
+        context.showError('Could not authenticate');
+      }
     }
 
     _loader = !_loader;
