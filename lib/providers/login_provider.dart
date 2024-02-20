@@ -4,6 +4,7 @@ import 'package:flymedia_app/services/firebase/auth_helper.dart';
 import 'package:flymedia_app/services/helpers/auth_helper.dart';
 import 'package:flymedia_app/utils/apple_auth_handler.dart';
 import 'package:flymedia_app/utils/extensions/context_extension.dart';
+import 'package:flymedia_app/utils/global_variables.dart';
 import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -256,6 +257,7 @@ class LoginNotifier extends ChangeNotifier {
   logout() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     auth.signOut();
+    repository.clearSecureData();
     await prefs.clear();
     await prefs.setBool('loggedIn', false);
     await prefs.setInt('selectedContainer', 3);

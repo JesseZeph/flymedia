@@ -1,9 +1,11 @@
 import 'package:flymedia_app/services/network/api_services.dart';
 
 import '../../models/network_response.dart';
+import '../database/secure_storage.dart';
 
 class Repository {
   final _apiService = ApiService();
+  final _secureDb = SecureStore();
 
   Future<NetworkResponse> getRequest(
           {String? endpoint,
@@ -59,4 +61,11 @@ class Repository {
           query: query,
           filesMap: filesMap,
           requiresHeader: requiresHeader);
+
+  Future<void> storeData({String? key, String? value}) async =>
+      _secureDb.storeData(key: key, value: value);
+
+  Future<String?> retrieveData(String key) async => _secureDb.retrieveData(key);
+
+  Future<void> clearSecureData() async => _secureDb.clearSecureData();
 }
