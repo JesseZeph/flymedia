@@ -184,35 +184,32 @@ class _ProfilePageState extends State<EditProfile> {
                     SizedBox(height: 30.h),
                     Container(
                       margin: EdgeInsets.symmetric(horizontal: 20.w),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CustomField(
-                              inputType: TextInputType.number,
-                              validator: (val) {
-                                if (val == null || val.isEmpty) {
-                                  return '*Required';
-                                }
-                                return null;
-                              },
-                              textController: numOfFollowersCtrl,
-                              text: 'No. of Tiktok Followers'),
-                          SizedBox(
-                            width: 20.w,
-                          ),
-                          CustomField(
-                              inputType: TextInputType.number,
-                              textController: numOfLikesCtrl,
-                              text: 'No. of Tiktok likes',
-                              validator: (val) {
-                                if (val == null || val.isEmpty) {
-                                  return '*Required';
-                                }
-                                return null;
-                              }),
-                        ],
-                      ),
+                      child: CustomField(
+                          inputType: TextInputType.number,
+                          validator: (val) {
+                            if (val == null || val.isEmpty) {
+                              return '*Required';
+                            }
+                            return null;
+                          },
+                          textController: numOfFollowersCtrl,
+                          text: 'No. of Tiktok Followers'),
                     ),
+                    SizedBox(height: 30.h),
+                    Container(
+                      margin: EdgeInsets.symmetric(horizontal: 20.w),
+                      child: CustomField(
+                          inputType: TextInputType.number,
+                          textController: numOfLikesCtrl,
+                          text: 'No. of Tiktok likes',
+                          validator: (val) {
+                            if (val == null || val.isEmpty) {
+                              return '*Required';
+                            }
+                            return null;
+                          }),
+                    ),
+
                     Container(
                       margin: EdgeInsets.symmetric(horizontal: 20.h),
                       child: const SubHeadings(
@@ -443,6 +440,9 @@ class _ProfilePageState extends State<EditProfile> {
                           }
                         },
                       ),
+                    ),
+                    SizedBox(
+                      height: 30.h,
                     ),
                   ],
                 ),
