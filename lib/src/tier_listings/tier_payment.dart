@@ -117,8 +117,11 @@ class _TierPaymentPageState extends State<TierPaymentPage> {
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) =>
-                                              StripeWebView(url: value)));
+                                          builder: (context) => StripeWebView(
+                                                url: value,
+                                                price: '',
+                                                influencerName: '',
+                                              )));
                                 }
                               });
                             }

@@ -8,10 +8,15 @@ import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class StripeWebView extends StatelessWidget {
-  const StripeWebView({Key? key, required this.url, this.paymentType = ''})
+  const StripeWebView(
+      {Key? key,
+      required this.url,
+      this.paymentType = '',
+      required this.influencerName,
+      required this.price})
       : super(key: key);
   final String url;
-  final String? paymentType;
+  final String? paymentType, influencerName, price;
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +42,10 @@ class StripeWebView extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const PaymentSuccess()),
+                                builder: (context) => PaymentSuccess(
+                                      influencerName: influencerName ?? '',
+                                      price: price ?? '',
+                                    )),
                           );
                         }
                       });
@@ -49,7 +57,10 @@ class StripeWebView extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const PaymentSuccess()),
+                                builder: (context) => PaymentSuccess(
+                                      influencerName: influencerName ?? '',
+                                      price: price ?? '',
+                                    )),
                           );
                         }
                       });

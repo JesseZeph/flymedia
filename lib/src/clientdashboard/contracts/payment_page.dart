@@ -114,7 +114,11 @@ class _CampaignPaymentState extends State<CampaignPayment> {
                             context,
                             MaterialPageRoute(
                               builder: (context) => StripeWebView(
-                                  url: value, paymentType: 'influencerPayment'),
+                                url: value,
+                                paymentType: 'influencerPayment',
+                                influencerName: widget.influencerName,
+                                price: widget.amount,
+                              ),
                             ),
                           );
                         }
