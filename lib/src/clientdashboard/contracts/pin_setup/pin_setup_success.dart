@@ -3,9 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:flymedia_app/src/authentication/components/roundedbutton.dart';
 import 'package:flymedia_app/src/authentication/forgotpassword/screens/checkemail.dart';
-import 'package:flymedia_app/src/clientdashboard/contracts/payment_page.dart';
-import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 
 class PinSetupSuccess extends StatefulWidget {
   const PinSetupSuccess({
