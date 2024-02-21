@@ -13,21 +13,29 @@ import '../config.dart';
 class CampaignHelper {
   static var client = https.Client();
 
-  static Future<List<CampaignUploadResponse>> getCampaigns() async {
-    Map<String, String> requestHeaders = {
-      'Content-Type': 'application/json',
-    };
-    List<CampaignUploadResponse> resp = [];
-    var url = Uri.https(Config.apiUrl, Config.getAllCampaigns);
+  static Future<List<CampaignUploadResponse>> getCampaigns(
+      int pageNumber) async {
+    try {
+      Map<String, String> requestHeaders = {
+        'Content-Type': 'application/json',
+      };
+      List<CampaignUploadResponse> resp = [];
+      var url = Uri.https(Config.apiUrl, Config.getAllCampaigns,
+          {'page': pageNumber.toString()});
 
-    var response = await client.get(url, headers: requestHeaders);
+      var response = await client.get(url, headers: requestHeaders);
 
-    if (response.statusCode == 200) {
-      resp = campaignResponseFromJson(response.body);
-      return resp;
-    } else {
-      // throw Exception('Failed to load campaign');
-      return resp;
+      if (response.statusCode == 200) {
+        resp = campaignResponseFromJson(response.body);
+        return resp;
+      } else {
+        // throw Exception('Failed to load campaign');
+        return resp;
+      }
+    } catch (e, s) {
+      debugPrint(e.toString());
+      debugPrintStack(stackTrace: s);
+      return [];
     }
   }
 

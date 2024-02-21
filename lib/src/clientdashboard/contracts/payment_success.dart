@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import 'package:flymedia_app/src/authentication/components/roundedbutton.dart';
 import 'package:flymedia_app/src/authentication/forgotpassword/screens/checkemail.dart';
 
 class PaymentSuccess extends StatelessWidget {
-  const PaymentSuccess({Key? key}) : super(key: key);
+  const PaymentSuccess(
+      {Key? key, required this.price, required this.influencerName})
+      : super(key: key);
+  final String price, influencerName;
 
   @override
   Widget build(BuildContext context) {
@@ -22,20 +24,20 @@ class PaymentSuccess extends StatelessWidget {
                 ),
                 headerText: 'Payment Received',
                 subText:
-                    'Your payment of \$10,000 has been received, and will be paid to Lexy Chang immediately the contract is completed.',
+                    'Your payment of \$$price has been received, and will be paid to $influencerName immediately the contract is completed.',
               ),
             ),
-            GestureDetector(
-              onTap: () {
-                // Get.to(() => ChatTile(model: chatModel, isClientView: true));
-              },
-              child: Padding(
-                padding: EdgeInsets.only(top: 30.h),
-                child: const RoundedButtonWidget(
-                  title: 'Chat with Lexy Chang',
-                ),
-              ),
-            )
+            // GestureDetector(
+            //   onTap: () {
+            //     // Get.to(() => ChatTile(model: chatModel, isClientView: true));
+            //   },
+            //   child: Padding(
+            //     padding: EdgeInsets.only(top: 30.h),
+            //     child: RoundedButtonWidget(
+            //       title: 'Chat with $influencerName',
+            //     ),
+            //   ),
+            // )
           ],
         ),
       ),

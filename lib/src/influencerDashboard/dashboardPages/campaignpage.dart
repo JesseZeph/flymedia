@@ -25,15 +25,31 @@ class CampaignPage extends StatefulWidget {
 
 class _CampaignPageState extends State<CampaignPage> {
   bool profileComplete = true;
+  var listController = ScrollController();
+  int pageNumber = 2;
+  bool hasMoreData = true;
+  List<String> sortMethods = ['Highest Rate', 'Lowest followers'];
   @override
   void initState() {
     super.initState();
     checkProfile();
-    context.read<CampaignsNotifier>().getCampaigns();
+    context.read<CampaignsNotifier>().getCampaigns(1);
+    listController.addListener(loadMore);
   }
 
   Future<void> _refreshCampaigns() async {
-    await context.read<CampaignsNotifier>().getCampaigns();
+    await context.read<CampaignsNotifier>().getCampaigns(1);
+  }
+
+  loadMore() async {
+    if (listController.position.extentAfter < 5 && hasMoreData) {
+      hasMoreData = await context
+          .read<CampaignsNotifier>()
+          .getCampaigns(pageNumber, isLoadingMore: true);
+      if (hasMoreData) {
+        pageNumber += 1;
+      }
+    }
   }
 
   checkProfile() {
@@ -189,17 +205,51 @@ class _CampaignPageState extends State<CampaignPage> {
                   ),
                 ),
               Container(
-                width: 321.w,
-                margin: EdgeInsets.only(top: 20.h),
-                child: Text(
-                  'Campaign Listing',
-                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: AppColors.mainTextColor,
-                        fontSize: 14.sp,
-                        fontWeight: FontWeight.w600,
+                  width: 321.w,
+                  margin: EdgeInsets.only(top: 20.h),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Campaign Listing',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                              color: AppColors.mainTextColor,
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w600,
+                            ),
                       ),
-                ),
-              ),
+                      const Spacer(),
+                      PopupMenuButton<int>(
+                        elevation: 2,
+                        color: AppColors.mainColor,
+                        onSelected: (index) => context
+                            .read<CampaignsNotifier>()
+                            .sortCampaigns(index),
+                        icon: Icon(
+                          Icons.sort_outlined,
+                          size: 25.r,
+                          color: AppColors.mainColor,
+                        ),
+                        itemBuilder: (context) => sortMethods
+                            .map(
+                              (method) => PopupMenuItem<int>(
+                                value: sortMethods.indexOf(method),
+                                child: ListTile(
+                                  title: Text(
+                                    method,
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.copyWith(
+                                            fontSize: 12.sp,
+                                            color: Colors.white),
+                                  ),
+                                ),
+                              ),
+                            )
+                            .toList(),
+                      )
+                    ],
+                  )),
               Expanded(
                 child: Consumer<CampaignsNotifier>(
                   builder: (context, campaignNotifier, child) {
@@ -216,6 +266,7 @@ class _CampaignPageState extends State<CampaignPage> {
                               )
                             : campaignNotifier.campaignList.isNotEmpty
                                 ? ListView.builder(
+                                    controller: listController,
                                     itemCount:
                                         campaignNotifier.campaignList.length,
                                     scrollDirection: Axis.vertical,
@@ -229,40 +280,7 @@ class _CampaignPageState extends State<CampaignPage> {
                                       );
                                     })
                                 : const Center(
-                                    child: Text('No campaign available'))
-                        // FutureBuilder<List<CampaignUploadResponse>>(
-                        //   future: campaignNotifier.campaignList,
-                        //   builder: (context, snapshot) {
-                        //     if (snapshot.connectionState ==
-                        //         ConnectionState.waiting) {
-                        //       return Center(
-                        //         child: SizedBox(
-                        //             height: 30.h,
-                        //             width: 30.w,
-                        //             child:
-                        //                 const CircularProgressIndicator.adaptive()),
-                        //       );
-                        //     } else if (snapshot.hasError) {
-                        //       return Text('Error: ${snapshot.error}');
-                        //     } else if (snapshot.data!.isEmpty) {
-                        //       return const Text('No campaign available');
-                        //     } else {
-                        //       final campaigns = snapshot.data;
-
-                        //       return ListView.builder(
-                        //           itemCount: campaigns!.length,
-                        //           scrollDirection: Axis.vertical,
-                        //           physics: const AlwaysScrollableScrollPhysics(),
-                        //           itemBuilder: (context, index) {
-                        //             var campaign = campaigns[index];
-                        //             return CampaignListTile(
-                        //               campaign: campaign,
-                        //             );
-                        //           });
-                        //     }
-                        //   },
-                        // ),
-                        );
+                                    child: Text('No campaign available')));
                   },
                 ),
               )

@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
-import 'dart:developer';
 
 import 'package:flymedia_app/services/config.dart';
 import 'package:http/http.dart';
@@ -61,7 +60,6 @@ class PaymentNotifier extends ChangeNotifier {
         "userId": prefs.getString('userId') ?? ''
       };
       var url = Uri.https(Config.apiUrl, Config.stripeConfirmPayment);
-      log(url.toString());
       var response =
           await post(url, headers: requestHeaders, body: jsonEncode(body));
       if (response.statusCode == 200) {
@@ -99,15 +97,12 @@ class PaymentNotifier extends ChangeNotifier {
         "userId": prefs.getString('userId'),
         "campaignId": campaignId
       };
-      log(body.values.toString());
       var url = Uri.https(Config.apiUrl, Config.influencerPayment);
 
       var response =
           await post(url, headers: requestHeaders, body: jsonEncode(body));
       var decodedResponse = jsonDecode(response.body);
-      log(decodedResponse.toString());
       if (response.statusCode == 200) {
-        log(decodedResponse.toString());
         state = PaymentState.loaded;
         notifyListeners();
         sessionId = decodedResponse['data']['sessionId'];
@@ -137,12 +132,10 @@ class PaymentNotifier extends ChangeNotifier {
       };
       var body = {"sessionId": sessionId, "userId": prefs.getString('userId')};
       var url = Uri.https(Config.apiUrl, Config.confirmCampaignPayment);
-      log(url.toString());
       var response =
           await post(url, headers: requestHeaders, body: jsonEncode(body));
       if (response.statusCode == 200) {
         state = PaymentState.loaded;
-        log(response.body.toString());
         notifyListeners();
       } else {
         state = PaymentState.error;

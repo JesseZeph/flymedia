@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flymedia_app/models/network_response.dart';
 import 'package:flymedia_app/models/requests/campaign/campain_upload.dart';
@@ -18,17 +16,25 @@ class CampaignsNotifier extends ChangeNotifier {
 
   bool _isUploading = false;
   bool get isUploading => _isUploading;
-  bool _isFetching = false;
+  bool _isFetching = true;
   bool get isFetching => _isFetching;
   bool _fetchedCampaigns = false;
   bool get fetchedCampaigns => _fetchedCampaigns;
   late Future<GetCampaignRes> campaign;
 
-  Future<void> getCampaigns() async {
-    _isFetching = !_isFetching;
-    campaignList = await CampaignHelper.getCampaigns();
-    _isFetching = !_isFetching;
+  Future<bool> getCampaigns(int page, {bool isLoadingMore = false}) async {
+    bool canLoadMore = true;
+    if (isLoadingMore) {
+      var newList = await CampaignHelper.getCampaigns(page);
+      campaignList.addAll(newList);
+      canLoadMore = newList.isNotEmpty && newList.length == 20;
+    } else {
+      campaignList = await CampaignHelper.getCampaigns(page);
+      canLoadMore = campaignList.isNotEmpty && campaignList.length == 20;
+    }
+    _isFetching = false;
     notifyListeners();
+    return canLoadMore;
   }
 
   Future<List<Object>> postCampaign(
@@ -49,7 +55,6 @@ class CampaignsNotifier extends ChangeNotifier {
 
     if (resp != null) {
       clientCampaigns = resp.campaign;
-      // log(clientCampaigns.first..toString());
     }
     _fetchedCampaigns = true;
     notifyListeners();
@@ -62,7 +67,6 @@ class CampaignsNotifier extends ChangeNotifier {
         query: {'type': userType});
     if (response.status) {
       List initList = response.data;
-      log(initList.toString());
       List<ActiveCampaignModel> campaigns = initList.map((item) {
         return ActiveCampaignModel.fromMap(item);
       }).toList();
@@ -83,6 +87,31 @@ class CampaignsNotifier extends ChangeNotifier {
           "user_type": userType
         });
     return response;
+  }
+
+  sortCampaigns(int sortIndex) {
+    _isFetching = true;
+    notifyListeners();
+    switch (sortIndex) {
+      // sort based on highest amount to be paid
+      case 0:
+        campaignList.sort((a, b) =>
+            (int.tryParse(a.rate) ?? 0).compareTo(int.tryParse(b.rate) ?? 0));
+        campaignList = campaignList.reversed.toList();
+        break;
+      case 1: // sort based on lowest min followers required.
+        campaignList.sort((a, b) => a.minFollowers.compareTo(b.minFollowers));
+        campaignList = campaignList.reversed.toList();
+        break;
+      // case 2:
+      //   campaignList.sort((a, b) =>
+      //       (int.tryParse(a.rate) ?? 0).compareTo(int.tryParse(b.rate) ?? 0));
+      //   campaignList = campaignList.reversed.toList();
+      //   notifyListeners();
+      //   break;
+    }
+    _isFetching = false;
+    notifyListeners();
   }
 
   deleteCampaign(int index) {
