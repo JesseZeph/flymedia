@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/colors.dart';
@@ -8,7 +6,10 @@ import 'package:flymedia_app/src/authentication/components/animated_button.dart'
 import 'package:flymedia_app/src/authentication/components/roundedbutton.dart';
 import 'package:flymedia_app/src/influencerDashboard/screens/stripe_page.dart';
 import 'package:flymedia_app/src/tier_listings/components/payment_methods.dart';
+import 'package:flymedia_app/utils/extensions/context_extension.dart';
 import 'package:flymedia_app/utils/extensions/string_extensions.dart';
+import 'package:flymedia_app/utils/global_variables.dart';
+import 'package:flymedia_app/utils/mixins/pin_mixin.dart';
 import 'package:flymedia_app/utils/widgets/alert_loader.dart';
 import 'package:flymedia_app/utils/widgets/custom_back_button.dart';
 import 'package:flymedia_app/utils/widgets/custom_text.dart';
@@ -31,13 +32,14 @@ class CampaignPayment extends StatefulWidget {
   State<CampaignPayment> createState() => _CampaignPaymentState();
 }
 
-class _CampaignPaymentState extends State<CampaignPayment> {
+class _CampaignPaymentState extends State<CampaignPayment> with PinMixin {
   int? selectedMethod;
   List<String> names = ["Pay with Paypal", "Pay with Stripe"];
   List<String> iconPaths = [
     "assets/images/paypal.svg",
     "assets/images/stripe.svg"
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -102,27 +104,11 @@ class _CampaignPaymentState extends State<CampaignPayment> {
                   SizedBox(height: 20.h),
                   AnimatedButton(
                     onTap: () async {
-                      context
-                          .read<PaymentNotifier>()
-                          .influencerPayment(
-                              campaignFee: widget.amount,
-                              campaignId: widget.campaignId)
-                          .then((value) {
-                        log(value);
-                        if (value.isNotEmpty) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => StripeWebView(
-                                url: value,
-                                paymentType: 'influencerPayment',
-                                influencerName: widget.influencerName,
-                                price: widget.amount,
-                              ),
-                            ),
-                          );
-                        }
-                      });
+                      if (selectedMethod == 0) {
+                        payWithPaypal();
+                      } else {
+                        payWithStripe();
+                      }
                     },
                     child: const RoundedButtonWidget(
                       title: 'Make Payment',
@@ -137,5 +123,46 @@ class _CampaignPaymentState extends State<CampaignPayment> {
         ),
       ),
     );
+  }
+
+  payWithStripe() async {
+    if (await repository.isPinSet() && context.mounted) {
+      var pinIsVerified = await verifyPin(context);
+
+      if (pinIsVerified && context.mounted) {
+        context
+            .read<PaymentNotifier>()
+            .influencerPayment(
+                campaignFee: widget.amount, campaignId: widget.campaignId)
+            .then((value) async {
+          if (value.isNotEmpty) {
+            var successful = await Navigator.push<bool?>(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => StripeWebView(
+                      url: value,
+                      paymentType: 'influencerPayment',
+                      influencerName: widget.influencerName,
+                      price: widget.amount,
+                    ),
+                  ),
+                ) ??
+                false;
+            if (context.mounted) {
+              Navigator.pop(context, successful);
+            }
+          }
+        });
+      } else {
+        // ignore: use_build_context_synchronously
+        context.showError('Incorrect pin entered.');
+      }
+    } else {
+      setupPin(context);
+    }
+  }
+
+  payWithPaypal() {
+    context.showSuccess('Not available, coming soon.');
   }
 }

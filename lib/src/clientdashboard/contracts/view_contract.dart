@@ -9,6 +9,8 @@ import 'package:flymedia_app/src/clientdashboard/contracts/widget/dialogs.dart';
 import 'package:flymedia_app/src/influencerDashboard/contracts/widget/dialogs.dart';
 import 'package:flymedia_app/utils/extensions/context_extension.dart';
 import 'package:flymedia_app/utils/extensions/string_extensions.dart';
+import 'package:flymedia_app/utils/global_variables.dart';
+import 'package:flymedia_app/utils/mixins/pin_mixin.dart';
 import 'package:flymedia_app/utils/widgets/alert_loader.dart';
 import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
@@ -28,7 +30,8 @@ class ViewCampaignContract extends StatefulWidget {
   State<ViewCampaignContract> createState() => _ViewCampaignContractState();
 }
 
-class _ViewCampaignContractState extends State<ViewCampaignContract> {
+class _ViewCampaignContractState extends State<ViewCampaignContract>
+    with PinMixin {
   late ActiveCampaignModel campaign;
   bool loading = false;
   @override
@@ -154,12 +157,22 @@ class _ViewCampaignContractState extends State<ViewCampaignContract> {
                 Padding(
                   padding: EdgeInsets.symmetric(horizontal: 100.w),
                   child: GestureDetector(
-                    onTap: () {
+                    onTap: () async {
                       if (campaign.checkIfMarkedComplete(widget.isClient)) {
                         context.showSnackBar(campaign.message);
                         return;
                       }
-                      markCompleted();
+                      if (await repository.isPinSet() && context.mounted) {
+                        var pinIsVerified = await verifyPin(context);
+
+                        if (pinIsVerified && context.mounted) {
+                          markCompleted();
+                        } else {
+                          context.showError('Incorrect pin entered.');
+                        }
+                      } else {
+                        setupPin(context);
+                      }
                     },
                     child: Container(
                       padding: EdgeInsets.all(10.r),

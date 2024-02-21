@@ -65,7 +65,7 @@ class StripeWebView extends StatelessWidget {
                         }
                       });
                     }
-                  }
+                  } else {}
                 },
                 zoomEnabled: true,
                 initialUrl: url,

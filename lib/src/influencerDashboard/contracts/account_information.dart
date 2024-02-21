@@ -6,6 +6,9 @@ import 'package:flymedia_app/providers/profile_provider.dart';
 import 'package:flymedia_app/src/authentication/components/animated_button.dart';
 import 'package:flymedia_app/src/influencerDashboard/contracts/account_display.dart';
 import 'package:flymedia_app/src/influencerDashboard/contracts/widget/rounded_button.dart';
+import 'package:flymedia_app/utils/extensions/context_extension.dart';
+import 'package:flymedia_app/utils/global_variables.dart';
+import 'package:flymedia_app/utils/mixins/pin_mixin.dart';
 
 import 'package:flymedia_app/utils/widgets/alert_loader.dart';
 import 'package:flymedia_app/utils/widgets/custom_text.dart';
@@ -24,7 +27,7 @@ class AccountInformation extends StatefulWidget {
   State<AccountInformation> createState() => _AccountInformationState();
 }
 
-class _AccountInformationState extends State<AccountInformation> {
+class _AccountInformationState extends State<AccountInformation> with PinMixin {
   late TextEditingController accountName;
   late TextEditingController accountNumber;
   late TextEditingController bankName;
@@ -36,38 +39,49 @@ class _AccountInformationState extends State<AccountInformation> {
 
   addAccount() async {
     if (formKey.currentState?.validate() ?? false) {
-      setState(() {
-        loading = !loading;
-      });
-      if (widget.isEdit) {
-        await context
-            .read<InfluencerAccountDetailsProvider>()
-            .editAccountDetails(
-                id: userAccount?.id ?? '',
-                name: accountName.text,
-                accountNumber: accountNumber.text,
-                bankName: bankName.text);
-      } else {
-        await context
-            .read<InfluencerAccountDetailsProvider>()
-            .postAccountDetails(
-                id: context.read<ProfileProvider>().userProfile?.id ?? '',
-                name: accountName.text,
-                accountNumber: accountNumber.text,
-                bankName: bankName.text);
-      }
+      if (await repository.isPinSet() && context.mounted) {
+        var pinVerified = await verifyPin(context);
+        if (pinVerified && context.mounted) {
+          setState(() {
+            loading = !loading;
+          });
+          if (widget.isEdit) {
+            await context
+                .read<InfluencerAccountDetailsProvider>()
+                .editAccountDetails(
+                    id: userAccount?.id ?? '',
+                    name: accountName.text,
+                    accountNumber: accountNumber.text,
+                    bankName: bankName.text);
+          } else {
+            await context
+                .read<InfluencerAccountDetailsProvider>()
+                .postAccountDetails(
+                    id: context.read<ProfileProvider>().userProfile?.id ?? '',
+                    name: accountName.text,
+                    accountNumber: accountNumber.text,
+                    bankName: bankName.text);
+          }
 
-      if (context.mounted) {
-        userAccount =
-            context.read<InfluencerAccountDetailsProvider>().getAccountResponse;
-        if (userAccount != null) {
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) =>
-                    DisplayAccountInfo(getAccountDetails: userAccount!),
-              ));
+          if (context.mounted) {
+            userAccount = context
+                .read<InfluencerAccountDetailsProvider>()
+                .getAccountResponse;
+            if (userAccount != null) {
+              Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) =>
+                        DisplayAccountInfo(getAccountDetails: userAccount!),
+                  ));
+            }
+          }
+        } else {
+          // ignore: use_build_context_synchronously
+          context.showError('Incorrect pin entered.');
         }
+      } else {
+        setupPin(context);
       }
     }
   }
@@ -80,6 +94,14 @@ class _AccountInformationState extends State<AccountInformation> {
     accountNumber =
         TextEditingController(text: userAccount?.accountNumber ?? '');
     bankName = TextEditingController(text: userAccount?.bankName ?? '');
+  }
+
+  @override
+  void dispose() {
+    accountName.dispose();
+    accountNumber.dispose();
+    bankName.dispose();
+    super.dispose();
   }
 
   @override
