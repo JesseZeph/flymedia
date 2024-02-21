@@ -5,6 +5,8 @@ import 'package:flymedia_app/models/response/get_accountdetails_res.dart';
 import 'package:flymedia_app/src/authentication/components/animated_button.dart';
 import 'package:flymedia_app/src/influencerDashboard/contracts/widget/delete_dialog.dart';
 import 'package:flymedia_app/src/influencerDashboard/contracts/widget/rounded_button.dart';
+import 'package:flymedia_app/utils/extensions/context_extension.dart';
+import 'package:flymedia_app/utils/global_variables.dart';
 import 'package:flymedia_app/utils/widgets/alert_loader.dart';
 import 'package:flymedia_app/utils/widgets/custom_text.dart';
 import 'package:get/get.dart';
@@ -12,6 +14,7 @@ import 'package:loading_overlay/loading_overlay.dart';
 import 'package:provider/provider.dart';
 
 import '../../../providers/influencer_add_account.dart';
+import '../../../utils/mixins/pin_mixin.dart';
 import 'account_information.dart';
 
 class DisplayAccountInfo extends StatefulWidget {
@@ -25,7 +28,7 @@ class DisplayAccountInfo extends StatefulWidget {
   State<DisplayAccountInfo> createState() => _DisplayAccountInfoState();
 }
 
-class _DisplayAccountInfoState extends State<DisplayAccountInfo> {
+class _DisplayAccountInfoState extends State<DisplayAccountInfo> with PinMixin {
   late GetAccountResponse getAccount;
   bool isDeleting = false;
 
@@ -41,26 +44,37 @@ class _DisplayAccountInfoState extends State<DisplayAccountInfo> {
       builder: (context) => const DeleteDialog(isConfirm: true),
     );
     if (proceed ?? false) {
-      setState(() {
-        isDeleting = !isDeleting;
-      });
-      if (context.mounted) {
-        var deleteResp = await context
-            .read<InfluencerAccountDetailsProvider>()
-            .deleteAccount('');
-        if (deleteResp.status && context.mounted) {
+      if (await repository.isPinSet() && context.mounted) {
+        var pinVerified = await verifyPin(context);
+        if (pinVerified) {
           setState(() {
             isDeleting = !isDeleting;
           });
-          showDialog(
-            context: context,
-            builder: (context) => const DeleteDialog(isConfirm: false),
-          ).then((_) => Navigator.pop(context));
-          return;
+          if (context.mounted) {
+            var deleteResp = await context
+                .read<InfluencerAccountDetailsProvider>()
+                .deleteAccount('');
+            if (deleteResp.status && context.mounted) {
+              setState(() {
+                isDeleting = !isDeleting;
+              });
+              showDialog(
+                context: context,
+                builder: (context) => const DeleteDialog(isConfirm: false),
+              ).then((_) => Navigator.pop(context));
+              return;
+            }
+            setState(() {
+              isDeleting = !isDeleting;
+            });
+          }
+        } else {
+          // ignore: use_build_context_synchronously
+          context.showError('Incorrect pin entered.');
         }
-        setState(() {
-          isDeleting = !isDeleting;
-        });
+      } else {
+        // ignore: use_build_context_synchronously
+        setupPin(context);
       }
     }
   }

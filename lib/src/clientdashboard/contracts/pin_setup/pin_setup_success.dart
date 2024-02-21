@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:flymedia_app/src/authentication/components/roundedbutton.dart';
 import 'package:flymedia_app/src/authentication/forgotpassword/screens/checkemail.dart';
+import 'package:get/get.dart';
 
 class PinSetupSuccess extends StatefulWidget {
   const PinSetupSuccess({
@@ -29,15 +30,17 @@ class _PinSetupSuccessState extends State<PinSetupSuccess> {
                 ),
                 headerText: 'Pin Successfully Set',
                 subText:
-                    'Success! Your pin has been set successfully. You can now proceed with making payments confidently. Than you for secuuring your account.',
+                    'Success! Your pin has been set successfully. Thank you for securing your account.',
               ),
             ),
             GestureDetector(
-              onTap: () {},
+              onTap: () {
+                Get.back(result: true);
+              },
               child: Padding(
                 padding: EdgeInsets.only(top: 30.h),
                 child: const RoundedButtonWidget(
-                  title: 'Make Payment',
+                  title: 'Continue',
                 ),
               ),
             )

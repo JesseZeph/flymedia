@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/colors.dart';
-import 'package:flymedia_app/services/database/secure_storage.dart';
 import 'package:flymedia_app/src/authentication/components/animated_button.dart';
 import 'package:flymedia_app/src/authentication/components/roundedbutton.dart';
 import 'package:flymedia_app/src/clientdashboard/contracts/pin_setup/pin_setup_success.dart';
+import 'package:flymedia_app/utils/extensions/context_extension.dart';
 import 'package:flymedia_app/utils/widgets/custom_text.dart';
 import 'package:get/get.dart';
 import 'package:pinput/pinput.dart';
 
+import '../../../../utils/global_variables.dart';
+
 class PinInput extends StatefulWidget {
-  const PinInput({super.key, t});
+  const PinInput({super.key});
 
   @override
   State<PinInput> createState() => _PinInputState();
@@ -19,7 +21,6 @@ class PinInput extends StatefulWidget {
 class _PinInputState extends State<PinInput> {
   final formKey = GlobalKey<FormState>();
   final TextEditingController pinController = TextEditingController();
-  final SecureStore repository = SecureStore();
 
   @override
   Widget build(BuildContext context) {
@@ -67,7 +68,7 @@ class _PinInputState extends State<PinInput> {
             Padding(
               padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 20.h),
               child: Text(
-                'Choose a PIN that you will easily remember to facilitate smooth transfers',
+                'Choose a PIN that you will easily remember to facilitate smooth processes.',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       fontSize: 14.sp,
                       fontWeight: FontWeight.w400,
@@ -93,14 +94,19 @@ class _PinInputState extends State<PinInput> {
             Padding(
               padding: EdgeInsets.only(top: 20.h),
               child: AnimatedButton(
-                onTap: () {
-                  if (formKey.currentState?.validate() ?? false) {
-                    repository.storeData(key: 'pin', value: pinController.text);
-                    Get.to(() => const PinSetupSuccess());
+                onTap: () async {
+                  if (pinController.text.isNotEmpty &&
+                      pinController.text.length == 4) {
+                    repository.storeData(value: pinController.text);
+                    var proceed =
+                        await Get.to<bool?>(() => const PinSetupSuccess());
+                    Get.back(result: proceed);
+                  } else {
+                    context.showError('Invalid pin entered');
                   }
                 },
                 child: const RoundedButtonWidget(
-                  title: ' Save Pin',
+                  title: 'Save Pin',
                 ),
               ),
             ),

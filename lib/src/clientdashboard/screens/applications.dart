@@ -223,7 +223,7 @@ class _ApplicantsTile extends StatelessWidget {
               onSelected: (String value) {
                 if (value == 'account_campaign') {
                   _showAccountCampaignDialog(
-                      context, amount, title, campaignId);
+                      context, amount, campaignId, title);
                 }
               },
               itemBuilder: (BuildContext context) {
@@ -251,7 +251,7 @@ class _ApplicantsTile extends StatelessWidget {
 
   void _showAccountCampaignDialog(BuildContext context, String amount,
       String capaignId, String title) async {
-    showDialog<bool?>(
+    var assignInfluencer = await showDialog<bool?>(
       context: context,
       builder: (BuildContext context) {
         return AssignCampaignDialog(
@@ -260,9 +260,9 @@ class _ApplicantsTile extends StatelessWidget {
           showTwoBtns: true,
         );
       },
-    ).then((assignInfluencer) {
-      if (assignInfluencer ?? false) {
-        showDialog<bool?>(
+    );
+    if ((assignInfluencer ?? false) && context.mounted) {
+      var makePayment = await showDialog<bool?>(
           context: context,
           builder: (BuildContext context) {
             return AssignCampaignDialog(
@@ -270,22 +270,48 @@ class _ApplicantsTile extends StatelessWidget {
               imageUrl: profile.imageUrl ?? '',
               showTwoBtns: false,
             );
-          },
-        ).then((makePayment) async {
-          if (makePayment ?? false) {
-            bool? paymentSuccessful = await Get.to<bool?>(() => CampaignPayment(
-                  imageUrl: profile.imageUrl ?? '',
-                  influencerName: profile.firstAndLastName ?? '',
-                  amount: amount,
-                  title: title,
-                  campaignId: campaignId,
-                ));
-            if (paymentSuccessful ?? false) {
-              action(profile.firstAndLastName ?? '', profile.email ?? '');
-            }
-          }
-        });
+          });
+
+      if ((makePayment ?? false) && context.mounted) {
+        bool? paymentSuccessful = await Get.to<bool?>(() => CampaignPayment(
+              imageUrl: profile.imageUrl ?? '',
+              influencerName: profile.firstAndLastName ?? '',
+              amount: amount,
+              title: title,
+              campaignId: campaignId,
+            ));
+
+        if (paymentSuccessful ?? false) {
+          action(profile.firstAndLastName ?? '', profile.email ?? '');
+        }
       }
-    });
+    }
+    // .then((assignInfluencer) {
+    //   if (assignInfluencer ?? false) {
+    //     showDialog<bool?>(
+    //       context: context,
+    //       builder: (BuildContext context) {
+    //         return AssignCampaignDialog(
+    //           influencerName: profile.firstAndLastName ?? '',
+    //           imageUrl: profile.imageUrl ?? '',
+    //           showTwoBtns: false,
+    //         );
+    //       },
+    //     ).then((makePayment) async {
+    //       if (makePayment ?? false) {
+    //         bool? paymentSuccessful = await Get.to<bool?>(() => CampaignPayment(
+    //               imageUrl: profile.imageUrl ?? '',
+    //               influencerName: profile.firstAndLastName ?? '',
+    //               amount: amount,
+    //               title: title,
+    //               campaignId: campaignId,
+    //             ));
+    //         if (paymentSuccessful ?? false) {
+    //           action(profile.firstAndLastName ?? '', profile.email ?? '');
+    //         }
+    //       }
+    //     });
+    //   }
+    // });
   }
 }

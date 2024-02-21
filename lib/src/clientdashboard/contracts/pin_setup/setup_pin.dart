@@ -45,7 +45,7 @@ class SetupPin extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 25.w, vertical: 20.h),
             child: Text(
-              'Please set up a four-digit PIN before proceeding to pay for the campaign. This Pin will ensure that only you are authorized to initiate transfers for payment of influencers',
+              'Please set up a four-digit PIN before proceeding. This Pin will ensure that only you are authorized to initiate certain actions on your account.',
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w400,
@@ -57,11 +57,13 @@ class SetupPin extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(top: 20.h),
             child: AnimatedButton(
-              onTap: () {
-                Get.to(() => const PinInput());
+              onTap: () async {
+                var pinSet =
+                    await Get.to<bool?>(() => const PinInput()) ?? false;
+                Get.back(result: pinSet);
               },
               child: const RoundedButtonWidget(
-                title: 'Set up Pin',
+                title: 'Set Pin',
               ),
             ),
           ),

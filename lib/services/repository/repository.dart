@@ -62,10 +62,15 @@ class Repository {
           filesMap: filesMap,
           requiresHeader: requiresHeader);
 
-  Future<void> storeData({String? key, String? value}) async =>
-      _secureDb.storeData(key: key, value: value);
+  Future<void> storeData({String? value}) async =>
+      _secureDb.storeData(value: value);
 
-  Future<String?> retrieveData(String key) async => _secureDb.retrieveData(key);
+  Future<String?> retrieveData() async => _secureDb.retrieveData();
 
   Future<void> clearSecureData() async => _secureDb.clearSecureData();
+
+  Future<bool> isPinSet() async => _secureDb.isPinSet();
+
+  Future<bool> verifyPin(String enteredPin) async =>
+      _secureDb.verifyPin(enteredPin);
 }
