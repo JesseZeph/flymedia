@@ -28,6 +28,8 @@ class _SignUpState extends State<SignUp> {
   final fullname = TextEditingController();
   final email = TextEditingController();
   final password = TextEditingController();
+  final confirmPassword = TextEditingController();
+
   bool agreedToTerms = false;
 
   @override
@@ -82,6 +84,13 @@ class _SignUpState extends State<SignUp> {
           password: password,
         ),
         SizedBox(
+          height: 25.h,
+        ),
+        PasswordField(
+          text: 'Confirm Password',
+          password: confirmPassword,
+        ),
+        SizedBox(
           height: 40.h,
         ),
         Padding(
@@ -94,6 +103,10 @@ class _SignUpState extends State<SignUp> {
           height: 15.h,
         ),
         SignUpButton(onTap: () async {
+          if (password.text != confirmPassword.text) {
+            context.showError('Passwords do not match.');
+            return;
+          }
           if (fullname.text.isEmpty ||
               email.text.isEmpty ||
               password.text.isEmpty) {

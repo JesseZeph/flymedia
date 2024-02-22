@@ -104,7 +104,7 @@ class ForgotPasswordHelper extends ChangeNotifier {
 
         await prefs.setString('token', decodedResponse['userToken']);
         await prefs.setString('userId', decodedResponse['_id']);
-        await prefs.setString('uid', decodedResponse['uid']);
+        // await prefs.setString('uid', decodedResponse['uid']);
         await prefs.setString('profile', decodedResponse['profile']);
         await prefs.setString('fullname', decodedResponse['fullname']);
         await prefs.setInt('selectedContainer', container);

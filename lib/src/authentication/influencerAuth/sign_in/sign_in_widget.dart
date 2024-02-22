@@ -67,7 +67,15 @@ class _InfluencerSignInState extends State<InfluencerSignIn> {
               padding: EdgeInsets.symmetric(horizontal: 5.w),
               child: TextInputField(
                 hintText: 'Enter your password',
-                obscureText: true,
+                obscureText: loginNotifier.obscureText,
+                suffixIcon: GestureDetector(
+                  onTap: () {
+                    loginNotifier.obscureText = !loginNotifier.obscureText;
+                  },
+                  child: Icon(loginNotifier.obscureText
+                      ? Icons.visibility_off
+                      : Icons.visibility),
+                ),
                 controller: password,
                 onChanged: (value) {
                   // Validate the password and update the error state

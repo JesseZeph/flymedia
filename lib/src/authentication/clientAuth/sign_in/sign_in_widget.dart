@@ -69,8 +69,16 @@ class _SignInWidgetState extends State<SignInWidget> {
               padding: EdgeInsets.symmetric(horizontal: 5.w),
               child: TextInputField(
                 hintText: 'Enter your password',
-                obscureText: true,
+                obscureText: loginNotifier.obscureText,
                 controller: password,
+                suffixIcon: GestureDetector(
+                  onTap: () {
+                    loginNotifier.obscureText = !loginNotifier.obscureText;
+                  },
+                  child: Icon(loginNotifier.obscureText
+                      ? Icons.visibility_off
+                      : Icons.visibility),
+                ),
                 onChanged: (_) {
                   // Validate the password and update the error state
                   // final passwordResult = Password.dirty(value).validator(value);

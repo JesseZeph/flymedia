@@ -7,11 +7,12 @@ class TextInputField extends StatelessWidget {
   final String hintText;
   final void Function(String value) onChanged;
   final String? errorText;
-  final bool obscureText;
+  final bool? obscureText;
   final TextEditingController? controller;
   final TextInputType? inputType;
   final String? Function(String?)? validator;
   final double? width;
+  final Widget? suffixIcon;
 
   const TextInputField({
     super.key,
@@ -19,10 +20,11 @@ class TextInputField extends StatelessWidget {
     required this.onChanged,
     this.errorText,
     this.controller,
-    this.obscureText = false,
+    this.obscureText,
     this.validator,
     this.inputType,
     this.width,
+    this.suffixIcon,
   });
 
   @override
@@ -33,7 +35,7 @@ class TextInputField extends StatelessWidget {
       children: [
         Container(
           width: width ?? 325.w,
-          padding: EdgeInsets.symmetric(horizontal: 10.w),
+          padding: EdgeInsets.only(left: 10.w),
           decoration: BoxDecoration(
               border: Border.all(
                   width: 1,
@@ -41,11 +43,12 @@ class TextInputField extends StatelessWidget {
               borderRadius: BorderRadius.circular(8.r)),
           child: TextFormField(
             onChanged: onChanged,
-            obscureText: obscureText,
+            obscureText: obscureText ?? false,
             controller: controller,
             decoration: InputDecoration(
                 border: InputBorder.none,
                 hintText: hintText,
+                suffixIcon: suffixIcon,
                 hintStyle: Theme.of(context).textTheme.bodySmall?.copyWith(
                     fontSize: 14.sp,
                     color: AppColors.lightHintTextColor.withOpacity(0.5),
