@@ -75,10 +75,9 @@ class _CampaignState extends State<Campaign> {
                     padding:
                         EdgeInsets.symmetric(vertical: 25.h, horizontal: 25.r),
                     decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 1,
-                        color: AppColors.lightHintTextColor.withOpacity(0.3),
-                      ),
+                      border: Border.all(width: 1, color: AppColors.mainColor
+                          // color: AppColors.lightHintTextColor.withOpacity(0.3),
+                          ),
                       borderRadius: BorderRadius.circular(10.r),
                     ),
                     child: Row(
@@ -88,7 +87,7 @@ class _CampaignState extends State<Campaign> {
                           padding: EdgeInsets.symmetric(
                               vertical: 4.r, horizontal: 2.r),
                           decoration: BoxDecoration(
-                            color: AppColors.mainColor.withOpacity(0.2),
+                            color: AppColors.mainColor.withOpacity(0.3),
                           ),
                           child: const Icon(
                             FluentSystemIcons.ic_fluent_add_filled,

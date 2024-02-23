@@ -224,7 +224,6 @@ class _CampaignPageState extends State<CampaignPage> {
                         displayIndex: 0,
                         tooltip: (controller) => Container(
                           color: Colors.white,
-                          margin: EdgeInsets.only(top: 10.h),
                           padding: const EdgeInsets.all(10).r,
                           child: const CustomKarlaText(
                             text: 'Sort available campaigns.',

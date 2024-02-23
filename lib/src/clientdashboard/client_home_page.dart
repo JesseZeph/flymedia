@@ -102,13 +102,13 @@ class _ClientHomePageState extends State<ClientHomePage> {
   Widget build(BuildContext context) {
     return OverlayTooltipScaffold(
       controller: _controller,
-      overlayColor: Colors.blue.withOpacity(0.4),
+      overlayColor: Colors.green.withOpacity(0.4),
       preferredOverlay: GestureDetector(
         onTap: () => _controller.next(),
         child: Container(
             height: double.infinity,
             width: double.infinity,
-            color: Colors.blue.withOpacity(0.4)),
+            color: Colors.green.withOpacity(0.4)),
       ),
       builder: (context) => Scaffold(
         body: Center(

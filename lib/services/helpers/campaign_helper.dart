@@ -4,7 +4,6 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flymedia_app/models/requests/campaign/campain_upload.dart';
 import 'package:flymedia_app/models/response/campaign_upload_response.dart';
-import 'package:flymedia_app/models/response/get_all_influencers.dart';
 import 'package:http/http.dart' as https;
 import 'package:shared_preferences/shared_preferences.dart';
 

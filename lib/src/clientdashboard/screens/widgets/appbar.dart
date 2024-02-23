@@ -35,7 +35,10 @@ class FlyAppBar extends StatelessWidget {
           child: Padding(
             padding: EdgeInsets.only(right: 5.w),
             child: PopupMenuButton<String>(
-              icon: const Icon(Icons.menu),
+              icon: const Icon(
+                Icons.menu,
+                color: AppColors.mainColor,
+              ),
               onSelected: (value) {
                 // if (value == 'profile') {
                 // } else

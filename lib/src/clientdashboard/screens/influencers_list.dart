@@ -225,19 +225,19 @@ class InfluencerDetailsPage extends StatelessWidget {
 
             Text(
               'Bio: ${influencerDetails.bio}',
-              style: TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16),
             ),
             Text(
               'Followers: ${influencerDetails.noOfTikTokFollowers.formatFigures()}',
-              style: TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16),
             ),
             Text(
               'location: ${influencerDetails.location}',
-              style: TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16),
             ),
             Text(
               'Tiktok Likes: ${influencerDetails.noOfTikTokLikes.formatFigures()}',
-              style: TextStyle(fontSize: 16),
+              style: const TextStyle(fontSize: 16),
             ),
             Wrap(
                 children: influencerDetails.niches
