@@ -4,12 +4,16 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/colors.dart';
 import 'package:flymedia_app/models/response/get_all_influencers.dart';
 import 'package:flymedia_app/providers/profile_provider.dart';
+import 'package:flymedia_app/src/influencerDashboard/widgets/custom_field.dart';
 import 'package:flymedia_app/src/influencerDashboard/widgets/nichescontainer.dart';
 import 'package:flymedia_app/utils/extensions/string_extensions.dart';
 import 'package:flymedia_app/utils/widgets/archery_refresh.dart';
 import 'package:flymedia_app/utils/widgets/custom_text.dart';
+import 'package:flymedia_app/utils/widgets/divider.dart';
+import 'package:flymedia_app/utils/widgets/subheadings.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AllInfluencersProfile extends StatefulWidget {
   const AllInfluencersProfile({super.key});
@@ -201,51 +205,131 @@ class InfluencerDetailsPage extends StatelessWidget {
   const InfluencerDetailsPage({Key? key, required this.influencerDetails})
       : super(key: key);
 
+  openSocialProfile(GetAllInfluencersRes profileC) async {
+    var link = Uri.parse(profileC.tikTokLink);
+    try {
+      if (!await launchUrl(
+        link,
+        mode: LaunchMode.inAppBrowserView,
+      )) {
+        throw Exception('Could not launch profile');
+      }
+    } on Exception catch (e) {
+      debugPrint(e.toString());
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(influencerDetails.firstAndLastName),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              width: 50.w,
-              height: 50.h,
-              padding: EdgeInsets.all(5.w),
-              child: CircleAvatar(
-                backgroundColor: AppColors.dialogColor,
-                radius: 50.w,
-                backgroundImage: NetworkImage(influencerDetails.imageUrl),
+        title: Text(
+          influencerDetails.firstAndLastName,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                color: AppColors.mainTextColor,
+                fontSize: 16.sp,
+                fontWeight: FontWeight.w600,
               ),
-            ),
-
-            Text(
-              'Bio: ${influencerDetails.bio}',
-              style: const TextStyle(fontSize: 16),
-            ),
-            Text(
-              'Followers: ${influencerDetails.noOfTikTokFollowers.formatFigures()}',
-              style: const TextStyle(fontSize: 16),
-            ),
-            Text(
-              'location: ${influencerDetails.location}',
-              style: const TextStyle(fontSize: 16),
-            ),
-            Text(
-              'Tiktok Likes: ${influencerDetails.noOfTikTokLikes.formatFigures()}',
-              style: const TextStyle(fontSize: 16),
-            ),
-            Wrap(
-                children: influencerDetails.niches
-                    .map((niche) => NichesWidget(text: niche.name))
-                    .toList()),
-            // Add more details as needed
-          ],
+          textAlign: TextAlign.center,
         ),
+      ),
+      body: ListView(
+        children: [
+          Padding(
+            padding: EdgeInsets.only(top: 50.h),
+            child: CircleAvatar(
+              radius: 55.r,
+              backgroundImage: NetworkImage(influencerDetails.imageUrl),
+            ),
+          ),
+          // Container(
+          //   margin: EdgeInsets.only(top: 15.h),
+          //   child: Text(
+          //     // 'Sophie Light',
+          //     influencerDetails.firstAndLastName,
+          //     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+          //           color: AppColors.mainTextColor,
+          //           fontSize: 16.sp,
+          //           fontWeight: FontWeight.w600,
+          //         ),
+          //     textAlign: TextAlign.center,
+          //   ),
+          // ),
+          Container(
+            margin: EdgeInsets.only(top: 12.h),
+            child: Text(
+              // 'Singapore',
+              influencerDetails.location,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.mainTextColor,
+                    fontSize: 12.sp,
+                    fontWeight: FontWeight.w400,
+                  ),
+              textAlign: TextAlign.center,
+            ),
+          ),
+          IconButton(
+              onPressed: () => openSocialProfile(influencerDetails),
+              icon: const Icon(Icons.tiktok_outlined)),
+          Padding(
+            padding: EdgeInsets.only(top: 12.h),
+            child: const FullDivider(),
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              CustomPreview(
+                headerText:
+                    influencerDetails.noOfTikTokFollowers.formatFigures(),
+                text: 'Followers',
+              ),
+              CustomPreview(
+                headerText: influencerDetails.postsViews,
+                text: 'Avg Views',
+              ),
+              CustomPreview(
+                headerText: influencerDetails.noOfTikTokLikes.formatFigures(),
+                text: 'Likes',
+              ),
+            ],
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 5.h),
+            child: const FullDivider(),
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 22.h),
+            child: const InfluencerSubHeading(
+              text: 'Niche',
+            ),
+          ),
+          Wrap(
+              children: influencerDetails.niches
+                  .map((niche) => NichesWidget(text: niche.name))
+                  .toList()),
+          Padding(
+            padding: EdgeInsets.only(top: 14.h),
+            child: const FullDivider(),
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 22.h),
+            child: const InfluencerSubHeading(
+              text: 'Bio',
+            ),
+          ),
+          Container(
+            width: 321.w,
+            padding: EdgeInsets.symmetric(horizontal: 22.w),
+            child: Text(
+              influencerDetails.bio,
+              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    color: AppColors.mainTextColor,
+                    fontSize: 14.sp,
+                    fontWeight: FontWeight.w400,
+                  ),
+            ),
+          ),
+        ],
       ),
     );
   }
