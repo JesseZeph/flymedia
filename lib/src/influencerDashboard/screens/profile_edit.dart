@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/colors.dart';
 import 'package:flymedia_app/providers/login_provider.dart';
 import 'package:flymedia_app/models/profile/profile_model.dart';
+import 'package:flymedia_app/services/validator/validator.dart';
 import 'package:flymedia_app/src/influencerDashboard/widgets/imagepicker.dart';
 import 'package:flymedia_app/utils/extensions/context_extension.dart';
 import 'package:flymedia_app/utils/widgets/alert_loader.dart';
@@ -29,6 +30,7 @@ class _ProfilePageState extends State<EditProfile> {
   List<String> selectedOptions = [];
   GlobalKey<FormState> formKey = GlobalKey();
   late bool hasFile;
+  bool isUrlValid = false;
 
   String? filePath;
   String? averageViews;
@@ -152,7 +154,7 @@ class _ProfilePageState extends State<EditProfile> {
                       child: TextInputField(
                         controller: emailCtrl,
                         hintText: 'sophie@gmail.com',
-                        onChanged: (_) {},
+                        onChanged: (value) {},
                         validator: (val) {
                           if (val == null || val.isEmpty) {
                             return '*Required';
@@ -221,7 +223,18 @@ class _ProfilePageState extends State<EditProfile> {
                       child: TextInputField(
                           controller: profileLinkCtrl,
                           hintText: 'https://www.tiktok.com/@your username',
-                          onChanged: (_) {},
+                          onChanged: (value) {
+                            if (value.isEmpty) {
+                              setState(() {
+                                isUrlValid = true;
+                              });
+                            } else {
+                              final isValid = validateURL(value);
+                              setState(() {
+                                isUrlValid = isValid;
+                              });
+                            }
+                          },
                           validator: (val) {
                             if (val == null || val.isEmpty) {
                               return '*Required';

@@ -151,7 +151,6 @@ class EmailFieldLogin extends StatelessWidget {
   });
 
   final TextEditingController email;
-  // final ValueNotifier<EmailValidationError?> emailError;
 
   @override
   Widget build(BuildContext context) {

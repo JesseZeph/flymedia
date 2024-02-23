@@ -1,7 +1,9 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/providers/payment_provider.dart';
+import 'package:flymedia_app/src/authentication/forgotpassword/screens/checkemail.dart';
 import 'package:flymedia_app/src/clientdashboard/contracts/payment_success.dart';
 import 'package:flymedia_app/utils/widgets/alert_loader.dart';
 import 'package:provider/provider.dart';
@@ -34,21 +36,21 @@ class StripeWebView extends StatelessWidget {
                   if (url.contains('success')) {
                     // initiate confirmpayment for influencerPayment
                     if (paymentType == 'influencerPayment') {
-                      readPaymentprovider
-                          .confirmCampaignPayment()
-                          .then((state) {
-                        if (state == PaymentState.loaded) {
-                          Navigator.pop(context);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PaymentSuccess(
-                                      influencerName: influencerName ?? '',
-                                      price: price ?? '',
-                                    )),
-                          );
-                        }
-                      });
+                      readPaymentprovider.confirmCampaignPayment().then(
+                        (state) {
+                          if (state == PaymentState.loaded) {
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => PaymentSuccess(
+                                        influencerName: influencerName ?? '',
+                                        price: price ?? '',
+                                      )),
+                            );
+                          }
+                        },
+                      );
                     } else {
                       // initiate confirmpayment for subscription
                       readPaymentprovider.confirmPayment().then((state) {
@@ -65,7 +67,23 @@ class StripeWebView extends StatelessWidget {
                         }
                       });
                     }
-                  } else {}
+                  } else if (url.contains('cancel')) {
+                    if (paymentType == 'influencerPayment') {
+                      readPaymentprovider.confirmCampaignPayment().then(
+                        (state) {
+                          if (state == PaymentState.error) {
+                            Navigator.pop(context);
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const CancelPage(),
+                              ),
+                            );
+                          }
+                        },
+                      );
+                    }
+                  }
                 },
                 zoomEnabled: true,
                 initialUrl: url,
@@ -75,6 +93,34 @@ class StripeWebView extends StatelessWidget {
                 },
                 onWebResourceError: (WebResourceError error) {},
               ),
+      ),
+    );
+  }
+}
+
+class CancelPage extends StatelessWidget {
+  const CancelPage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(
+        child: Column(
+          children: [
+            Container(
+              margin: EdgeInsets.only(top: 120.w),
+              child: ImageWithTextWidget(
+                assetImage: Image.asset(
+                  'assets/images/error.png',
+                ),
+                headerText: 'Payment Received',
+                subText:
+                    'Your transaction wasn\'nt successful, please try again later',
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

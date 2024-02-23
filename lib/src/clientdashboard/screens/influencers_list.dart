@@ -1,9 +1,7 @@
 import 'package:easy_refresh/easy_refresh.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flymedia_app/constants/app_constants.dart';
 import 'package:flymedia_app/constants/colors.dart';
-import 'package:flymedia_app/models/profile/profile_model.dart';
 import 'package:flymedia_app/models/response/get_all_influencers.dart';
 import 'package:flymedia_app/providers/profile_provider.dart';
 import 'package:flymedia_app/src/influencerDashboard/widgets/custom_field.dart';

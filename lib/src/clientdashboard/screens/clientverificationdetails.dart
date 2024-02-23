@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/app_constants.dart';
 import 'package:flymedia_app/services/helpers/verify_company.dart';
+import 'package:flymedia_app/services/validator/validator.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/verificationinprogress.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/widgets/country_dropdown.dart';
 import 'package:flymedia_app/utils/extensions/context_extension.dart';
@@ -36,6 +37,7 @@ class _ClientVerificationDetailsState extends State<ClientVerificationDetails> {
   GlobalKey<FormState> formKey = GlobalKey();
 
   var loading = false;
+  bool isUrlValid = false;
 
   @override
   void dispose() {
@@ -133,8 +135,19 @@ class _ClientVerificationDetailsState extends State<ClientVerificationDetails> {
                 padding: EdgeInsets.symmetric(horizontal: 25.w),
                 child: TextInputField(
                   controller: website,
-                  hintText: 'e.g. https://companyname.com',
-                  onChanged: (_) {},
+                  hintText: 'e.g. https://www.companyname.com',
+                  onChanged: (value) {
+                    if (value.isEmpty) {
+                      setState(() {
+                        isUrlValid = true;
+                      });
+                    } else {
+                      final isValid = validateURL(value);
+                      setState(() {
+                        isUrlValid = isValid;
+                      });
+                    }
+                  },
                   validator: (val) {
                     if (val == null || val.isEmpty) return '';
                     return null;
@@ -209,41 +222,45 @@ class _ClientVerificationDetailsState extends State<ClientVerificationDetails> {
                 margin: EdgeInsets.only(
                   top: 30.h,
                 ),
-                child: AnimatedButton(
-                  onTap: () async {
-                    if (isValidForm()) {
-                      setState(() {
-                        loading = !loading;
-                      });
-
-                      String fullPhoneNumber = '$code${memberContact.text}';
-
-                      VerifyCompanyRequest rawModel = VerifyCompanyRequest(
-                          companyName: companyName.text,
-                          website: website.text,
-                          companyEmail: companyEmail.text,
-                          memberContact: fullPhoneNumber,
-                          userId: userUid,
-                          companyHq: companyHq!);
-                      var model = verifyCompanyToJson(rawModel);
-
-                      await VerifyCompanyHelper.verifyCompany(model)
-                          .then((result) {
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: AnimatedButton(
+                    onTap: () async {
+                      if (isValidForm()) {
                         setState(() {
                           loading = !loading;
                         });
-                        if (result) {
-                          Get.offAll(() => const VerificationInProgress());
-                        } else {
-                          context.showError('Error occured, try again later.');
-                        }
-                      });
-                    } else {
-                      context.showError('One or more fields are empty');
-                    }
-                  },
-                  child: const RoundedButtonWidget(
-                    title: 'Submit',
+
+                        String fullPhoneNumber = '$code${memberContact.text}';
+
+                        VerifyCompanyRequest rawModel = VerifyCompanyRequest(
+                            companyName: companyName.text,
+                            website: website.text,
+                            companyEmail: companyEmail.text,
+                            memberContact: fullPhoneNumber,
+                            userId: userUid,
+                            companyHq: companyHq!);
+                        var model = verifyCompanyToJson(rawModel);
+
+                        await VerifyCompanyHelper.verifyCompany(model)
+                            .then((result) {
+                          setState(() {
+                            loading = !loading;
+                          });
+                          if (result) {
+                            Get.offAll(() => const VerificationInProgress());
+                          } else {
+                            context
+                                .showError('Error occured, try again later.');
+                          }
+                        });
+                      } else {
+                        context.showError('One or more fields are empty');
+                      }
+                    },
+                    child: const RoundedButtonWidget(
+                      title: 'Submit',
+                    ),
                   ),
                 ),
               ),

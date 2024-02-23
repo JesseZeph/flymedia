@@ -5,7 +5,7 @@ import 'package:flymedia_app/src/authentication/components/size_fade.dart';
 
 class TextInputField extends StatelessWidget {
   final String hintText;
-  final void Function(String value) onChanged;
+  final void Function(String value)? onChanged;
   final String? errorText;
   final bool? obscureText;
   final TextEditingController? controller;
@@ -13,11 +13,12 @@ class TextInputField extends StatelessWidget {
   final String? Function(String?)? validator;
   final double? width;
   final Widget? suffixIcon;
+  final FocusNode? focusNode;
 
   const TextInputField({
     super.key,
     required this.hintText,
-    required this.onChanged,
+    this.onChanged,
     this.errorText,
     this.controller,
     this.obscureText,
@@ -25,6 +26,7 @@ class TextInputField extends StatelessWidget {
     this.inputType,
     this.width,
     this.suffixIcon,
+    this.focusNode,
   });
 
   @override
