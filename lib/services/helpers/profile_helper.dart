@@ -3,11 +3,15 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flymedia_app/models/profile/profile_model.dart';
+import 'package:flymedia_app/models/response/get_all_influencers.dart';
 import 'package:flymedia_app/services/config.dart';
 import 'package:http/http.dart' as http;
+import 'package:http/http.dart' as https;
 import 'package:shared_preferences/shared_preferences.dart';
 
 mixin ProfileHelper {
+  static var client = https.Client();
+
   Future<ProfileModel?> getUserProfile(String userId) async {
     ProfileModel? profile;
 
@@ -95,5 +99,30 @@ mixin ProfileHelper {
     final prefs = await SharedPreferences.getInstance();
 
     return {'Authorization': 'Bearer ${prefs.getString('token')}'};
+  }
+
+  static Future<List<GetAllInfluencersRes>> getAllInfluencers(
+      int pageNumber) async {
+    try {
+      Map<String, String> requestHeaders = {
+        'Content-Type': 'application/json',
+      };
+      List<GetAllInfluencersRes> resp = [];
+      var url = Uri.https(Config.apiUrl, Config.influencerProfile,
+          {'page': pageNumber.toString()});
+
+      var response = await client.get(url, headers: requestHeaders);
+
+      if (response.statusCode == 200) {
+        resp = getAllInfluencersResFromJson(response.body);
+        return resp;
+      } else {
+        return resp;
+      }
+    } catch (e, s) {
+      debugPrint(e.toString());
+      debugPrintStack(stackTrace: s);
+      return [];
+    }
   }
 }

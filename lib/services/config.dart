@@ -14,6 +14,7 @@ class Config {
   static const String searchCampaign = "/api/uploadCampaign/search";
   static const String deleteCampaign = "/api/uploadCampaign/delete";
   static const String influencerProfile = "/api/influencerProfile/";
+
   static const String forgotPassword = "/api/forgotPassword";
   static const String verifyOtp = "/api/verifyPasswordReset";
   static const String resendOtp = "/api/resendVerification";
