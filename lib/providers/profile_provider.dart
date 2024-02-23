@@ -1,9 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flymedia_app/models/profile/profile_model.dart';
+import 'package:flymedia_app/models/response/get_all_influencers.dart';
 import 'package:flymedia_app/services/helpers/profile_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileProvider extends ChangeNotifier with ProfileHelper {
+  List<GetAllInfluencersRes> profileList = [];
+  bool _isFetching = true;
+  bool get isFetching => _isFetching;
   bool _isFetchingProfile = false;
   bool get isFetchingProfile => _isFetchingProfile;
   ProfileModel? _userProfile;
@@ -34,5 +38,21 @@ class ProfileProvider extends ChangeNotifier with ProfileHelper {
     _isFetchingProfile = !_isFetchingProfile;
     notifyListeners();
     return resp;
+  }
+
+  Future<bool> getAllInfluencerProfiles(int page,
+      {bool isLoadingMore = false}) async {
+    bool canLoadMore = true;
+    if (isLoadingMore) {
+      var newList = await ProfileHelper.getAllInfluencers(page);
+      profileList.addAll(newList);
+      canLoadMore = newList.isNotEmpty && newList.length == 20;
+    } else {
+      profileList = await ProfileHelper.getAllInfluencers(page);
+      canLoadMore = profileList.isNotEmpty && profileList.length == 20;
+    }
+    _isFetching = false;
+    notifyListeners();
+    return canLoadMore;
   }
 }

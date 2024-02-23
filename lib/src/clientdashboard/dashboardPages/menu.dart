@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/colors.dart';
 import 'package:flymedia_app/src/clientdashboard/contracts/contracts_list.dart';
+import 'package:flymedia_app/src/clientdashboard/screens/influencers_list.dart';
 import 'package:flymedia_app/src/search/widget/custom_field.dart';
 import 'package:flymedia_app/src/tier_listings/tier_listings_page.dart';
 import 'package:flymedia_app/utils/widgets/subscription_info.dart';
@@ -36,15 +37,14 @@ class Menu extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   SubscriptionInfo(
-                    headerText: 'Get Premium',
-                    subText:
-                        'Explore our pricing plans tailored\nto suit your needs',
+                    headerText: 'Influencers',
+                    subText: 'See all available influencers for your campaigns',
                     imageUrl: 'assets/images/pricing-plan.svg',
-                    buttonText: 'Subscribe now',
+                    buttonText: 'View influencers',
                     buttonColor: AppColors.mainColor,
                     containerColor: AppColors.cardColor,
                     onTap: () {
-                      Get.to(() => const TierListingsPage());
+                      Get.to(() => const AllInfluencersProfile());
                     },
                   ),
                   SizedBox(
