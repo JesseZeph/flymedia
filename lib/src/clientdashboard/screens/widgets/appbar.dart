@@ -3,9 +3,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/providers/login_provider.dart';
 import 'package:flymedia_app/route/route.dart';
 import 'package:flymedia_app/src/accountoption/view.dart';
+import 'package:overlay_tooltip/overlay_tooltip.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../constants/colors.dart';
+import '../../../../utils/widgets/custom_text.dart';
 
 class FlyAppBar extends StatelessWidget {
   const FlyAppBar({
@@ -18,45 +20,58 @@ class FlyAppBar extends StatelessWidget {
       automaticallyImplyLeading: false,
       scrolledUnderElevation: 0,
       actions: [
-        Padding(
-          padding: EdgeInsets.only(right: 5.w),
-          child: PopupMenuButton<String>(
-            icon: const Icon(Icons.menu),
-            onSelected: (value) {
-              // if (value == 'profile') {
-              // } else
-              if (value == 'logout') {
-                _showLogoutDialog(context);
-              }
-            },
-            itemBuilder: (BuildContext context) {
-              return [
-                // PopupMenuItem<String>(
-                //   value: 'profile',
-                //   child: ListTile(
-                //     leading: const Icon(Icons.person),
-                //     title: Text('Profile',
-                //         style: Theme.of(context)
-                //             .textTheme
-                //             .bodySmall
-                //             ?.copyWith(fontSize: 12.sp)),
-                //   ),
-                // ),
-                PopupMenuItem<String>(
-                  value: 'logout',
-                  child: ListTile(
-                    leading: const Icon(Icons.exit_to_app),
-                    title: Text(
-                      'Logout',
-                      style: Theme.of(context)
-                          .textTheme
-                          .bodySmall
-                          ?.copyWith(fontSize: 12.sp),
+        OverlayTooltipItem(
+          displayIndex: 1,
+          tooltip: (controller) => Container(
+            color: Colors.white,
+            margin: EdgeInsets.only(top: 10.h),
+            padding: const EdgeInsets.all(10).r,
+            child: const CustomKarlaText(
+              text: 'Sign out your account here.',
+              color: AppColors.mainColor,
+              weight: FontWeight.bold,
+            ),
+          ),
+          child: Padding(
+            padding: EdgeInsets.only(right: 5.w),
+            child: PopupMenuButton<String>(
+              icon: const Icon(Icons.menu),
+              onSelected: (value) {
+                // if (value == 'profile') {
+                // } else
+                if (value == 'logout') {
+                  _showLogoutDialog(context);
+                }
+              },
+              itemBuilder: (BuildContext context) {
+                return [
+                  // PopupMenuItem<String>(
+                  //   value: 'profile',
+                  //   child: ListTile(
+                  //     leading: const Icon(Icons.person),
+                  //     title: Text('Profile',
+                  //         style: Theme.of(context)
+                  //             .textTheme
+                  //             .bodySmall
+                  //             ?.copyWith(fontSize: 12.sp)),
+                  //   ),
+                  // ),
+                  PopupMenuItem<String>(
+                    value: 'logout',
+                    child: ListTile(
+                      leading: const Icon(Icons.exit_to_app),
+                      title: Text(
+                        'Logout',
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodySmall
+                            ?.copyWith(fontSize: 12.sp),
+                      ),
                     ),
                   ),
-                ),
-              ];
-            },
+                ];
+              },
+            ),
           ),
         ),
       ],
