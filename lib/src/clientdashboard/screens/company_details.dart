@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/constants/textstring.dart';
 import 'package:flymedia_app/models/requests/campaign/campain_upload.dart';
-import 'package:flymedia_app/providers/subscription_provider.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/preview_listing.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/widgets/country_dropdown.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/widgets/custom_text_field.dart';
@@ -16,7 +15,6 @@ import 'package:flymedia_app/utils/widgets/headings.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:provider/provider.dart';
 
 import '../../../constants/colors.dart';
 import '../../../route/route.dart';
@@ -290,11 +288,11 @@ class _CompanyDetailsState extends State<CompanyDetails> {
                         companyDescription: companyDescriptionCtrl.text,
                         jobTitle: jobTitleCtrl.text,
                         country: country ?? 'Nil',
-                        maxApplicants: context
-                                .read<SubscriptionProvider>()
-                                .userCurrentSub
-                                ?.maxApplicants ??
-                            0,
+                        // maxApplicants: context
+                        //         .read<SubscriptionProvider>()
+                        //         .userCurrentSub
+                        //         ?.maxApplicants ??
+                        //     0,
                         minFollowers: int.tryParse(minFollowers.text) ?? 0,
                         // rateFrom: rateFromCtrl.text,
                         rate: rate.text,

@@ -9,13 +9,16 @@ import 'package:flymedia_app/src/influencerDashboard/dashboardPages/messagespage
 import 'package:flymedia_app/src/influencerDashboard/dashboardPages/profile.dart';
 import 'package:flymedia_app/src/influencerDashboard/screens/influencer_menu.dart';
 import 'package:flymedia_app/utils/extensions/context_extension.dart';
+import 'package:overlay_tooltip/overlay_tooltip.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../constants/colors.dart';
 import '../../providers/chat_provider.dart';
 import '../../route/route.dart';
+import '../../services/database/secure_storage.dart';
 import '../../services/helpers/applications_helper.dart';
+import '../../utils/global_variables.dart';
 import '../accountoption/view.dart';
 
 class InfluencerHomePage extends StatefulWidget {
@@ -28,6 +31,7 @@ class InfluencerHomePage extends StatefulWidget {
 class _InfluencerHomePage extends State<InfluencerHomePage> {
   int _selectedIndex = 0;
   Timer? timer;
+  final TooltipController _controller = TooltipController();
 
   var pages = <Widget>[
     const CampaignPage(),
@@ -39,6 +43,7 @@ class _InfluencerHomePage extends State<InfluencerHomePage> {
   @override
   void initState() {
     super.initState();
+    checkTooltipDisplay();
     loadInfo();
     validateToken();
     timer = Timer.periodic(const Duration(seconds: 5), (_) {
@@ -49,6 +54,18 @@ class _InfluencerHomePage extends State<InfluencerHomePage> {
             "Influencer");
       });
     });
+  }
+
+  checkTooltipDisplay() async {
+    var tooltipShown =
+        await repository.retrieveData(dataKey: SecureStore.toolInfluencer);
+    if (tooltipShown == 'false' || tooltipShown == null) {
+      _controller.start();
+      _controller.onDone(() {
+        repository.storeData(
+            dataKey: SecureStore.toolInfluencer, value: 'true');
+      });
+    }
   }
 
   loadInfo() {
@@ -83,42 +100,54 @@ class _InfluencerHomePage extends State<InfluencerHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: pages[_selectedIndex],
+    return OverlayTooltipScaffold(
+      controller: _controller,
+      overlayColor: Colors.green.withOpacity(0.4),
+      preferredOverlay: GestureDetector(
+        onTap: () => _controller.next(),
+        child: Container(
+            height: double.infinity,
+            width: double.infinity,
+            color: Colors.green.withOpacity(0.4)),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-          currentIndex: _selectedIndex,
-          onTap: (value) {
-            setState(() {
-              _selectedIndex = value;
-            });
-          },
-          elevation: 10,
-          showSelectedLabels: true,
-          showUnselectedLabels: true,
-          selectedItemColor: AppColors.mainColor,
-          unselectedItemColor: AppColors.lightHintTextColor,
-          type: BottomNavigationBarType.fixed,
-          items: const [
-            BottomNavigationBarItem(
-                icon: Icon(FluentSystemIcons.ic_fluent_note_add_regular),
-                activeIcon: Icon(FluentSystemIcons.ic_fluent_note_add_filled),
-                label: 'Campaigns'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.mail_outline_rounded),
-                activeIcon: Icon(Icons.mail),
-                label: 'Messages'),
-            BottomNavigationBarItem(
-                icon: Icon(FluentSystemIcons.ic_fluent_person_accounts_regular),
-                activeIcon:
-                    Icon(FluentSystemIcons.ic_fluent_person_accounts_filled),
-                label: 'Profile'),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.menu),
-                activeIcon: Icon(Icons.menu_open),
-                label: 'Menu'),
-          ]),
+      builder: (context) => Scaffold(
+        body: Center(
+          child: pages[_selectedIndex],
+        ),
+        bottomNavigationBar: BottomNavigationBar(
+            currentIndex: _selectedIndex,
+            onTap: (value) {
+              setState(() {
+                _selectedIndex = value;
+              });
+            },
+            elevation: 10,
+            showSelectedLabels: true,
+            showUnselectedLabels: true,
+            selectedItemColor: AppColors.mainColor,
+            unselectedItemColor: AppColors.lightHintTextColor,
+            type: BottomNavigationBarType.fixed,
+            items: const [
+              BottomNavigationBarItem(
+                  icon: Icon(FluentSystemIcons.ic_fluent_note_add_regular),
+                  activeIcon: Icon(FluentSystemIcons.ic_fluent_note_add_filled),
+                  label: 'Campaigns'),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.mail_outline_rounded),
+                  activeIcon: Icon(Icons.mail),
+                  label: 'Messages'),
+              BottomNavigationBarItem(
+                  icon:
+                      Icon(FluentSystemIcons.ic_fluent_person_accounts_regular),
+                  activeIcon:
+                      Icon(FluentSystemIcons.ic_fluent_person_accounts_filled),
+                  label: 'Profile'),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.menu),
+                  activeIcon: Icon(Icons.menu_open),
+                  label: 'Menu'),
+            ]),
+      ),
     );
   }
 }

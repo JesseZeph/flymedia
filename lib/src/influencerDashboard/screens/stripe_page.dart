@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/providers/payment_provider.dart';
@@ -32,7 +30,6 @@ class StripeWebView extends StatelessWidget {
             : WebView(
                 // onPageStarted: (String url) {},
                 onPageFinished: (String url) {
-                  log(url.toString());
                   if (url.contains('success')) {
                     // initiate confirmpayment for influencerPayment
                     if (paymentType == 'influencerPayment') {

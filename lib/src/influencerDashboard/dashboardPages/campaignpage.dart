@@ -6,11 +6,13 @@ import 'package:flymedia_app/models/response/campaign_upload_response.dart';
 import 'package:flymedia_app/src/search/search.dart';
 import 'package:flymedia_app/utils/widgets/archery_refresh.dart';
 import 'package:get/get.dart';
+import 'package:overlay_tooltip/overlay_tooltip.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../constants/colors.dart';
 import '../../../providers/profile_provider.dart';
+import '../../../utils/widgets/custom_text.dart';
 import '../../clientdashboard/screens/widgets/appbar.dart';
 import '../../clientdashboard/screens/widgets/welcome_widget.dart';
 import '../screens/campaignlisting.dart';
@@ -218,35 +220,47 @@ class _CampaignPageState extends State<CampaignPage> {
                             ),
                       ),
                       const Spacer(),
-                      PopupMenuButton<int>(
-                        elevation: 2,
-                        color: AppColors.mainColor,
-                        onSelected: (index) => context
-                            .read<CampaignsNotifier>()
-                            .sortCampaigns(index),
-                        icon: Icon(
-                          Icons.sort_outlined,
-                          size: 25.r,
-                          color: AppColors.mainColor,
+                      OverlayTooltipItem(
+                        displayIndex: 0,
+                        tooltip: (controller) => Container(
+                          color: Colors.white,
+                          padding: const EdgeInsets.all(10).r,
+                          child: const CustomKarlaText(
+                            text: 'Sort available campaigns.',
+                            color: AppColors.mainColor,
+                            weight: FontWeight.bold,
+                          ),
                         ),
-                        itemBuilder: (context) => sortMethods
-                            .map(
-                              (method) => PopupMenuItem<int>(
-                                value: sortMethods.indexOf(method),
-                                child: ListTile(
-                                  title: Text(
-                                    method,
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodySmall
-                                        ?.copyWith(
-                                            fontSize: 12.sp,
-                                            color: Colors.white),
+                        child: PopupMenuButton<int>(
+                          elevation: 2,
+                          color: AppColors.mainColor,
+                          onSelected: (index) => context
+                              .read<CampaignsNotifier>()
+                              .sortCampaigns(index),
+                          icon: Icon(
+                            Icons.sort_outlined,
+                            size: 25.r,
+                            color: AppColors.mainColor,
+                          ),
+                          itemBuilder: (context) => sortMethods
+                              .map(
+                                (method) => PopupMenuItem<int>(
+                                  value: sortMethods.indexOf(method),
+                                  child: ListTile(
+                                    title: Text(
+                                      method,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodySmall
+                                          ?.copyWith(
+                                              fontSize: 12.sp,
+                                              color: Colors.white),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            )
-                            .toList(),
+                              )
+                              .toList(),
+                        ),
                       )
                     ],
                   )),

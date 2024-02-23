@@ -62,10 +62,11 @@ class Repository {
           filesMap: filesMap,
           requiresHeader: requiresHeader);
 
-  Future<void> storeData({String? value}) async =>
-      _secureDb.storeData(value: value);
+  Future<void> storeData({String? dataKey, String? value}) async =>
+      _secureDb.storeData(dataKey: dataKey, value: value);
 
-  Future<String?> retrieveData() async => _secureDb.retrieveData();
+  Future<String?> retrieveData({String? dataKey}) async =>
+      _secureDb.retrieveData(dataKey: dataKey);
 
   Future<void> clearSecureData() async => _secureDb.clearSecureData();
 

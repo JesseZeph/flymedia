@@ -6,7 +6,9 @@ import 'package:flymedia_app/constants/colors.dart';
 import 'package:flymedia_app/providers/login_provider.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/company_details.dart';
 import 'package:flymedia_app/utils/widgets/archery_refresh.dart';
+import 'package:flymedia_app/utils/widgets/custom_text.dart';
 import 'package:get/get.dart';
+import 'package:overlay_tooltip/overlay_tooltip.dart';
 import 'package:provider/provider.dart';
 
 import '../../../providers/campaign_provider.dart';
@@ -52,47 +54,60 @@ class _CampaignState extends State<Campaign> {
                 subText: "Let's find the best talent for you.",
               ),
               SizedBox(height: 40.h),
-              GestureDetector(
-                onTap: () {
-                  Get.to(() => const CompanyDetails());
-                },
-                child: Container(
-                  width: 321.w,
-                  padding:
-                      EdgeInsets.symmetric(vertical: 25.h, horizontal: 25.r),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      width: 1,
-                      color: AppColors.lightHintTextColor.withOpacity(0.3),
-                    ),
-                    borderRadius: BorderRadius.circular(10.r),
+              OverlayTooltipItem(
+                displayIndex: 0,
+                tooltip: (controller) => Container(
+                  color: Colors.white,
+                  margin: EdgeInsets.only(top: 10.h),
+                  padding: const EdgeInsets.all(10).r,
+                  child: const CustomKarlaText(
+                    text: 'Begin posting campaigns influencers can apply to.',
+                    color: AppColors.mainColor,
+                    weight: FontWeight.bold,
                   ),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 30.w,
-                        padding: EdgeInsets.symmetric(
-                            vertical: 4.r, horizontal: 2.r),
-                        decoration: BoxDecoration(
-                          color: AppColors.mainColor.withOpacity(0.2),
+                ),
+                child: GestureDetector(
+                  onTap: () {
+                    Get.to(() => const CompanyDetails());
+                  },
+                  child: Container(
+                    width: 321.w,
+                    padding:
+                        EdgeInsets.symmetric(vertical: 25.h, horizontal: 25.r),
+                    decoration: BoxDecoration(
+                      border: Border.all(width: 1, color: AppColors.mainColor
+                          // color: AppColors.lightHintTextColor.withOpacity(0.3),
+                          ),
+                      borderRadius: BorderRadius.circular(10.r),
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: 30.w,
+                          padding: EdgeInsets.symmetric(
+                              vertical: 4.r, horizontal: 2.r),
+                          decoration: BoxDecoration(
+                            color: AppColors.mainColor.withOpacity(0.3),
+                          ),
+                          child: const Icon(
+                            FluentSystemIcons.ic_fluent_add_filled,
+                            color: AppColors.mainColor,
+                          ),
                         ),
-                        child: const Icon(
-                          FluentSystemIcons.ic_fluent_add_filled,
-                          color: AppColors.mainColor,
+                        SizedBox(
+                          width: 10.w,
                         ),
-                      ),
-                      SizedBox(
-                        width: 10.w,
-                      ),
-                      Text(
-                        'Post a campaign',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                              color: AppColors.mainTextColor,
-                              fontSize: 12.sp,
-                              fontWeight: FontWeight.w600,
-                            ),
-                      ),
-                    ],
+                        Text(
+                          'Post a campaign',
+                          style:
+                              Theme.of(context).textTheme.bodySmall?.copyWith(
+                                    color: AppColors.mainTextColor,
+                                    fontSize: 12.sp,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
               ),

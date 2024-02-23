@@ -8,7 +8,7 @@ class CampaignUploadRequest {
   final String companyDescription;
   final String jobTitle;
   final String country;
-  final int maxApplicants;
+  // final int maxApplicants;
   final int minFollowers;
   final String rate;
   // final String rateFrom;
@@ -20,7 +20,7 @@ class CampaignUploadRequest {
     required this.companyDescription,
     required this.jobTitle,
     required this.country,
-    required this.maxApplicants,
+    // required this.maxApplicants,
     required this.minFollowers,
     required this.rate,
     // required this.rateTo,
@@ -34,7 +34,7 @@ class CampaignUploadRequest {
         companyDescription: json["companyDescription"],
         jobTitle: json["jobTitle"],
         country: json["country"],
-        maxApplicants: json["maxApplicants"],
+        // maxApplicants: json["maxApplicants"],
         minFollowers: json["minFollowers"],
         // rateFrom: json["rateFrom"],
         rate: json["rate"],
@@ -47,7 +47,7 @@ class CampaignUploadRequest {
         "companyDescription": companyDescription,
         "jobTitle": jobTitle,
         "country": country,
-        "maxApplicants": maxApplicants.toString(),
+        // "maxApplicants": maxApplicants.toString(),
         "minFollowers": minFollowers.toString(),
         // "rateFrom": rateFrom,
         "rate": rate,

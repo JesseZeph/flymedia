@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart';
@@ -25,15 +24,12 @@ class SubscriptionProvider extends ChangeNotifier {
     };
 
     var url = Uri.https(Config.apiUrl, Config.allPlans);
-    log(url.toString());
     var response = await get(url, headers: requestHeaders);
     var body = jsonDecode(response.body);
-    log(body['data']['plans'].toString());
     for (var data in body['data']['plans']) {
       allPlans.add(AllPlanModel.fromJson(data));
     }
     allPlans.sort((a, b) => a.name!.compareTo(b.name!));
-    log(allPlans.first.name.toString());
     notifyListeners();
   }
 
@@ -43,7 +39,6 @@ class SubscriptionProvider extends ChangeNotifier {
       // final body = jsonDecode(response.);
 
       List initList = response.data;
-      log(initList.toString());
       allSubscription =
           initList.map((item) => Subscriptions.fromMap(item)).toList();
       notifyListeners();

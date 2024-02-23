@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/providers/campaign_provider.dart';
 import 'package:flymedia_app/models/requests/campaign/campain_upload.dart';
-import 'package:flymedia_app/providers/subscription_provider.dart';
 import 'package:flymedia_app/src/clientdashboard/screens/widgets/fly_button.dart';
 import 'package:flymedia_app/utils/extensions/context_extension.dart';
 import 'package:flymedia_app/utils/extensions/string_extensions.dart';
@@ -216,13 +215,14 @@ class PreviewListing extends StatelessWidget {
                                   await context
                                       .read<CampaignsNotifier>()
                                       .postCampaign(
-                                          campaignDetails,
-                                          context.read<LoginNotifier>().userId,
-                                          context
-                                                  .read<SubscriptionProvider>()
-                                                  .userCurrentSub
-                                                  ?.maxCampaigns ??
-                                              0)
+                                        campaignDetails,
+                                        context.read<LoginNotifier>().userId,
+                                        // context
+                                        //         .read<SubscriptionProvider>()
+                                        //         .userCurrentSub
+                                        //         ?.maxCampaigns ??
+                                        //     0
+                                      )
                                       .then((resp) {
                                     if (resp.first as bool) {
                                       context
