@@ -5,6 +5,9 @@ import 'package:flymedia_app/providers/profile_provider.dart';
 import 'package:flymedia_app/models/chats/chat_model.dart';
 import 'package:flymedia_app/models/profile/profile_model.dart';
 import 'package:flymedia_app/src/influencerDashboard/screens/profile_edit.dart';
+import 'package:flymedia_app/src/influencerDashboard/verifications/influencer_verification.dart';
+import 'package:flymedia_app/utils/extensions/context_extension.dart';
+import 'package:flymedia_app/utils/widgets/custom_text.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -44,8 +47,8 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
-  openSocialProfile(ProfileModel profileC) async {
-    var link = Uri.parse(profileC.profileLink ?? "");
+  openSocialProfile(ProfileModel? profileC) async {
+    var link = Uri.parse(profileC?.profileLink ?? "");
     try {
       if (!await launchUrl(
         link,
@@ -61,7 +64,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     var isLoggedIn = context.watch<LoginNotifier>().loggedIn;
-    ProfileModel? profile =
+    profile =
         widget.userProfile ?? context.watch<ProfileProvider>().userProfile;
 
     bool profileComplete = profile != null;
@@ -109,13 +112,13 @@ class _ProfilePageState extends State<ProfilePage> {
                       CircleAvatar(
                         radius: 55.r,
                         backgroundImage:
-                            NetworkImage(profile.imageUrl ?? '', scale: 1.0),
+                            NetworkImage(profile?.imageUrl ?? '', scale: 1.0),
                       ),
                       Container(
                         margin: EdgeInsets.only(top: 15.h),
                         child: Text(
                           // 'Sophie Light',
-                          profile.firstAndLastName ?? 'Nil',
+                          profile?.firstAndLastName ?? 'Nil',
                           style:
                               Theme.of(context).textTheme.bodyMedium?.copyWith(
                                     color: AppColors.mainTextColor,
@@ -129,7 +132,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         margin: EdgeInsets.only(top: 12.h),
                         child: Text(
                           // 'Singapore',
-                          profile.location ?? 'Nil',
+                          profile?.location ?? 'Nil',
                           style:
                               Theme.of(context).textTheme.bodyMedium?.copyWith(
                                     color: AppColors.mainTextColor,
@@ -198,6 +201,34 @@ class _ProfilePageState extends State<ProfilePage> {
                       //             ),
                       //       ),
                       //     )),
+                      if (widget.isPersonalView &&
+                          !(profile?.isVerified() ?? false))
+                        Column(
+                          children: [
+                            SizedBox(
+                              height: 10.h,
+                            ),
+                            SizedBox(
+                              height: 50.h,
+                              // width: 200.w,
+                              child: OutlinedButton(
+                                  style: ButtonStyle(
+                                      backgroundColor: MaterialStatePropertyAll(
+                                          profile?.verificationStatColor())),
+                                  onPressed: () => verificationHandler(
+                                      profile?.verificationStatus ?? ''),
+                                  child: CustomKarlaText(
+                                    text:
+                                        '${profile?.verificationStatus == 'Not Started' ? 'Start verification' : profile?.verificationStatus}',
+                                    size: 16,
+                                    color: profile?.verificationStatus ==
+                                            'Not Started'
+                                        ? Colors.white
+                                        : Colors.black,
+                                  )),
+                            )
+                          ],
+                        ),
                       Padding(
                         padding: EdgeInsets.only(top: 12.h),
                         child: const FullDivider(),
@@ -207,17 +238,17 @@ class _ProfilePageState extends State<ProfilePage> {
                         children: [
                           CustomPreview(
                             headerText:
-                                profile.noOfTikTokFollowers?.formatFigures() ??
+                                profile?.noOfTikTokFollowers?.formatFigures() ??
                                     '',
                             text: 'Followers',
                           ),
                           CustomPreview(
-                            headerText: profile.postsViews ?? 'Nil',
+                            headerText: profile?.postsViews ?? 'Nil',
                             text: 'Avg Views',
                           ),
                           CustomPreview(
                             headerText:
-                                profile.noOfTikTokLikes?.formatFigures() ?? '',
+                                profile?.noOfTikTokLikes?.formatFigures() ?? '',
                             text: 'Likes',
                           ),
                         ],
@@ -233,7 +264,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                       Wrap(
-                          children: profile.niches
+                          children: profile?.niches
                                   ?.map((niche) => NichesWidget(text: niche))
                                   .toList() ??
                               []),
@@ -252,7 +283,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         padding: EdgeInsets.symmetric(horizontal: 22.w),
                         child: Text(
                           // "Experienced makeup artist and skincare expert with a passion for creating captivating beauty content. My journey is a testament to my dedication, from stunning transformations to in-depth skincare reviews, I've left no beauty stone unturned. Join forces with me to bring your brand to the forefront of beauty on TikTok. Let's collaborate and elevate the world of beauty together.",
-                          profile.bio ?? '',
+                          profile?.bio ?? '',
                           style:
                               Theme.of(context).textTheme.bodyMedium?.copyWith(
                                     color: AppColors.mainTextColor,
@@ -265,5 +296,17 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ))
             : EditProfile(profile: profile);
+  }
+
+  verificationHandler(String status) async {
+    switch (status) {
+      case 'Not Started':
+      case 'Failed':
+        Get.to(() => const InfluencerVerificationPage());
+        break;
+      case 'Pending':
+        context.showSnackBar('Verification still under review.');
+        break;
+    }
   }
 }

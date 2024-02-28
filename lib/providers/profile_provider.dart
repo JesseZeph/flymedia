@@ -1,8 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flymedia_app/models/profile/profile_model.dart';
 import 'package:flymedia_app/models/response/get_all_influencers.dart';
+import 'package:flymedia_app/services/config.dart';
 import 'package:flymedia_app/services/helpers/profile_helper.dart';
+import 'package:flymedia_app/utils/global_variables.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import '../models/network_response.dart';
 
 class ProfileProvider extends ChangeNotifier with ProfileHelper {
   List<GetAllInfluencersRes> profileList = [];
@@ -54,5 +60,18 @@ class ProfileProvider extends ChangeNotifier with ProfileHelper {
     _isFetching = false;
     notifyListeners();
     return canLoadMore;
+  }
+
+  Future<NetworkResponse> uploadVerificationInfo(
+      File image, String userId) async {
+    var response = await repository.requestWithFile(
+        endpoint: '${Config.influencerProfile}verification',
+        filesMap: {'scan_image': image.path},
+        body: {'influencer_id': _userProfile?.id ?? ''});
+    if (response.status) {
+      await getProfile(userId);
+    }
+
+    return response;
   }
 }
