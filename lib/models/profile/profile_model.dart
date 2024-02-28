@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 class ProfileModel {
   String id;
@@ -12,21 +12,22 @@ class ProfileModel {
   String? postsViews;
   String? email;
   String? profileLink;
+  String? verificationStatus;
   List<String>? niches;
   String? bio;
-  ProfileModel({
-    required this.id,
-    this.imageUrl,
-    this.firstAndLastName,
-    this.location,
-    this.noOfTikTokFollowers,
-    this.noOfTikTokLikes,
-    this.postsViews,
-    this.email,
-    this.profileLink,
-    this.niches,
-    this.bio,
-  });
+  ProfileModel(
+      {required this.id,
+      this.imageUrl,
+      this.firstAndLastName,
+      this.location,
+      this.noOfTikTokFollowers,
+      this.noOfTikTokLikes,
+      this.postsViews,
+      this.email,
+      this.profileLink,
+      this.niches,
+      this.bio,
+      this.verificationStatus});
 
   ProfileModel copyWith({
     String? id,
@@ -37,24 +38,26 @@ class ProfileModel {
     ValueGetter<String?>? noOfTikTokLikes,
     ValueGetter<String?>? postsViews,
     ValueGetter<String?>? email,
+    ValueGetter<String?>? verificationStatus,
     ValueGetter<String?>? profileLink,
     ValueGetter<List<String>?>? niches,
     ValueGetter<String?>? bio,
   }) {
     return ProfileModel(
-      id: id ?? this.id,
-      imageUrl: imageUrl?.call() ?? this.imageUrl,
-      firstAndLastName: firstAndLastName?.call() ?? this.firstAndLastName,
-      location: location?.call() ?? this.location,
-      noOfTikTokFollowers:
-          noOfTikTokFollowers?.call() ?? this.noOfTikTokFollowers,
-      noOfTikTokLikes: noOfTikTokLikes?.call() ?? this.noOfTikTokLikes,
-      postsViews: postsViews?.call() ?? this.postsViews,
-      email: email?.call() ?? this.email,
-      profileLink: profileLink?.call() ?? this.profileLink,
-      niches: niches?.call() ?? this.niches,
-      bio: bio?.call() ?? this.bio,
-    );
+        id: id ?? this.id,
+        imageUrl: imageUrl?.call() ?? this.imageUrl,
+        firstAndLastName: firstAndLastName?.call() ?? this.firstAndLastName,
+        location: location?.call() ?? this.location,
+        noOfTikTokFollowers:
+            noOfTikTokFollowers?.call() ?? this.noOfTikTokFollowers,
+        noOfTikTokLikes: noOfTikTokLikes?.call() ?? this.noOfTikTokLikes,
+        postsViews: postsViews?.call() ?? this.postsViews,
+        email: email?.call() ?? this.email,
+        profileLink: profileLink?.call() ?? this.profileLink,
+        niches: niches?.call() ?? this.niches,
+        bio: bio?.call() ?? this.bio,
+        verificationStatus:
+            verificationStatus?.call() ?? this.verificationStatus);
   }
 
   Map<String, String> toMap() {
@@ -68,6 +71,7 @@ class ProfileModel {
       'postsViews': postsViews ?? '',
       'email': email ?? '',
       'tikTokLink': profileLink ?? '',
+      'verificationStatus': verificationStatus ?? '',
       'bio': bio ?? '',
       'niches': niches?.join(",") ?? ''
       // ...{for (var element in niches ?? []) 'niches[]': element}
@@ -100,6 +104,7 @@ class ProfileModel {
       noOfTikTokLikes: map['noOfTikTokLikes'],
       postsViews: map['postsViews'],
       email: map['email'],
+      verificationStatus: map['verificationStatus'],
       profileLink: map.containsKey('tikTokLink') ? map['tikTokLink'] : null,
       niches: List<String>.from(
           (map['niches'] as List<dynamic>).map((niche) => niche['name'])),
@@ -136,4 +141,19 @@ class ProfileModel {
   String toString() {
     return 'ProfileModel(id: $id, imageUrl: $imageUrl, firstAndLastName: $firstAndLastName, location: $location, email: $email, noOfTikTokFollowers: $noOfTikTokFollowers, noOfTikTokLikes: $noOfTikTokLikes, postsViews: $postsViews, profileLink: $profileLink, niches: $niches, bio: $bio)';
   }
+
+  Color verificationStatColor() {
+    switch (verificationStatus) {
+      case 'Not Started':
+        return Colors.black;
+      case 'Pending':
+        return Colors.amber;
+      case 'Failed':
+        return Colors.red;
+      default:
+        return Colors.green;
+    }
+  }
+
+  bool isVerified() => verificationStatus == 'Verified';
 }

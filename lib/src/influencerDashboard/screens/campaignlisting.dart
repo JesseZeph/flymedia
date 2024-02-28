@@ -140,15 +140,11 @@ class _ViewCampaignListingState extends State<ViewCampaignListing> {
                                 0)
                         ? AnimatedButton(
                             onTap: () async {
-                              if (profile == null) {
-                                context.showError(
-                                    'You must verify your profile to apply.');
-                                return;
-                              } else {
+                              if (profile?.isVerified() ?? false) {
                                 await context
                                     .read<ApplicationsHelper>()
                                     .applyToCampaign(
-                                        userId: profile.id,
+                                        userId: profile?.id ?? '',
                                         campaignId: campaign.id)
                                     .then((resp) {
                                   if (resp.first) {
@@ -157,6 +153,10 @@ class _ViewCampaignListingState extends State<ViewCampaignListing> {
                                     context.showError(resp.last);
                                   }
                                 });
+                              } else {
+                                context.showError(
+                                    'You must verify your profile to apply.');
+                                return;
                               }
                             },
                             child: const RoundedButtonWidget(
