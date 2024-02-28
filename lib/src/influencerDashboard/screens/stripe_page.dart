@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/providers/payment_provider.dart';
-import 'package:flymedia_app/src/authentication/forgotpassword/screens/checkemail.dart';
 import 'package:flymedia_app/src/clientdashboard/contracts/payment_success.dart';
 import 'package:flymedia_app/utils/extensions/context_extension.dart';
 import 'package:flymedia_app/utils/widgets/alert_loader.dart';
