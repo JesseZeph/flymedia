@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flymedia_app/providers/payment_provider.dart';
-import 'package:flymedia_app/src/clientdashboard/contracts/payment_success.dart';
-import 'package:flymedia_app/utils/extensions/context_extension.dart';
+
 import 'package:flymedia_app/utils/widgets/alert_loader.dart';
 import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
@@ -35,15 +34,15 @@ class StripeWebView extends StatelessWidget {
                       readPaymentprovider.confirmCampaignPayment().then(
                         (state) {
                           if (state == PaymentState.loaded) {
-                            Navigator.pop(context);
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => PaymentSuccess(
-                                        influencerName: influencerName ?? '',
-                                        price: price ?? '',
-                                      )),
-                            );
+                            Navigator.pop(context, true);
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(
+                            //       builder: (context) => PaymentSuccess(
+                            //             influencerName: influencerName ?? '',
+                            //             price: price ?? '',
+                            //           )),
+                            // );
                           }
                         },
                       );
@@ -51,15 +50,15 @@ class StripeWebView extends StatelessWidget {
                       // initiate confirmpayment for subscription
                       readPaymentprovider.confirmPayment().then((state) {
                         if (state == PaymentState.loaded) {
-                          Navigator.pop(context);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => PaymentSuccess(
-                                      influencerName: influencerName ?? '',
-                                      price: price ?? '',
-                                    )),
-                          );
+                          Navigator.pop(context, true);
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(
+                          //       builder: (context) => PaymentSuccess(
+                          //             influencerName: influencerName ?? '',
+                          //             price: price ?? '',
+                          //           )),
+                          // );
                         }
                       });
                     }
@@ -68,8 +67,8 @@ class StripeWebView extends StatelessWidget {
                       readPaymentprovider.confirmCampaignPayment().then(
                         (state) {
                           if (state == PaymentState.error) {
-                            Navigator.pop(context);
-                            context.showError('Payment not successful');
+                            Navigator.pop(context, false);
+                            // context.showError('Payment not successful');
                           }
                         },
                       );

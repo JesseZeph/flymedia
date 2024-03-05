@@ -283,6 +283,10 @@ class _ApplicantsTile extends StatelessWidget {
 
         if (paymentSuccessful ?? false) {
           action(profile.firstAndLastName ?? '', profile.email ?? '');
+        } else {
+          if (context.mounted) {
+            context.showError('Payment was unsuccessful');
+          }
         }
       }
     }

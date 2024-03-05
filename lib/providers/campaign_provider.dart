@@ -94,6 +94,16 @@ class CampaignsNotifier extends ChangeNotifier {
     return response;
   }
 
+  Future<NetworkResponse> acceptOrRejectCampaign(
+      {required String accepted, required String activeCampaignId}) async {
+    var response = await repository
+        .postRequest(endpoint: '${Config.campaignUpload}/accept', body: {
+      "active_campaign_id": activeCampaignId,
+      "accepted": accepted,
+    });
+    return response;
+  }
+
   sortCampaigns(int sortIndex) {
     _isFetching = true;
     notifyListeners();
