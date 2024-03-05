@@ -117,7 +117,7 @@ class _CampaignPaymentState extends State<CampaignPayment> with PinMixin {
                   SizedBox(height: 20.h),
                 ]))),
             context.watch<PaymentNotifier>().state == PaymentState.loading
-                ? const AlertLoader(message: 'please Wait')
+                ? const AlertLoader(message: 'Please Wait')
                 : const SizedBox.shrink()
           ],
         ),

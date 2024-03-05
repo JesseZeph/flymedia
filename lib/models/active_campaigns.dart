@@ -11,6 +11,7 @@ class ActiveCampaignModel {
   String status;
   bool completed;
   bool verified;
+  bool accepted;
   String completedDate;
   ActiveCampaignModel({
     required this.id,
@@ -21,6 +22,7 @@ class ActiveCampaignModel {
     required this.status,
     required this.completed,
     required this.verified,
+    required this.accepted,
     required this.completedDate,
   });
 
@@ -33,6 +35,7 @@ class ActiveCampaignModel {
     String? status,
     bool? completed,
     bool? verified,
+    bool? accepted,
     String? completedDate,
   }) {
     return ActiveCampaignModel(
@@ -44,6 +47,7 @@ class ActiveCampaignModel {
       status: status ?? this.status,
       completed: completed ?? this.completed,
       verified: verified ?? this.verified,
+      accepted: accepted ?? this.accepted,
       completedDate: completedDate ?? this.completedDate,
     );
   }
@@ -58,24 +62,26 @@ class ActiveCampaignModel {
       status: map['status'] ?? '',
       completed: map['completed'] ?? false,
       verified: map['verified_complete'] ?? false,
+      accepted: map['accepted'] ?? false,
       completedDate: map['completed_date'] ?? '',
     );
   }
 
   @override
   String toString() {
-    return 'ActiveCampaignModel(id: $id, campaign: $campaign, client: $client, influencer: $influencer, message: $message, status: $status, completed: $completed, verified: $verified, completedDate: $completedDate)';
+    return 'ActiveCampaignModel(id: $id, campaign: $campaign, client: $client, influencer: $influencer, message: $message, status: $status, completed: $completed, verified: $verified, accepted: $accepted, completedDate: $completedDate)';
   }
 
   Color btnColor() {
     switch (status) {
       case 'Pending':
         return Colors.amber;
-
       case 'In Progress':
         return AppColors.deepGreen;
       case 'Completed':
         return Colors.black;
+      case 'Rejected':
+        return Colors.red;
     }
     return Colors.green;
   }
@@ -90,4 +96,6 @@ class ActiveCampaignModel {
   bool checkIfMarkedComplete(bool isClient) {
     return isClient ? verified : completed;
   }
+
+  bool showAcceptButtons() => !accepted && status == 'Pending';
 }
