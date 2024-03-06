@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/models/profile/profile_model.dart';
+import 'package:flymedia_app/models/response/campaign_upload_response.dart';
 import 'package:flymedia_app/services/helpers/applications_helper.dart';
 import 'package:flymedia_app/src/clientdashboard/client_home_page.dart';
 import 'package:flymedia_app/src/clientdashboard/contracts/widget/assign_campaign_dialog.dart';
