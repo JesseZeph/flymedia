@@ -98,7 +98,7 @@ class _ViewCampaignContractState extends State<ViewCampaignContract>
           appBar: AppBar(
             leading: IconButton(
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.pop(context, campaign);
               },
               icon: const Icon(Icons.arrow_back_ios),
             ),

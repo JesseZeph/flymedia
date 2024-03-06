@@ -50,10 +50,17 @@ class _ContractCardWidgetState extends State<ContractCardWidget> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Get.to(() => ViewCampaignContract(
-            contract: activeContract,
-            isClient: widget.isClient,
-          )),
+      onTap: () async {
+        var updateCampaign =
+            await Get.to<ActiveCampaignModel?>(() => ViewCampaignContract(
+                  contract: activeContract,
+                  isClient: widget.isClient,
+                ));
+        if (updateCampaign != null) {
+          activeContract = updateCampaign;
+          setState(() {});
+        }
+      },
       child: FittedBox(
         child: Container(
           width: Get.width.w,
