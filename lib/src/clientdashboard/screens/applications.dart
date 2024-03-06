@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/models/profile/profile_model.dart';
-import 'package:flymedia_app/models/response/campaign_upload_response.dart';
 import 'package:flymedia_app/services/helpers/applications_helper.dart';
 import 'package:flymedia_app/src/clientdashboard/client_home_page.dart';
 import 'package:flymedia_app/src/clientdashboard/contracts/widget/assign_campaign_dialog.dart';
@@ -19,11 +18,13 @@ import '../contracts/payment_page.dart';
 
 class Applications extends StatefulWidget {
   final String campaignId, amount, title;
+  final bool hasPaid;
   const Applications(
       {super.key,
       required this.campaignId,
       required this.amount,
-      required this.title});
+      required this.title,
+      required this.hasPaid});
 
   @override
   State<Applications> createState() => _ApplicationsState();
@@ -84,6 +85,7 @@ class _ApplicationsState extends State<Applications> {
                               widget.title,
                               widget.amount,
                               campaignId: widget.campaignId,
+                              hasPaid: widget.hasPaid,
                               action: (name, mail) =>
                                   assignInfluencer(name, mail),
                             );
@@ -135,9 +137,10 @@ class _ApplicantsTile extends StatelessWidget {
   final ProfileModel profile;
   final void Function(String, String) action;
   final String title, amount, campaignId;
+  final bool hasPaid;
 
   const _ApplicantsTile(this.profile, this.title, this.amount,
-      {required this.action, required this.campaignId});
+      {required this.action, required this.campaignId, required this.hasPaid});
 
   @override
   Widget build(BuildContext context) {
@@ -252,71 +255,48 @@ class _ApplicantsTile extends StatelessWidget {
 
   void _showAccountCampaignDialog(BuildContext context, String amount,
       String capaignId, String title) async {
-    var assignInfluencer = await showDialog<bool?>(
-      context: context,
-      builder: (BuildContext context) {
-        return AssignCampaignDialog(
-          influencerName: profile.firstAndLastName ?? '',
-          imageUrl: profile.imageUrl ?? '',
-          showTwoBtns: true,
-        );
-      },
-    );
-    if ((assignInfluencer ?? false) && context.mounted) {
-      var makePayment = await showDialog<bool?>(
-          context: context,
-          builder: (BuildContext context) {
-            return AssignCampaignDialog(
-              influencerName: profile.firstAndLastName ?? '',
-              imageUrl: profile.imageUrl ?? '',
-              showTwoBtns: false,
-            );
-          });
+    if (hasPaid) {
+      action(profile.firstAndLastName ?? '', profile.email ?? '');
+    } else {
+      var assignInfluencer = await showDialog<bool?>(
+        context: context,
+        builder: (BuildContext context) {
+          return AssignCampaignDialog(
+            influencerName: profile.firstAndLastName ?? '',
+            imageUrl: profile.imageUrl ?? '',
+            showTwoBtns: true,
+          );
+        },
+      );
+      if ((assignInfluencer ?? false) && context.mounted) {
+        var makePayment = await showDialog<bool?>(
+            context: context,
+            builder: (BuildContext context) {
+              return AssignCampaignDialog(
+                influencerName: profile.firstAndLastName ?? '',
+                imageUrl: profile.imageUrl ?? '',
+                showTwoBtns: false,
+              );
+            });
 
-      if ((makePayment ?? false) && context.mounted) {
-        bool? paymentSuccessful = await Get.to<bool?>(() => CampaignPayment(
-              imageUrl: profile.imageUrl ?? '',
-              influencerName: profile.firstAndLastName ?? '',
-              amount: amount,
-              title: title,
-              campaignId: campaignId,
-            ));
+        if ((makePayment ?? false) && context.mounted) {
+          bool? paymentSuccessful = await Get.to<bool?>(() => CampaignPayment(
+                imageUrl: profile.imageUrl ?? '',
+                influencerName: profile.firstAndLastName ?? '',
+                amount: amount,
+                title: title,
+                campaignId: campaignId,
+              ));
 
-        if (paymentSuccessful ?? false) {
-          action(profile.firstAndLastName ?? '', profile.email ?? '');
-        } else {
-          if (context.mounted) {
-            context.showError('Payment was unsuccessful');
+          if (paymentSuccessful ?? false) {
+            action(profile.firstAndLastName ?? '', profile.email ?? '');
+          } else {
+            if (context.mounted) {
+              context.showError('Payment was unsuccessful');
+            }
           }
         }
       }
     }
-    // .then((assignInfluencer) {
-    //   if (assignInfluencer ?? false) {
-    //     showDialog<bool?>(
-    //       context: context,
-    //       builder: (BuildContext context) {
-    //         return AssignCampaignDialog(
-    //           influencerName: profile.firstAndLastName ?? '',
-    //           imageUrl: profile.imageUrl ?? '',
-    //           showTwoBtns: false,
-    //         );
-    //       },
-    //     ).then((makePayment) async {
-    //       if (makePayment ?? false) {
-    //         bool? paymentSuccessful = await Get.to<bool?>(() => CampaignPayment(
-    //               imageUrl: profile.imageUrl ?? '',
-    //               influencerName: profile.firstAndLastName ?? '',
-    //               amount: amount,
-    //               title: title,
-    //               campaignId: campaignId,
-    //             ));
-    //         if (paymentSuccessful ?? false) {
-    //           action(profile.firstAndLastName ?? '', profile.email ?? '');
-    //         }
-    //       }
-    //     });
-    //   }
-    // });
   }
 }

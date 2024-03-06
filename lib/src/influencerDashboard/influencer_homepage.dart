@@ -102,13 +102,13 @@ class _InfluencerHomePage extends State<InfluencerHomePage> {
   Widget build(BuildContext context) {
     return OverlayTooltipScaffold(
       controller: _controller,
-      overlayColor: Colors.green.withOpacity(0.4),
+      overlayColor: Colors.white.withOpacity(1.0),
       preferredOverlay: GestureDetector(
         onTap: () => _controller.next(),
         child: Container(
             height: double.infinity,
             width: double.infinity,
-            color: Colors.green.withOpacity(0.4)),
+            color: Colors.white.withOpacity(1.0)),
       ),
       builder: (context) => Scaffold(
         body: Center(

@@ -108,6 +108,7 @@ class _ViewCampaignState extends State<ViewCampaign> {
                               campaignId: campaign.id,
                               amount: campaign.rate,
                               title: campaign.jobTitle,
+                              hasPaid: campaign.isPaidFor,
                             ));
                       },
                       child: Container(

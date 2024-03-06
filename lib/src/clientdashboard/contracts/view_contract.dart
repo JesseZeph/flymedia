@@ -94,118 +94,125 @@ class _ViewCampaignContractState extends State<ViewCampaignContract>
     return LoadingOverlay(
       isLoading: loading,
       progressIndicator: const AlertLoader(message: 'Please wait'),
-      child: Scaffold(
-          appBar: AppBar(
-            leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context, campaign);
-              },
-              icon: const Icon(Icons.arrow_back_ios),
+      child: PopScope(
+        // onPopInvoked: (didPop) => Get.back(result: campaign),
+        child: Scaffold(
+            appBar: AppBar(
+              leading: IconButton(
+                onPressed: () {
+                  Navigator.pop(context, campaign);
+                },
+                icon: const Icon(Icons.arrow_back_ios),
+              ),
             ),
-          ),
-          body: Center(
-            child: ListView(
-              children: [
-                Center(
-                  child: Padding(
-                    padding: EdgeInsets.only(top: 5.h),
-                    child: CircleAvatar(
-                      radius: 37.5.w,
-                      backgroundColor: AppColors.mainColor,
-                      backgroundImage: NetworkImage(
-                          '${widget.isClient ? campaign.influencer['imageURL'] : campaign.campaign['imageUrl']}'),
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 15.h),
-                  child: Text(
-                    '${widget.isClient ? campaign.influencer['firstAndLastName'] : campaign.campaign['company']['companyName']}',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: AppColors.mainTextColor,
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 5.h),
-                  child: Text(
-                    '${campaign.campaign['country']}',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: AppColors.mainTextColor,
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w400,
-                        ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(top: 5.h),
-                  child: Text(
-                    '\$${(campaign.campaign['rate'] as String).formatComma()}',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: AppColors.mainTextColor,
-                          fontSize: 16.sp,
-                          fontWeight: FontWeight.w600,
-                        ),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                SizedBox(height: 15.h),
-                Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 100.w),
-                  child: GestureDetector(
-                    onTap: () async {
-                      if (campaign.checkIfMarkedComplete(widget.isClient)) {
-                        context.showSnackBar(campaign.message);
-                        return;
-                      }
-                      if (await repository.isPinSet() && context.mounted) {
-                        var pinIsVerified = await verifyPin(context);
-
-                        if (pinIsVerified && context.mounted) {
-                          markCompleted();
-                        } else {
-                          context.showError('Incorrect pin entered.');
-                        }
-                      } else {
-                        setupPin(context);
-                      }
-                    },
-                    child: Container(
-                      padding: EdgeInsets.all(10.r),
-                      decoration: BoxDecoration(
-                          color: campaign.checkIfMarkedComplete(widget.isClient)
-                              ? Colors.grey.shade300
-                              : AppColors.mainColor,
-                          borderRadius: BorderRadius.circular(25.r)),
-                      child: Text(
-                        campaign.actionCommand(widget.isClient),
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                              color: campaign
-                                      .checkIfMarkedComplete(widget.isClient)
-                                  ? Colors.black
-                                  : Colors.white,
-                              fontSize: 14.sp,
-                              fontWeight: FontWeight.w700,
-                            ),
-                        textAlign: TextAlign.center,
+            body: Center(
+              child: ListView(
+                children: [
+                  Center(
+                    child: Padding(
+                      padding: EdgeInsets.only(top: 5.h),
+                      child: CircleAvatar(
+                        radius: 37.5.w,
+                        backgroundColor: AppColors.mainColor,
+                        backgroundImage: NetworkImage(
+                            '${widget.isClient ? campaign.influencer['imageURL'] : campaign.campaign['imageUrl']}'),
                       ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding: EdgeInsets.only(top: 30.h),
-                  child: const FullDivider(),
-                ),
-                CustomHeader(
-                    heading: '${campaign.campaign['jobTitle']}',
-                    subText: '${campaign.campaign['jobDescription']}')
-              ],
-            ),
-          )),
+                  Container(
+                    margin: EdgeInsets.only(top: 15.h),
+                    child: Text(
+                      '${widget.isClient ? campaign.influencer['firstAndLastName'] : campaign.campaign['company']['companyName']}',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: AppColors.mainTextColor,
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600,
+                          ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 5.h),
+                    child: Text(
+                      '${campaign.campaign['country']}',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: AppColors.mainTextColor,
+                            fontSize: 14.sp,
+                            fontWeight: FontWeight.w400,
+                          ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Container(
+                    margin: EdgeInsets.only(top: 5.h),
+                    child: Text(
+                      '\$${(campaign.campaign['rate'] as String).formatComma()}',
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: AppColors.mainTextColor,
+                            fontSize: 16.sp,
+                            fontWeight: FontWeight.w600,
+                          ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  SizedBox(height: 15.h),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 100.w),
+                    child: GestureDetector(
+                      onTap: () async {
+                        if (campaign.checkIfMarkedComplete(widget.isClient)) {
+                          context.showSnackBar(campaign.message);
+                          return;
+                        }
+                        if (await repository.isPinSet() && context.mounted) {
+                          var pinIsVerified = await verifyPin(context);
+
+                          if (pinIsVerified && context.mounted) {
+                            markCompleted();
+                          } else {
+                            context.showError('Incorrect pin entered.');
+                          }
+                        } else {
+                          setupPin(context);
+                        }
+                      },
+                      child: Container(
+                        padding: EdgeInsets.all(10.r),
+                        decoration: BoxDecoration(
+                            color:
+                                campaign.checkIfMarkedComplete(widget.isClient)
+                                    ? Colors.grey.shade300
+                                    : AppColors.mainColor,
+                            borderRadius: BorderRadius.circular(25.r)),
+                        child: Text(
+                          campaign.actionCommand(widget.isClient),
+                          style: Theme.of(context)
+                              .textTheme
+                              .bodyMedium
+                              ?.copyWith(
+                                color: campaign
+                                        .checkIfMarkedComplete(widget.isClient)
+                                    ? Colors.black
+                                    : Colors.white,
+                                fontSize: 14.sp,
+                                fontWeight: FontWeight.w700,
+                              ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.only(top: 30.h),
+                    child: const FullDivider(),
+                  ),
+                  CustomHeader(
+                      heading: '${campaign.campaign['jobTitle']}',
+                      subText: '${campaign.campaign['jobDescription']}')
+                ],
+              ),
+            )),
+      ),
     );
   }
 }
