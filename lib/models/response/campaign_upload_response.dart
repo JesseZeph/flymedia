@@ -16,6 +16,7 @@ class CampaignUploadResponse {
   final String rate;
   final String viewsRequired;
   final String jobDescription;
+  final bool isPaidFor;
   final String? assigned;
 
   CampaignUploadResponse({
@@ -29,6 +30,7 @@ class CampaignUploadResponse {
     // required this.rateFrom,
     required this.rate,
     required this.viewsRequired,
+    required this.isPaidFor,
     required this.jobDescription,
     this.assigned,
   });
@@ -45,6 +47,7 @@ class CampaignUploadResponse {
         // rateFrom: json["rateFrom"],
         rate: json["rate"],
         viewsRequired: json["viewsRequired"],
+        isPaidFor: json["isPaidFor"],
         jobDescription: json["jobDescription"],
         assigned: json["assigned"],
       );
@@ -60,6 +63,7 @@ class CampaignUploadResponse {
         // "rateFrom": rateFrom,
         "rate": rate,
         "viewsRequired": viewsRequired,
+        "isPaidFor": isPaidFor,
         "jobDescription": jobDescription,
         "assigned": assigned,
       };
