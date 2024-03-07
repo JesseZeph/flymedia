@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flymedia_app/models/profile/influencer_points.dart';
 
 class ProfileModel {
   String id;
@@ -15,6 +16,7 @@ class ProfileModel {
   String? verificationStatus;
   List<String>? niches;
   String? bio;
+  InfluencerPoints? points;
   ProfileModel(
       {required this.id,
       this.imageUrl,
@@ -27,6 +29,7 @@ class ProfileModel {
       this.profileLink,
       this.niches,
       this.bio,
+      this.points,
       this.verificationStatus});
 
   ProfileModel copyWith({
@@ -42,6 +45,7 @@ class ProfileModel {
     ValueGetter<String?>? profileLink,
     ValueGetter<List<String>?>? niches,
     ValueGetter<String?>? bio,
+    ValueGetter<InfluencerPoints>? points,
   }) {
     return ProfileModel(
         id: id ?? this.id,
@@ -56,6 +60,7 @@ class ProfileModel {
         profileLink: profileLink?.call() ?? this.profileLink,
         niches: niches?.call() ?? this.niches,
         bio: bio?.call() ?? this.bio,
+        points: points?.call() ?? this.points,
         verificationStatus:
             verificationStatus?.call() ?? this.verificationStatus);
   }
@@ -104,6 +109,7 @@ class ProfileModel {
       noOfTikTokLikes: map['noOfTikTokLikes'],
       postsViews: map['postsViews'],
       email: map['email'],
+      points: InfluencerPoints.fromMap(map['points']),
       verificationStatus: map['verificationStatus'],
       profileLink: map.containsKey('tikTokLink') ? map['tikTokLink'] : null,
       niches: List<String>.from(
@@ -139,7 +145,7 @@ class ProfileModel {
 
   @override
   String toString() {
-    return 'ProfileModel(id: $id, imageUrl: $imageUrl, firstAndLastName: $firstAndLastName, location: $location, email: $email, noOfTikTokFollowers: $noOfTikTokFollowers, noOfTikTokLikes: $noOfTikTokLikes, postsViews: $postsViews, profileLink: $profileLink, niches: $niches, bio: $bio)';
+    return 'ProfileModel(id: $id, imageUrl: $imageUrl, firstAndLastName: $firstAndLastName, location: $location, email: $email, noOfTikTokFollowers: $noOfTikTokFollowers, noOfTikTokLikes: $noOfTikTokLikes, points: $points, postsViews: $postsViews, profileLink: $profileLink, niches: $niches, bio: $bio)';
   }
 
   Color verificationStatColor() {
