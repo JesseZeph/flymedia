@@ -10,13 +10,15 @@ class CustomKarlaText extends StatelessWidget {
       this.weight,
       this.color,
       this.align,
-      this.overflow});
+      this.overflow,
+      this.height});
   final String text;
   final double? size;
   final FontWeight? weight;
   final Color? color;
   final TextAlign? align;
   final TextOverflow? overflow;
+  final double? height;
 
   @override
   Widget build(BuildContext context) {
@@ -25,10 +27,10 @@ class CustomKarlaText extends StatelessWidget {
       textAlign: align ?? TextAlign.center,
       overflow: overflow ?? TextOverflow.clip,
       style: GoogleFonts.karla(
-        fontSize: size?.sp ?? 12.sp,
-        fontWeight: weight ?? FontWeight.normal,
-        color: color ?? Colors.black,
-      ),
+          fontSize: size?.sp ?? 12.sp,
+          fontWeight: weight ?? FontWeight.normal,
+          color: color ?? Colors.black,
+          height: height),
       softWrap: true,
     );
   }

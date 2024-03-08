@@ -13,6 +13,7 @@ class AppColors {
   static const Color cardColor2 = Color(0xFFE6D4FF);
   static const purplePatch = Color(0xFFA45EFF);
   static const green = Color(0XFF3c4B40);
+  static const blueeTint = Color(0XFFB6DBFF);
 
   static const Color mainTextColor = Color(0xFF2D2F34);
   static const Color lightHintTextColor = Color(0xFFAEAEAE);

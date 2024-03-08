@@ -7,6 +7,7 @@ import 'package:flymedia_app/providers/profile_provider.dart';
 import 'package:flymedia_app/src/influencerDashboard/contracts/account_display.dart';
 import 'package:flymedia_app/src/influencerDashboard/contracts/account_information.dart';
 import 'package:flymedia_app/src/influencerDashboard/contracts/contracts_list.dart';
+import 'package:flymedia_app/src/influencerDashboard/screens/points_center.dart';
 import 'package:flymedia_app/src/search/widget/custom_field.dart';
 import 'package:flymedia_app/utils/modal.dart';
 import 'package:flymedia_app/utils/widgets/subscription_info.dart';
@@ -87,7 +88,22 @@ class _InfluencerMenuState extends State<InfluencerMenu> {
                                   '',
                             ));
                       },
-                    )
+                    ),
+                    SizedBox(
+                      height: 25.h,
+                    ),
+                    SubscriptionInfo(
+                      containerColor: AppColors.blueeTint,
+                      headerText: 'Earn Points',
+                      subText:
+                          'Earn points and unlock fun rewards\nas you engage with our platform.',
+                      imageUrl: 'assets/images/gift-box.svg',
+                      buttonText: 'My points',
+                      buttonColor: AppColors.dialogBlue,
+                      onTap: () {
+                        Get.to(() => const PointsCenter());
+                      },
+                    ),
                   ],
                 ),
               ),
