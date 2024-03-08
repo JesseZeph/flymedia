@@ -7,7 +7,7 @@ import 'package:flymedia_app/providers/profile_provider.dart';
 import 'package:flymedia_app/src/influencerDashboard/dashboardPages/campaignpage.dart';
 import 'package:flymedia_app/src/influencerDashboard/dashboardPages/messagespage.dart';
 import 'package:flymedia_app/src/influencerDashboard/dashboardPages/profile.dart';
-import 'package:flymedia_app/src/influencerDashboard/screens/influencer_menu.dart';
+import 'package:flymedia_app/src/influencerDashboard/dashboardPages/influencer_menu.dart';
 import 'package:flymedia_app/utils/extensions/context_extension.dart';
 import 'package:overlay_tooltip/overlay_tooltip.dart';
 import 'package:provider/provider.dart';

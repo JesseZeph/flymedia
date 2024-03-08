@@ -25,7 +25,7 @@ class RoundedButtonWidget extends StatelessWidget {
           style: Theme.of(context).textTheme.bodySmall?.copyWith(
               color: Colors.white,
               fontWeight: FontWeight.w700,
-              fontSize: 12.sp),
+              fontSize: 16.sp),
         ),
       ),
     );
