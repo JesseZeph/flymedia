@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flymedia_app/constants/colors.dart';
+import 'package:flymedia_app/providers/profile_provider.dart';
 import 'package:flymedia_app/src/authentication/components/animated_button.dart';
 import 'package:flymedia_app/src/authentication/components/roundedbutton.dart';
 import 'package:flymedia_app/utils/widgets/custom_text.dart';
 import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 
 class PointsCenter extends StatefulWidget {
   const PointsCenter({super.key});
@@ -18,8 +20,10 @@ class PointsCenter extends StatefulWidget {
 class _PointsCenterState extends State<PointsCenter> {
   @override
   Widget build(BuildContext context) {
+    var points = context.watch<ProfileProvider>().userProfile?.points;
     return Scaffold(
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new),
           onPressed: () => Get.back(),
@@ -59,7 +63,7 @@ class _PointsCenterState extends State<PointsCenter> {
                         ),
                         Text.rich(
                           TextSpan(
-                              text: '20 ',
+                              text: '${points?.totalPoints ?? 2} ',
                               style: Theme.of(context)
                                   .textTheme
                                   .bodySmall
@@ -91,47 +95,48 @@ class _PointsCenterState extends State<PointsCenter> {
                 ),
               ),
             ),
-            Padding(
-              padding: EdgeInsets.symmetric(vertical: 30.h, horizontal: 30.w),
-              child: Container(
-                width: Get.width,
-                padding: EdgeInsets.only(
-                    left: 20.w, right: 20.w, top: 20, bottom: 15),
-                decoration: BoxDecoration(
-                  border: Border.all(
-                    width: 1.2,
-                    color: AppColors.lightHintTextColor.withOpacity(0.2),
+            if (points?.totalPoints == 20)
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: 30.h, horizontal: 30.w),
+                child: Container(
+                  width: Get.width,
+                  padding: EdgeInsets.only(
+                      left: 20.w, right: 20.w, top: 20, bottom: 15),
+                  decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 1.2,
+                      color: AppColors.lightHintTextColor.withOpacity(0.2),
+                    ),
+                  ),
+                  child: Column(
+                    children: [
+                      const CustomKarlaText(
+                        text: 'Claim Your Points',
+                        size: 18,
+                        weight: FontWeight.w700,
+                      ),
+                      const CustomKarlaText(
+                        text:
+                            'You have successfully gained 20 points and can now claim your reward',
+                        size: 16,
+                        height: 2.5,
+                        weight: FontWeight.w500,
+                        color: AppColors.hintTextColor,
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 50.w, vertical: 15),
+                        child: AnimatedButton(
+                            onTap: () {},
+                            child: const RoundedButtonWidget(
+                                title: 'Claim Reward')),
+                      )
+                    ],
                   ),
                 ),
-                child: Column(
-                  children: [
-                    const CustomKarlaText(
-                      text: 'Claim Your Points',
-                      size: 18,
-                      weight: FontWeight.w700,
-                    ),
-                    const CustomKarlaText(
-                      text:
-                          'You have successfully gained 20 points and can now claim your reward',
-                      size: 16,
-                      height: 2.5,
-                      weight: FontWeight.w500,
-                      color: AppColors.hintTextColor,
-                    ),
-                    Padding(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 50.w, vertical: 15),
-                      child: AnimatedButton(
-                          onTap: () {},
-                          child:
-                              const RoundedButtonWidget(title: 'Claim Reward')),
-                    )
-                  ],
-                ),
               ),
-            ),
             Padding(
-              padding: EdgeInsets.symmetric(horizontal: 15.w),
+              padding: EdgeInsets.symmetric(horizontal: 15.w, vertical: 10.h),
               child: const CustomKarlaText(
                 text: 'Your points',
                 size: 16,
@@ -143,29 +148,33 @@ class _PointsCenterState extends State<PointsCenter> {
               imageUrl: 'assets/images/p1.svg',
               firstText: 'Register an account',
               secondText: 'Register your account and get 2 points',
-              thirdText: '+0 points',
+              thirdText: '+2 points',
               icon: CupertinoIcons.checkmark_alt_circle,
+              completed: true,
             ),
-            const PointsTileWidget(
+            PointsTileWidget(
               imageUrl: 'assets/images/p2.svg',
               firstText: 'Complete profile',
               secondText: 'Complete influencer profile and get 2 points',
               thirdText: '+2 points',
               icon: CupertinoIcons.checkmark_alt_circle,
+              completed: points?.completedTasks.contains('1') ?? false,
             ),
-            const PointsTileWidget(
+            PointsTileWidget(
               imageUrl: 'assets/images/p3.svg',
               firstText: 'Complete one campaign',
               secondText: 'Complete one campaign and get 1 point',
               thirdText: '+1 points',
               icon: CupertinoIcons.checkmark_alt_circle,
+              completed: points?.completedTasks.contains('2') ?? false,
             ),
-            const PointsTileWidget(
+            PointsTileWidget(
               imageUrl: 'assets/images/p4.svg',
               firstText: 'Complete five campaigns',
               secondText: 'Complete five campaigns and get 8 points',
               thirdText: '+8 points',
               icon: CupertinoIcons.checkmark_alt_circle,
+              completed: points?.completedTasks.contains('3') ?? false,
             ),
           ],
         ),
@@ -180,6 +189,7 @@ class PointsTileWidget extends StatelessWidget {
   final String secondText;
   final String thirdText;
   final IconData icon;
+  final bool completed;
 
   const PointsTileWidget({
     Key? key,
@@ -188,6 +198,7 @@ class PointsTileWidget extends StatelessWidget {
     required this.secondText,
     required this.thirdText,
     required this.icon,
+    required this.completed,
   }) : super(key: key);
 
   @override
@@ -219,12 +230,14 @@ class PointsTileWidget extends StatelessWidget {
                   text: firstText,
                   size: 18,
                   weight: FontWeight.w700,
+                  align: TextAlign.start,
                 ),
                 SizedBox(height: 10.h),
                 CustomKarlaText(
                   text: secondText,
                   color: AppColors.hintTextColor,
                   size: 14,
+                  align: TextAlign.start,
                 ),
                 SizedBox(height: 10.h),
                 CustomKarlaText(
@@ -236,10 +249,11 @@ class PointsTileWidget extends StatelessWidget {
               ],
             ),
           ),
-          Icon(
-            icon,
-            color: AppColors.greenTick,
-          )
+          if (completed)
+            Icon(
+              icon,
+              color: AppColors.greenTick,
+            )
         ],
       ),
     );
