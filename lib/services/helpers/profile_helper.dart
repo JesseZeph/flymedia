@@ -59,12 +59,12 @@ mixin ProfileHelper {
               onTimeout: () =>
                   http.StreamedResponse(Stream.fromIterable([]), 504),
             );
-
         if (response.statusCode == 200) {
         } else if (response.statusCode == 504) {
           return [false, 'Network Timeout'];
         }
         var finalResponse = await http.Response.fromStream(response);
+
         var decodedResponse = jsonDecode(finalResponse.body);
         return [decodedResponse['success'], decodedResponse['message']];
       } else {
