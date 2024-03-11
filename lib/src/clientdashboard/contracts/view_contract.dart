@@ -156,52 +156,53 @@ class _ViewCampaignContractState extends State<ViewCampaignContract>
                     ),
                   ),
                   SizedBox(height: 15.h),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 100.w),
-                    child: GestureDetector(
-                      onTap: () async {
-                        if (campaign.checkIfMarkedComplete(widget.isClient)) {
-                          context.showSnackBar(campaign.message);
-                          return;
-                        }
-                        if (await repository.isPinSet() && context.mounted) {
-                          var pinIsVerified = await verifyPin(context);
-
-                          if (pinIsVerified && context.mounted) {
-                            markCompleted();
-                          } else {
-                            context.showError('Incorrect pin entered.');
+                  if (campaign.accepted)
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 100.w),
+                      child: GestureDetector(
+                        onTap: () async {
+                          if (campaign.checkIfMarkedComplete(widget.isClient)) {
+                            context.showSnackBar(campaign.message);
+                            return;
                           }
-                        } else {
-                          setupPin(context);
-                        }
-                      },
-                      child: Container(
-                        padding: EdgeInsets.all(10.r),
-                        decoration: BoxDecoration(
-                            color:
-                                campaign.checkIfMarkedComplete(widget.isClient)
-                                    ? Colors.grey.shade300
-                                    : AppColors.mainColor,
-                            borderRadius: BorderRadius.circular(25.r)),
-                        child: Text(
-                          campaign.actionCommand(widget.isClient),
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyMedium
-                              ?.copyWith(
-                                color: campaign
-                                        .checkIfMarkedComplete(widget.isClient)
-                                    ? Colors.black
-                                    : Colors.white,
-                                fontSize: 14.sp,
-                                fontWeight: FontWeight.w700,
-                              ),
-                          textAlign: TextAlign.center,
+                          if (await repository.isPinSet() && context.mounted) {
+                            var pinIsVerified = await verifyPin(context);
+
+                            if (pinIsVerified && context.mounted) {
+                              markCompleted();
+                            } else {
+                              context.showError('Incorrect pin entered.');
+                            }
+                          } else {
+                            setupPin(context);
+                          }
+                        },
+                        child: Container(
+                          padding: EdgeInsets.all(10.r),
+                          decoration: BoxDecoration(
+                              color: campaign
+                                      .checkIfMarkedComplete(widget.isClient)
+                                  ? Colors.grey.shade300
+                                  : AppColors.mainColor,
+                              borderRadius: BorderRadius.circular(25.r)),
+                          child: Text(
+                            campaign.actionCommand(widget.isClient),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                  color: campaign.checkIfMarkedComplete(
+                                          widget.isClient)
+                                      ? Colors.black
+                                      : Colors.white,
+                                  fontSize: 14.sp,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                            textAlign: TextAlign.center,
+                          ),
                         ),
                       ),
                     ),
-                  ),
                   Padding(
                     padding: EdgeInsets.only(top: 30.h),
                     child: const FullDivider(),
