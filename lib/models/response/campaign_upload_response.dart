@@ -70,6 +70,6 @@ class CampaignUploadResponse {
 
   bool checkInfluencerEligibility(int? influencerFollowers) {
     if (influencerFollowers == null) return false;
-    return influencerFollowers >= minFollowers ? true : false;
+    return influencerFollowers >= minFollowers;
   }
 }
