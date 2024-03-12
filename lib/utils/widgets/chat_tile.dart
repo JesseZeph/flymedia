@@ -77,17 +77,19 @@ class _ChatTileState extends State<ChatTile> {
               weight: FontWeight.w400,
               align: TextAlign.start,
               size: 12,
-              color: chatModel.newMessagesCount > 0
+              color: chatModel.hasNewMessages(widget.isClientView)
                   ? AppColors.mainColor
                   : const Color(0xff2D2F34),
               overflow: TextOverflow.ellipsis,
             ),
-            trailing: chatModel.newMessagesCount > 0
+            trailing: chatModel.hasNewMessages(widget.isClientView)
                 ? CircleAvatar(
                     radius: 10,
                     backgroundColor: AppColors.mainColor,
                     child: CustomKarlaText(
-                        text: chatModel.newMessagesCount.toString()),
+                        text: widget.isClientView
+                            ? chatModel.newMessagesCountClient.toString()
+                            : chatModel.newMessagesCount.toString()),
                   )
                 : null,
           ),

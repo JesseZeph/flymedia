@@ -64,6 +64,12 @@ class _CampaignPageState extends State<CampaignPage> {
   }
 
   @override
+  void dispose() {
+    listController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     // var loadingProfile = context.watch<ProfileProvider>().isFetchingProfile;
     var userProfile = context.watch<ProfileProvider>().userProfile;

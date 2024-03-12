@@ -17,6 +17,7 @@ import '../../../providers/login_provider.dart';
 import '../../../utils/modal.dart';
 import '../../../utils/widgets/divider.dart';
 import '../../../utils/widgets/subheadings.dart';
+import '../screens/chat_page.dart';
 import '../widgets/custom_field.dart';
 import '../widgets/nichescontainer.dart';
 import '../../../utils/extensions/string_extensions.dart';
@@ -166,41 +167,56 @@ class _ProfilePageState extends State<ProfilePage> {
                       //       textAlign: TextAlign.center,
                       //     ),
                       //   )
-                      // : TextButton(
-                      //     onPressed: () async {
-                      //       Get.to(() => ChatPage(
-                      //             model: chatModel ??
-                      //                 ChatModel(
-                      //                     id: '',
-                      //                     companyOwnerId: context
-                      //                         .read<LoginNotifier>()
-                      //                         .userId,
-                      //                     influencerId: profile.toMap(),
-                      //                     lastMessage: '',
-                      //                     newMessagesCount: 0),
-                      //             isClientView: true,
-                      //           ));
-                      //     },
-                      //     child: Container(
-                      //       padding: EdgeInsets.all(10.r),
-                      //       decoration: BoxDecoration(
-                      //           border: Border.all(
-                      //             width: 1,
-                      //             color: AppColors.mainColor,
-                      //           ),
-                      //           borderRadius: BorderRadius.circular(25.r)),
-                      //       child: Text(
-                      //         'Send Message',
-                      //         style: Theme.of(context)
-                      //             .textTheme
-                      //             .bodyMedium
-                      //             ?.copyWith(
-                      //               color: AppColors.mainColor,
-                      //               fontSize: 12.sp,
-                      //               fontWeight: FontWeight.w400,
-                      //             ),
-                      //       ),
-                      //     )),
+                      // :
+                      if (!widget.isPersonalView)
+                        Padding(
+                          padding: EdgeInsets.symmetric(vertical: 8.h),
+                          child: TextButton(
+                              onPressed: () async {
+                                if (chatModel != null) {
+                                  context.read<ChatProvider>().updateChatStatus(
+                                      chatModel?.id,
+                                      context.read<LoginNotifier>().userId,
+                                      widget.isPersonalView
+                                          ? 'Influencer'
+                                          : "Client");
+                                }
+                                Get.to(() => ChatPage(
+                                      model: chatModel ??
+                                          ChatModel(
+                                            id: '',
+                                            companyOwnerId: context
+                                                .read<LoginNotifier>()
+                                                .userId,
+                                            influencerId: profile?.toMap(),
+                                            lastMessage: '',
+                                            newMessagesCount: 0,
+                                            newMessagesCountClient: 0,
+                                          ),
+                                      isClientView: true,
+                                    ));
+                              },
+                              child: Container(
+                                padding: EdgeInsets.all(10.r),
+                                decoration: BoxDecoration(
+                                    border: Border.all(
+                                      width: 1,
+                                      color: AppColors.mainColor,
+                                    ),
+                                    borderRadius: BorderRadius.circular(25.r)),
+                                child: Text(
+                                  'Send Message',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyMedium
+                                      ?.copyWith(
+                                        color: AppColors.mainColor,
+                                        fontSize: 12.sp,
+                                        fontWeight: FontWeight.w400,
+                                      ),
+                                ),
+                              )),
+                        ),
                       if (widget.isPersonalView &&
                           !(profile?.isVerified() ?? false))
                         Column(

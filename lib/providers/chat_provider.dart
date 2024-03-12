@@ -41,14 +41,13 @@ class ChatProvider extends ChangeNotifier {
 
   updateChat(String? chatId, String? lastMessage, String userId,
       String userType) async {
-    await helper.updateChat(chatId: chatId, lastMessage: lastMessage);
+    await helper.updateChat(
+        chatId: chatId, lastMessage: lastMessage, user: userType);
     await fetchUserMessages(userId, userType);
   }
 
   updateChatStatus(String? chatId, String userId, String userType) async {
-    await helper.updateChatStatus(
-      chatId: chatId,
-    );
+    await helper.updateChatStatus(chatId: chatId, user: userType);
     await fetchUserMessages(userId, userType);
   }
 

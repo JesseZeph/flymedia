@@ -4,12 +4,14 @@ class ChatModel {
   dynamic influencerId;
   String lastMessage;
   int newMessagesCount;
+  int newMessagesCountClient;
   ChatModel({
     required this.id,
     required this.companyOwnerId,
     required this.influencerId,
     required this.lastMessage,
     required this.newMessagesCount,
+    required this.newMessagesCountClient,
   });
 
   Map<String, String> toMap() {
@@ -19,6 +21,7 @@ class ChatModel {
       'influencer_id': influencerId,
       'last_message': lastMessage,
       'new_messages_count': newMessagesCount.toString(),
+      'new_messages_count_client': newMessagesCountClient.toString(),
     };
   }
 
@@ -29,11 +32,15 @@ class ChatModel {
       influencerId: map['influencer'],
       lastMessage: map['last_message'] ?? '',
       newMessagesCount: map['new_messages_count'] ?? 0,
+      newMessagesCountClient: map['new_messages_count_client'] ?? 0,
     );
   }
 
   @override
   String toString() {
-    return 'ChatModel(id: $id, companyOwnerId: $companyOwnerId, influencerId: $influencerId, lastMessage: $lastMessage, firestoreDocName: $newMessagesCount)';
+    return 'ChatModel(id: $id, companyOwnerId: $companyOwnerId, influencerId: $influencerId, lastMessage: $lastMessage, newMessagesCount: $newMessagesCount, newMessagesCountClient: $newMessagesCountClient)';
   }
+
+  bool hasNewMessages(bool isClient) =>
+      isClient ? newMessagesCountClient > 0 : newMessagesCount > 0;
 }

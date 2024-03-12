@@ -74,31 +74,35 @@ class ChatHelper {
     return newChat;
   }
 
-  Future<void> updateChat({String? chatId, String? lastMessage}) async {
+  Future<void> updateChat(
+      {String? chatId, String? lastMessage, String? user}) async {
     var url = Uri.https(
       Config.apiUrl,
       Config.chats,
     );
 
     try {
-      await http.put(url,
-          headers: await getHeaders(),
-          body: {"chat_id": chatId, "last_message": lastMessage});
+      await http.put(url, headers: await getHeaders(), body: {
+        "chat_id": chatId,
+        "last_message": lastMessage,
+        "user_type": user
+      });
     } catch (e, s) {
       debugPrint(e.toString());
       debugPrintStack(stackTrace: s);
     }
   }
 
-  Future<void> updateChatStatus({String? chatId}) async {
+  Future<void> updateChatStatus({String? chatId, String? user}) async {
     var url = Uri.https(
       Config.apiUrl,
       '${Config.chats}/status',
     );
 
     try {
-      await http
-          .post(url, headers: await getHeaders(), body: {"chat_id": chatId});
+      await http.post(url,
+          headers: await getHeaders(),
+          body: {"chat_id": chatId, "user_type": user});
     } catch (e, s) {
       debugPrint(e.toString());
       debugPrintStack(stackTrace: s);
