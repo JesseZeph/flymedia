@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/cupertino.dart';
 import 'package:flymedia_app/models/response/influencer_login_response.dart';
+import 'package:flymedia_app/utils/global_variables.dart';
 import 'package:http/http.dart' as https;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -141,10 +142,8 @@ class AuthHelper {
 
       if (response.statusCode == 200) {
         final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-        var verifiedCompany = (decodedResponse['company']
-                as Map<String, dynamic>)['isVerified'] ??
-            false;
+        var company = (decodedResponse['company'] as Map<String, dynamic>);
+        var verifiedCompany = company['isVerified'] ?? false;
 
         var user = loginResponseModelFromJson(response.body);
         await prefs.setString('token', user.userToken);
@@ -152,6 +151,8 @@ class AuthHelper {
         await prefs.setString('profile', user.profile);
         await prefs.setString('email', user.email);
         await prefs.setString('fullname', user.fullname);
+        await repository.storeData(
+            dataKey: 'companyName', value: company['companyName']);
 
         await prefs.setBool('loggedIn', true);
         return [true, decodedResponse['isVerified'], verifiedCompany];

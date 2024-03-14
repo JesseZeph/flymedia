@@ -7,14 +7,19 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flymedia_app/models/chats/chats_messages.dart';
+import 'package:flymedia_app/models/network_response.dart';
+import 'package:flymedia_app/services/config.dart';
 import 'package:flymedia_app/services/helpers/chat_helper.dart';
+import 'package:flymedia_app/utils/global_variables.dart';
 
 import '../models/chats/chat_model.dart';
+import '../models/chats/group_chat.dart';
 
 class ChatProvider extends ChangeNotifier {
   final _db = FirebaseFirestore.instance;
   ChatHelper helper = ChatHelper();
   List<ChatModel> userMessages = [];
+  List<GroupChat> userGroups = [];
   bool fetchingChat = true;
   int? uploadTime;
   double taskProgress = 0;
@@ -24,11 +29,32 @@ class ChatProvider extends ChangeNotifier {
   String? currentTaskId;
 
   fetchUserMessages(String userId, String userType) async {
-    List<ChatModel> messages =
-        await helper.fetchUserMessages(userId: userId, userType: userType);
-    messages.sort((a, b) => a.newMessagesCount.compareTo(b.newMessagesCount));
-    userMessages = messages.reversed.toList();
+    try {
+      List<NetworkResponse> messages = await Future.wait([
+        repository.getRequest(
+            endpoint: Config.chats,
+            query: {"user_id": userId, "user_type": userType}),
+        repository.getRequest(
+            endpoint: '${Config.chats}/groups',
+            query: {"user_id": userId, "user_type": userType}),
+      ]);
+      if (messages.first.status) {
+        List initList = messages.first.data;
+        userMessages = initList.map((item) => ChatModel.fromMap(item)).toList();
+      }
+      if (messages.last.status) {
+        List initList = messages.last.data;
+        userGroups = initList.map((item) => GroupChat.fromMap(item)).toList();
+      }
+    } catch (e, s) {
+      debugPrintStack(stackTrace: s);
+    }
+    // List<ChatModel> messages =
+    //     await helper.fetchUserMessages(userId: userId, userType: userType);
+    // messages.sort((a, b) => a.newMessagesCount.compareTo(b.newMessagesCount));
+    // userMessages = messages.reversed.toList();
     fetchingChat = false;
+
     notifyListeners();
   }
 
@@ -39,15 +65,29 @@ class ChatProvider extends ChangeNotifier {
     return chat;
   }
 
-  updateChat(String? chatId, String? lastMessage, String userId,
-      String userType) async {
-    await helper.updateChat(
-        chatId: chatId, lastMessage: lastMessage, user: userType);
+  updateChat(
+      String? chatId, String? lastMessage, String userId, String userType,
+      {bool isGroup = false}) async {
+    var endPointToUse = isGroup ? '${Config.chats}/groups' : Config.chats;
+    await repository.putRequest(endpoint: endPointToUse, body: {
+      "chat_id": chatId ?? '',
+      "last_message": lastMessage ?? '',
+      "user_type": userType
+    });
+    // await helper.updateChat(
+    //     chatId: chatId, lastMessage: lastMessage, user: userType);
     await fetchUserMessages(userId, userType);
   }
 
-  updateChatStatus(String? chatId, String userId, String userType) async {
-    await helper.updateChatStatus(chatId: chatId, user: userType);
+  updateChatStatus(String? chatId, String userId, String userType,
+      {bool isGroup = false}) async {
+    var endPointToUse =
+        isGroup ? '${Config.chats}/groups/status' : '${Config.chats}/status';
+
+    await repository.postRequest(
+        endpoint: endPointToUse,
+        body: {"chat_id": chatId ?? '', "user_type": userType});
+    // await helper.updateChatStatus(chatId: chatId, user: userType);
     await fetchUserMessages(userId, userType);
   }
 
@@ -75,12 +115,37 @@ class ChatProvider extends ChangeNotifier {
             toFirestore: (message, _) => message.toMap());
   }
 
+  Query<GroupMessages> groupChatStream({String? groupName}) {
+    return _db
+        .collection('chats')
+        .doc('groups')
+        .collection(groupName ?? '')
+        // .orderBy('timestamp', descending: true)
+        .withConverter<GroupMessages>(
+            fromFirestore: (snapshot, _) =>
+                GroupMessages.fromMap(snapshot.data() ?? {}),
+            toFirestore: (message, _) => message.toMap());
+  }
+
   sendMessage(ChatMessages message) async {
     try {
       _db
           .collection('chats')
           .doc(message.clientId)
           .collection(message.influencerId)
+          .add(message.toMap());
+    } catch (e, s) {
+      debugPrint(e.toString());
+      debugPrintStack(stackTrace: s);
+    }
+  }
+
+  sendGroupMessage(GroupMessages message, String groupName) async {
+    try {
+      _db
+          .collection('groups')
+          .doc('chats')
+          .collection(groupName)
           .add(message.toMap());
     } catch (e, s) {
       debugPrint(e.toString());

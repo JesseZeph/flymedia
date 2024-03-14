@@ -48,11 +48,11 @@ class _ClientHomePageState extends State<ClientHomePage> {
     checkTooltipDisplay();
     fetchData();
     validateToken();
-    timer = Timer.periodic(const Duration(seconds: 5), (_) {
-      context
-          .read<ChatProvider>()
-          .fetchUserMessages(context.read<LoginNotifier>().userId, "Client");
-    });
+    // timer = Timer.periodic(const Duration(seconds: 5), (_) {
+    //   context
+    //       .read<ChatProvider>()
+    //       .fetchUserMessages(context.read<LoginNotifier>().userId, "Client");
+    // });
   }
 
   checkTooltipDisplay() async {

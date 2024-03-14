@@ -109,8 +109,10 @@ class ProfileModel {
       noOfTikTokLikes: map['noOfTikTokLikes'],
       postsViews: map['postsViews'],
       email: map['email'],
-      points: map['points'] != null
-          ? InfluencerPoints.fromMap(map['points'])
+      points: map.containsKey('points')
+          ? map['points'] != null
+              ? InfluencerPoints.fromMap(map['points'])
+              : null
           : null,
       verificationStatus: map['verificationStatus'],
       profileLink: map.containsKey('tikTokLink') ? map['tikTokLink'] : null,

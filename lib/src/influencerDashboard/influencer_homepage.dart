@@ -46,14 +46,14 @@ class _InfluencerHomePage extends State<InfluencerHomePage> {
     checkTooltipDisplay();
     loadInfo();
     validateToken();
-    timer = Timer.periodic(const Duration(seconds: 5), (_) {
-      SharedPreferences.getInstance().then((prefs) {
-        context.read<ChatProvider>().fetchUserMessages(
-            prefs.getString('influencerId') ??
-                context.read<LoginNotifier>().userId,
-            "Influencer");
-      });
-    });
+    // timer = Timer.periodic(const Duration(seconds: 5), (_) {
+    //   SharedPreferences.getInstance().then((prefs) {
+    //     context.read<ChatProvider>().fetchUserMessages(
+    //         prefs.getString('influencerId') ??
+    //             context.read<LoginNotifier>().userId,
+    //         "Influencer");
+    //   });
+    // });
   }
 
   checkTooltipDisplay() async {
