@@ -36,6 +36,7 @@ class _ChatTileState extends State<ChatTile> {
         width: 390.w,
         child: Center(
           child: ListTile(
+            tileColor: Colors.grey.shade100.withOpacity(0.6),
             onTap: () async {
               context.read<ChatProvider>().updateChatStatus(
                   chatModel.id,
@@ -90,6 +91,7 @@ class _ChatTileState extends State<ChatTile> {
                     radius: 10,
                     backgroundColor: AppColors.mainColor,
                     child: CustomKarlaText(
+                        color: Colors.white,
                         text: widget.isClientView
                             ? chatModel.newMessagesCountClient.toString()
                             : chatModel.newMessagesCount.toString()),
@@ -125,6 +127,7 @@ class _GroupChatTileState extends State<GroupChatTile> {
         width: 390.w,
         child: Center(
           child: ListTile(
+            tileColor: Colors.grey.shade100.withOpacity(0.6),
             onTap: () async {
               context.read<ChatProvider>().updateChatStatus(
                   chatModel.id,
@@ -141,6 +144,11 @@ class _GroupChatTileState extends State<GroupChatTile> {
                   ));
               if (mounted) {
                 chatModel.lastMessage = lastMsg ?? chatModel.lastMessage;
+                if (widget.isClient) {
+                  chatModel.newMessageCountClient = 0;
+                } else {
+                  chatModel.newMessageCount = 0;
+                }
                 setState(() {});
               }
             },
@@ -174,9 +182,10 @@ class _GroupChatTileState extends State<GroupChatTile> {
                     radius: 10,
                     backgroundColor: AppColors.mainColor,
                     child: CustomKarlaText(
+                        color: Colors.white,
                         text: widget.isClient
                             ? chatModel.newMessageCountClient.toString()
-                            : chatModel.newMessageCountClient.toString()),
+                            : chatModel.newMessageCount.toString()),
                   )
                 : null,
           ),

@@ -68,17 +68,26 @@ class _InfluencerHomePage extends State<InfluencerHomePage> {
     }
   }
 
-  loadInfo() {
+  loadInfo() async {
     context.read<LoginNotifier>().getPref();
+    var influencerId = await repository.retrieveData(dataKey: 'InfluencerId');
     SharedPreferences.getInstance().then((prefs) {
       prefs.setInt('selectedContainer', 2);
       context
           .read<ProfileProvider>()
           .getProfile(prefs.getString('userId') ?? '');
-      context.read<ChatProvider>().fetchUserMessages(
-          prefs.getString('influencerId') ??
-              context.read<LoginNotifier>().userId,
-          "Influencer");
+      if (influencerId == null) {
+        Future.delayed(const Duration(seconds: 2), () {
+          context.read<ChatProvider>().fetchUserMessages(
+              context.read<ProfileProvider>().userProfile?.id ??
+                  context.read<LoginNotifier>().userId,
+              "Influencer");
+        });
+      } else {
+        context
+            .read<ChatProvider>()
+            .fetchUserMessages(influencerId, "Influencer");
+      }
     });
   }
 

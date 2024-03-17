@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:flymedia_app/constants/colors.dart';
 
 class ChatMessages {
   String clientId;
@@ -152,6 +153,7 @@ class GroupMessages {
   bool isSender(String userId) => senderId == userId;
   bool get isFile => type == 'File';
   bool justUploaded(int uploadTime) => (uploadTime - timeStamp!) <= 3000;
-  // String get filePath =>
-  //     '${clientId.substring(17)}_${influencerId.substring(17)}/$fileName}';
+  Color nameDisplayColor(String otherId) {
+    return senderId == otherId ? AppColors.mainColor : AppColors.deepGreen;
+  }
 }

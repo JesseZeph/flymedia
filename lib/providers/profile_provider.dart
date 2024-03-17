@@ -26,7 +26,8 @@ class ProfileProvider extends ChangeNotifier with ProfileHelper {
     _userProfile = await getUserProfile(userId);
     if (_userProfile != null) {
       prefs.setBool('profile', true);
-      prefs.setString('influencerId', _userProfile?.id ?? '');
+      repository.storeData(dataKey: 'InfluencerId', value: _userProfile?.id);
+      // prefs.setString('influencerId', _userProfile?.id ?? '');
     } else {
       prefs.setBool('profile', false);
     }

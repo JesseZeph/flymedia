@@ -102,7 +102,12 @@ class _ChatMessageBoxState extends State<ChatMessageBox> {
                         borderRadius: BorderRadius.circular(6).r),
                     child: Row(
                       children: [
-                        const Icon(Icons.file_present_outlined),
+                        Icon(
+                          Icons.file_present_outlined,
+                          color: widget.isUserMessage
+                              ? Colors.white
+                              : Colors.black,
+                        ),
                         SizedBox(
                           width: 5.w,
                         ),
@@ -111,7 +116,9 @@ class _ChatMessageBoxState extends State<ChatMessageBox> {
                             text: widget.message.fileName ?? '',
                             align: TextAlign.start,
                             weight: FontWeight.w400,
-                            color: Colors.black,
+                            color: widget.isUserMessage
+                                ? Colors.white
+                                : Colors.black,
                             size: 14,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -149,7 +156,12 @@ class _ChatMessageBoxState extends State<ChatMessageBox> {
                         onPressed: () {
                           downloadFile();
                         },
-                        icon: const Icon(Icons.download_for_offline_outlined),
+                        icon: Icon(
+                          Icons.download_for_offline_outlined,
+                          color: widget.isUserMessage
+                              ? Colors.white
+                              : Colors.black,
+                        ),
                         iconSize: 30,
                       )
                     ],
@@ -170,9 +182,13 @@ class _ChatMessageBoxState extends State<ChatMessageBox> {
 
 class GroupMessageBox extends StatefulWidget {
   const GroupMessageBox(
-      {super.key, required this.message, required this.isUserMessage});
+      {super.key,
+      required this.message,
+      required this.isUserMessage,
+      required this.otherUserId});
   final GroupMessages message;
   final bool isUserMessage;
+  final String otherUserId;
 
   @override
   State<GroupMessageBox> createState() => _GroupMessageBoxState();
@@ -225,99 +241,128 @@ class _GroupMessageBoxState extends State<GroupMessageBox> {
   Widget build(BuildContext context) {
     // var lastUploadTime = context.watch<ChatProvider>().uploadTime;
     // var progress = context.watch<ChatProvider>().uploadProgress;
-    return Container(
-      padding: const EdgeInsets.all(14).r,
-      decoration: BoxDecoration(
-        color: widget.isUserMessage
-            ? AppColors.mainColor
-            : const Color(0xffF2F4F7),
-        borderRadius: BorderRadius.only(
-            bottomLeft: const Radius.circular(8),
-            bottomRight: const Radius.circular(8),
-            topRight:
-                widget.isUserMessage ? Radius.zero : const Radius.circular(8),
-            topLeft:
-                widget.isUserMessage ? const Radius.circular(8) : Radius.zero),
-      ),
-      child: SizedBox(
-        width: 200.w,
-        child: widget.message.isFile
-            ? Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 200.w,
-                    padding: const EdgeInsets.all(8),
-                    decoration: BoxDecoration(
-                        color: widget.isUserMessage
-                            ? AppColors.mainColor
-                            : const Color(0xffF2F4F7),
-                        borderRadius: BorderRadius.circular(6).r),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.file_present_outlined),
-                        SizedBox(
-                          width: 5.w,
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (!widget.isUserMessage)
+          Padding(
+            padding: EdgeInsets.only(right: 8.r),
+            child: CircleAvatar(
+              radius: 20.r,
+              backgroundImage: NetworkImage(widget.message.senderImg ?? ''),
+            ),
+          ),
+        Container(
+            padding: const EdgeInsets.fromLTRB(10, 5, 10, 10).r,
+            decoration: BoxDecoration(
+              color: widget.isUserMessage
+                  ? AppColors.mainColor
+                  : const Color(0xffF2F4F7),
+              borderRadius: BorderRadius.only(
+                  bottomLeft: const Radius.circular(8),
+                  bottomRight: const Radius.circular(8),
+                  topRight: widget.isUserMessage
+                      ? Radius.zero
+                      : const Radius.circular(8),
+                  topLeft: widget.isUserMessage
+                      ? const Radius.circular(8)
+                      : Radius.zero),
+            ),
+            child: SizedBox(
+                width: 200.w,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    if (!widget.isUserMessage)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 3.0),
+                        child: CustomKarlaText(
+                          text: widget.message.senderName ?? '',
+                          weight: FontWeight.w800,
+                          color: widget.message
+                              .nameDisplayColor(widget.otherUserId),
                         ),
-                        Expanded(
-                          child: CustomKarlaText(
-                            text: widget.message.fileName ?? '',
+                      ),
+                    widget.message.isFile
+                        ? Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Container(
+                                width: 200.w,
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                    color: widget.isUserMessage
+                                        ? const Color(0xffF2F4F7)
+                                        : AppColors.mainColor,
+                                    borderRadius: BorderRadius.circular(6).r),
+                                child: Row(
+                                  children: [
+                                    Icon(
+                                      Icons.file_present_outlined,
+                                      color: widget.isUserMessage
+                                          ? Colors.black
+                                          : Colors.white,
+                                    ),
+                                    SizedBox(
+                                      width: 5.w,
+                                    ),
+                                    Expanded(
+                                      child: CustomKarlaText(
+                                        text: widget.message.fileName ?? '',
+                                        align: TextAlign.start,
+                                        weight: FontWeight.w400,
+                                        color: widget.isUserMessage
+                                            ? Colors.black
+                                            : Colors.white,
+                                        size: 14,
+                                        overflow: TextOverflow.ellipsis,
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                      child: CustomKarlaText(
+                                    text: widget.message.text ?? '',
+                                    align: TextAlign.start,
+                                    weight: FontWeight.w400,
+                                    color: widget.isUserMessage
+                                        ? Colors.white
+                                        : Colors.black,
+                                    size: 14,
+                                  )),
+                                  IconButton(
+                                    onPressed: () {
+                                      downloadFile();
+                                    },
+                                    icon: Icon(
+                                      Icons.download_for_offline_outlined,
+                                      color: widget.isUserMessage
+                                          ? Colors.white
+                                          : Colors.black,
+                                    ),
+                                    iconSize: 30,
+                                  )
+                                ],
+                              )
+                            ],
+                          )
+                        : CustomKarlaText(
+                            text: widget.message.text ?? '',
                             align: TextAlign.start,
                             weight: FontWeight.w400,
-                            color: Colors.black,
+                            color: widget.isUserMessage
+                                ? Colors.white
+                                : Colors.black,
                             size: 14,
-                            overflow: TextOverflow.ellipsis,
                           ),
-                        )
-                      ],
-                    ),
-                  ),
-                  // SizedBox(
-                  //   height: 5.h,
-                  // ),
-                  Row(
-                    children: [
-                      Expanded(
-                          child: CustomKarlaText(
-                        text: widget.message.text ?? '',
-                        align: TextAlign.start,
-                        weight: FontWeight.w400,
-                        color:
-                            widget.isUserMessage ? Colors.white : Colors.black,
-                        size: 14,
-                      )),
-                      // widget.message.justUploaded(lastUploadTime ?? 0) &&
-                      //         progress != 0
-                      //     ? SizedBox(
-                      //         height: 30.h,
-                      //         width: 30.w,
-                      //         child: CircularProgressIndicator(
-                      //           value: progress,
-                      //           backgroundColor: AppColors.mainColor,
-                      //           color: AppColors.deepGreen,
-                      //         ),
-                      //       )
-                      //     :
-                      IconButton(
-                        onPressed: () {
-                          downloadFile();
-                        },
-                        icon: const Icon(Icons.download_for_offline_outlined),
-                        iconSize: 30,
-                      )
-                    ],
-                  )
-                ],
-              )
-            : CustomKarlaText(
-                text: widget.message.text ?? '',
-                align: TextAlign.start,
-                weight: FontWeight.w400,
-                color: widget.isUserMessage ? Colors.white : Colors.black,
-                size: 14,
-              ),
-      ),
+                  ],
+                ))),
+      ],
     );
   }
 }

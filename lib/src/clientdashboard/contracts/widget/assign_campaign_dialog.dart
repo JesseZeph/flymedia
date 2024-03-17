@@ -59,7 +59,7 @@ class _AssignCampaignDialogState extends State<AssignCampaignDialog> {
             SizedBox(height: 16.h),
             if (showTwoButtons)
               CustomKarlaText(
-                text: 'Assign Campaign to ${widget.influencerName}',
+                text: 'Assign Campaign to ${widget.influencerName}?',
                 size: 14.sp,
                 weight: FontWeight.w700,
               ),

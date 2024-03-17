@@ -117,8 +117,8 @@ class ChatProvider extends ChangeNotifier {
 
   Query<GroupMessages> groupChatStream({String? groupName}) {
     return _db
-        .collection('chats')
-        .doc('groups')
+        .collection('groups')
+        .doc('chats')
         .collection(groupName ?? '')
         // .orderBy('timestamp', descending: true)
         .withConverter<GroupMessages>(

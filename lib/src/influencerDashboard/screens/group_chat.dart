@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/models/chats/chats_messages.dart';
 import 'package:flymedia_app/models/chats/group_chat.dart';
-import 'package:flymedia_app/providers/login_provider.dart';
 import 'package:flymedia_app/providers/profile_provider.dart';
 import 'package:flymedia_app/utils/global_variables.dart';
 import 'package:flymedia_app/utils/widgets/chat_message_box.dart';
@@ -35,7 +34,7 @@ class _GroupChatPageState extends State<GroupChatPage> {
   var textController = TextEditingController();
   bool showSend = false;
   late ScrollController listController;
-  String? finalMessage;
+  String? lastMessage;
   late Query<GroupMessages> chats;
   bool pickEmoji = false;
   String? id;
@@ -48,9 +47,7 @@ class _GroupChatPageState extends State<GroupChatPage> {
   void initState() {
     super.initState();
     listController = ScrollController();
-    id = widget.isClientView
-        ? context.read<LoginNotifier>().userId
-        : context.read<ProfileProvider>().userProfile?.id;
+    id = widget.isClientView ? widget.model.client : widget.model.influencer;
     chats = context
         .read<ChatProvider>()
         .groupChatStream(groupName: widget.model.groupName);
@@ -58,19 +55,20 @@ class _GroupChatPageState extends State<GroupChatPage> {
 
   void sendMessage() async {
     String? name;
+    String? img;
     if (widget.isClientView) {
       name = await repository.retrieveData(dataKey: 'companyName');
     } else {
-      name = context.read<ProfileProvider>().userProfile?.id;
+      name = context.read<ProfileProvider>().userProfile?.firstAndLastName;
+      img = context.read<ProfileProvider>().userProfile?.imageUrl;
     }
 
     GroupMessages msg = GroupMessages(
         type: hasPickedFile ? 'File' : 'Text',
         senderName: name,
         senderId: id,
-        text: textController.text.isNotEmpty
-            ? textController.text
-            : 'Sent a file',
+        senderImg: widget.isClientView ? widget.model.groupImage : img,
+        text: lastMessage ?? 'Sent a file',
         fileName: hasPickedFile
             ? filePicked?.path.split(Platform.pathSeparator).last ?? ''
             : null);
@@ -78,10 +76,8 @@ class _GroupChatPageState extends State<GroupChatPage> {
       if (context.mounted) {
         var downloadUrl = await context
             .read<ChatProvider>()
-            .uploadFileToStorage(
-                filePicked ?? File(''),
-                context.read<LoginNotifier>().userId,
-                context.read<ProfileProvider>().userProfile?.id ?? '');
+            .uploadFileToStorage(filePicked ?? File(''), widget.model.client,
+                widget.model.influencer);
         msg.downloadUrl = downloadUrl;
         filePicked = null;
         hasPickedFile = false;
@@ -92,7 +88,7 @@ class _GroupChatPageState extends State<GroupChatPage> {
         .sendGroupMessage(msg, widget.model.groupName);
     context.read<ChatProvider>().updateChat(
         msgSent?.id ?? widget.model.id,
-        textController.text.isNotEmpty ? textController.text : 'Sent a file',
+        lastMessage ?? 'Sent a file',
         id ?? '',
         widget.isClientView ? 'Client' : 'Influencer',
         isGroup: true);
@@ -168,176 +164,177 @@ class _GroupChatPageState extends State<GroupChatPage> {
           ),
         ],
       ),
-      child: Scaffold(
-          body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
-        child: SafeArea(
-            child: Column(
-          children: [
-            Align(
-              alignment: Alignment.centerLeft,
-              child: InkWell(
-                  onTap: () {
-                    Navigator.pop(context, finalMessage);
-                  },
-                  child: const Icon(
-                    Icons.arrow_back_ios,
-                    color: Colors.black,
-                  )),
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
-            Column(
-              children: [
-                SizedBox(
-                  height: 70.h,
-                  width: 70.w,
-                  child: CircleAvatar(
-                      radius: 50,
-                      backgroundColor: AppColors.dialogColor,
-                      backgroundImage: NetworkImage(widget.model.groupImage)),
-                ),
-                SizedBox(
-                  height: 8.h,
-                ),
-                CustomKarlaText(
-                  text: widget.model.groupName,
-                  size: 14,
-                  weight: FontWeight.w700,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 10.h,
-            ),
-            Expanded(
-                child: FirestoreListView<GroupMessages>(
-                    query: chats.orderBy('timeStamp', descending: true),
-                    pageSize: 20,
-                    controller: listController,
-                    reverse: true,
-                    shrinkWrap: true,
-                    itemBuilder: (context, snapshot) {
-                      GroupMessages message = snapshot.data();
-                      bool isUserMsg = message.isSender(id ?? '');
-                      return Align(
-                        alignment: isUserMsg
-                            ? Alignment.centerRight
-                            : Alignment.centerLeft,
-                        child: Container(
-                          margin: EdgeInsets.symmetric(vertical: 10.h),
-                          child: GroupMessageBox(
-                              isUserMessage: isUserMsg, message: message),
-                        ),
-                      );
-                    })),
-            Visibility(
-                visible: hasPickedFile,
-                child: Container(
-                  margin: EdgeInsets.only(top: 10.h),
-                  padding: const EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                      color: const Color(0xffF2F4F7),
-                      borderRadius: BorderRadius.vertical(
-                          top: const Radius.circular(6).r)),
-                  child: Row(
-                    children: [
-                      Expanded(
-                          child: CustomKarlaText(
-                        text: filePicked?.path
-                                .split(Platform.pathSeparator)
-                                .last ??
-                            '',
-                      )),
-                      IconButton(
-                          onPressed: () {
-                            filePicked = null;
-                            hasPickedFile = false;
-                            setState(() {});
-                          },
-                          icon: const Icon(Icons.close))
-                    ],
-                  ),
-                )),
-            SizedBox(
-              height: 60.h,
-              width: Get.width,
-              child: Row(
+      child: PopScope(
+        canPop: !isUploading && !isDownloading,
+        child: Scaffold(
+            body: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 20.h),
+          child: SafeArea(
+              child: Column(
+            children: [
+              Align(
+                alignment: Alignment.centerLeft,
+                child: InkWell(
+                    onTap: () {
+                      Navigator.pop(context, lastMessage);
+                    },
+                    child: const Icon(
+                      Icons.arrow_back_ios,
+                      color: Colors.black,
+                    )),
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              Column(
                 children: [
-                  Expanded(
-                      child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 15.w),
-                    height: 40.h,
+                  SizedBox(
+                    height: 70.h,
+                    width: 70.w,
+                    child: CircleAvatar(
+                        radius: 50,
+                        backgroundColor: AppColors.dialogColor,
+                        backgroundImage: NetworkImage(widget.model.groupImage)),
+                  ),
+                  SizedBox(
+                    height: 8.h,
+                  ),
+                  CustomKarlaText(
+                    text: widget.model.groupName,
+                    size: 14,
+                    weight: FontWeight.w700,
+                    overflow: TextOverflow.clip,
+                  ),
+                ],
+              ),
+              SizedBox(
+                height: 10.h,
+              ),
+              Expanded(
+                  child: FirestoreListView<GroupMessages>(
+                      query: chats.orderBy('timeStamp', descending: true),
+                      pageSize: 20,
+                      controller: listController,
+                      reverse: true,
+                      shrinkWrap: true,
+                      itemBuilder: (context, snapshot) {
+                        GroupMessages message = snapshot.data();
+                        bool isUserMsg = message.isSender(id ?? '');
+                        return Align(
+                          alignment: isUserMsg
+                              ? Alignment.centerRight
+                              : Alignment.centerLeft,
+                          child: Container(
+                            margin: EdgeInsets.symmetric(vertical: 10.h),
+                            child: GroupMessageBox(
+                                otherUserId: widget.isClientView
+                                    ? widget.model.influencer
+                                    : widget.model.client,
+                                isUserMessage: isUserMsg,
+                                message: message),
+                          ),
+                        );
+                      })),
+              Visibility(
+                  visible: hasPickedFile,
+                  child: Container(
+                    margin: EdgeInsets.only(top: 10.h),
+                    padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
                         color: const Color(0xffF2F4F7),
-                        borderRadius: BorderRadius.circular(22).r),
+                        borderRadius: BorderRadius.vertical(
+                            top: const Radius.circular(6).r)),
                     child: Row(
                       children: [
                         Expanded(
-                          child: TextFormField(
-                            controller: textController,
-                            onChanged: (text) => setState(() {
-                              showSend =
-                                  textController.text.isNotEmpty ? true : false;
-                            }),
-                            decoration: InputDecoration(
-                                isDense: true,
-                                border: InputBorder.none,
-                                hintStyle: GoogleFonts.karla(
-                                    fontSize: 14.sp,
-                                    fontWeight: FontWeight.w400),
-                                hintText: 'Type your message here...'),
-                          ),
-                        ),
+                            child: CustomKarlaText(
+                          text: filePicked?.path
+                                  .split(Platform.pathSeparator)
+                                  .last ??
+                              '',
+                        )),
+                        IconButton(
+                            onPressed: () {
+                              filePicked = null;
+                              hasPickedFile = false;
+                              setState(() {});
+                            },
+                            icon: const Icon(Icons.close))
                       ],
                     ),
                   )),
-                  SizedBox(
-                    width: 5.w,
-                  ),
-                  IconButton(
-                      onPressed: () => pickFile(),
-                      icon: const Icon(
-                        Icons.description_outlined,
-                        size: 25,
-                        color: Color(0xff667085),
-                      )),
-                  if (showSend || hasPickedFile)
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: 5.w,
-                        ),
-                        GestureDetector(
-                            onTap: () {
-                              showSend = false;
-                              sendMessage();
-                              finalMessage = textController.text;
-                              FocusScopeNode currentFocus =
-                                  FocusScope.of(context);
+              SizedBox(
+                width: Get.width,
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    Expanded(
+                        child: Container(
+                      padding: EdgeInsets.symmetric(horizontal: 15.w),
+                      decoration: BoxDecoration(
+                          color: const Color(0xffF2F4F7),
+                          borderRadius: BorderRadius.circular(22).r),
+                      child: TextFormField(
+                        maxLines: null,
+                        minLines: 1,
+                        controller: textController,
+                        onChanged: (text) => setState(() {
+                          showSend =
+                              textController.text.isNotEmpty ? true : false;
+                        }),
+                        decoration: InputDecoration(
+                            isDense: true,
+                            border: InputBorder.none,
+                            hintStyle: GoogleFonts.karla(
+                                fontSize: 14.sp, fontWeight: FontWeight.w400),
+                            hintText: 'Type your message here...'),
+                      ),
+                    )),
+                    SizedBox(
+                      width: 5.w,
+                    ),
+                    IconButton(
+                        onPressed: () => pickFile(),
+                        icon: const Icon(
+                          Icons.description_outlined,
+                          size: 25,
+                          color: Color(0xff667085),
+                        )),
+                    if (showSend || hasPickedFile)
+                      Row(
+                        children: [
+                          SizedBox(
+                            width: 5.w,
+                          ),
+                          GestureDetector(
+                              onTap: () {
+                                showSend = false;
+                                lastMessage = textController.text;
+                                sendMessage();
+                                FocusScopeNode currentFocus =
+                                    FocusScope.of(context);
 
-                              if (!currentFocus.hasPrimaryFocus) {
-                                currentFocus.unfocus();
-                              }
-                              textController.clear();
-                            },
-                            child: const CircleAvatar(
-                              backgroundColor: AppColors.mainColor,
-                              child: Icon(
-                                Icons.send,
-                                color: Colors.white,
-                              ),
-                            )),
-                      ],
-                    )
-                ],
+                                if (!currentFocus.hasPrimaryFocus) {
+                                  currentFocus.unfocus();
+                                }
+                                textController.clear();
+                              },
+                              child: const CircleAvatar(
+                                backgroundColor: AppColors.mainColor,
+                                child: Icon(
+                                  Icons.send,
+                                  color: Colors.white,
+                                ),
+                              )),
+                        ],
+                      )
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          )),
         )),
-      )),
+      ),
     );
   }
 }
