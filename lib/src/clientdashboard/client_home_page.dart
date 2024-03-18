@@ -100,6 +100,7 @@ class _ClientHomePageState extends State<ClientHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    var newMessageAvail = context.watch<ChatProvider>().userHasNewMessages;
     return OverlayTooltipScaffold(
       controller: _controller,
       overlayColor: Colors.white.withOpacity(1.0),
@@ -117,6 +118,9 @@ class _ClientHomePageState extends State<ClientHomePage> {
         bottomNavigationBar: BottomNavigationBar(
             currentIndex: _selectedIndex,
             onTap: (value) {
+              if (value == 1) {
+                context.read<ChatProvider>().toggleIndicator();
+              }
               setState(() {
                 _selectedIndex = value;
               });
@@ -127,21 +131,30 @@ class _ClientHomePageState extends State<ClientHomePage> {
             selectedItemColor: AppColors.mainColor,
             unselectedItemColor: AppColors.lightHintTextColor,
             type: BottomNavigationBarType.fixed,
-            items: const [
-              BottomNavigationBarItem(
+            items: [
+              const BottomNavigationBarItem(
                   icon: Icon(FluentSystemIcons.ic_fluent_note_add_regular),
                   activeIcon: Icon(FluentSystemIcons.ic_fluent_note_add_filled),
                   label: 'Campaigns'),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.mail_outline_rounded),
-                  activeIcon: Icon(Icons.mail),
+                  icon: Badge(
+                      offset: const Offset(0.0, 0.2),
+                      smallSize: 10,
+                      isLabelVisible: newMessageAvail,
+                      backgroundColor: AppColors.mainColor,
+                      child: const Icon(Icons.mail_outline_rounded)),
+                  activeIcon: Badge(
+                    isLabelVisible: newMessageAvail,
+                    backgroundColor: AppColors.mainColor,
+                    child: const Icon(Icons.mail),
+                  ),
                   label: 'Messages'),
-              BottomNavigationBarItem(
+              const BottomNavigationBarItem(
                   icon: Icon(FluentSystemIcons.ic_fluent_help_circle_regular),
                   activeIcon:
                       Icon(FluentSystemIcons.ic_fluent_help_circle_filled),
                   label: 'Help'),
-              BottomNavigationBarItem(
+              const BottomNavigationBarItem(
                   icon: Icon(Icons.menu),
                   activeIcon: Icon(Icons.menu_open),
                   label: 'Menu'),

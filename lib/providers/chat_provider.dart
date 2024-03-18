@@ -25,6 +25,7 @@ class ChatProvider extends ChangeNotifier {
   double taskProgress = 0;
   bool uploadingFile = false;
   bool downloadingFile = false;
+  bool userHasNewMessages = false;
   UploadTask? uploadTask;
   String? currentTaskId;
 
@@ -40,11 +41,23 @@ class ChatProvider extends ChangeNotifier {
       ]);
       if (messages.first.status) {
         List initList = messages.first.data;
-        userMessages = initList.map((item) => ChatModel.fromMap(item)).toList();
+        userMessages = initList.map((item) {
+          var chat = ChatModel.fromMap(item);
+          if (chat.hasNewMessages(userType == 'Client')) {
+            userHasNewMessages = true;
+          }
+          return chat;
+        }).toList();
       }
       if (messages.last.status) {
         List initList = messages.last.data;
-        userGroups = initList.map((item) => GroupChat.fromMap(item)).toList();
+        userGroups = initList.map((item) {
+          var group = GroupChat.fromMap(item);
+          if (group.hasNewMessages(userType == 'Client')) {
+            userHasNewMessages = true;
+          }
+          return group;
+        }).toList();
       }
     } catch (e, s) {
       debugPrintStack(stackTrace: s);
@@ -60,8 +73,7 @@ class ChatProvider extends ChangeNotifier {
 
   Future<ChatModel?> addChat(String clientId, String influencerId,
       String lastMessage, String userId, String userType) async {
-    var chat =
-        await helper.addChat(clientId, influencerId, lastMessage, userType);
+    var chat = await helper.addChat(clientId, influencerId, lastMessage);
     await fetchUserMessages(userId, userType);
     return chat;
   }
@@ -220,5 +232,10 @@ class ChatProvider extends ChangeNotifier {
 
     notifyListeners();
     return result;
+  }
+
+  toggleIndicator() {
+    userHasNewMessages = false;
+    notifyListeners();
   }
 }

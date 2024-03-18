@@ -51,8 +51,8 @@ class ChatHelper {
     return chat;
   }
 
-  Future<ChatModel?> addChat(String clientId, String influencerId,
-      String lastMessage, String userType) async {
+  Future<ChatModel?> addChat(
+      String clientId, String influencerId, String lastMessage) async {
     ChatModel? newChat;
     var url = Uri.https(
       Config.apiUrl,
@@ -63,7 +63,6 @@ class ChatHelper {
         "company_owner_id": clientId,
         "influencer_id": influencerId,
         "last_message": lastMessage,
-        "user_type": userType
       });
 
       newChat = ChatModel.fromMap(jsonDecode(response.body)['data']);
