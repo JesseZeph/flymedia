@@ -12,9 +12,15 @@ import '../../constants/colors.dart';
 import '../../models/chats/chat_model.dart';
 
 class ChatTile extends StatefulWidget {
-  const ChatTile({super.key, required this.model, required this.isClientView});
+  const ChatTile({
+    super.key,
+    required this.model,
+    required this.isClientView,
+    required this.index,
+  });
   final ChatModel model;
   final bool isClientView;
+  final int index;
 
   @override
   State<ChatTile> createState() => _ChatTileState();
@@ -22,7 +28,7 @@ class ChatTile extends StatefulWidget {
 
 class _ChatTileState extends State<ChatTile> {
   late ChatModel chatModel;
-
+  bool isSelected = false;
   @override
   void initState() {
     super.initState();
@@ -32,16 +38,39 @@ class _ChatTileState extends State<ChatTile> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-        height: 80.h,
-        width: 390.w,
-        child: Center(
-          child: ListTile(
+      height: 80.h,
+      width: 390.w,
+      child: Stack(
+        children: [
+          Positioned.fill(
+              child: ListTile(
+            shape: RoundedRectangleBorder(
+                side: BorderSide(
+                    color: isSelected ? Colors.red : Colors.transparent)),
+            onLongPress: () {
+              setState(() {
+                isSelected = true;
+              });
+            },
             tileColor: Colors.grey.shade100.withOpacity(0.6),
             onTap: () async {
-              context.read<ChatProvider>().updateChatStatus(
-                  chatModel.id,
-                  context.read<LoginNotifier>().userId,
-                  widget.isClientView ? 'Client' : "Influencer");
+              if (isSelected) {
+                setState(() {
+                  isSelected = false;
+                });
+                return;
+              }
+              if ((widget.isClientView && widget.model.hasNewMessages(true)) ||
+                  (!widget.isClientView &&
+                      widget.model.hasNewMessages(false))) {
+                context.read<ChatProvider>().updateChatStatus(
+                    chatModel.id,
+                    widget.isClientView
+                        ? widget.model.companyOwnerId
+                        : widget.model.influencerId,
+                    widget.isClientView ? 'Client' : "Influencer");
+              }
+
               String? lastMsg = await Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -97,8 +126,35 @@ class _ChatTileState extends State<ChatTile> {
                             : chatModel.newMessagesCount.toString()),
                   )
                 : null,
-          ),
-        ));
+          )),
+          if (isSelected)
+            Positioned(
+                top: 0,
+                right: 0,
+                child: FractionalTranslation(
+                  translation: const Offset(0.0, 0.0),
+                  child: CircleAvatar(
+                    backgroundColor: Colors.red,
+                    child: IconButton(
+                      onPressed: () {
+                        context.read<ChatProvider>().deleteChat(
+                            chatModel.id,
+                            widget.index,
+                            widget.isClientView
+                                ? chatModel.companyOwnerId
+                                : chatModel.influencerId,
+                            widget.isClientView ? 'Client' : 'Influencer');
+                      },
+                      icon: const Icon(
+                        Icons.delete_forever_outlined,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ))
+        ],
+      ),
+    );
   }
 }
 

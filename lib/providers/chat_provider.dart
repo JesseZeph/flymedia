@@ -60,7 +60,8 @@ class ChatProvider extends ChangeNotifier {
 
   Future<ChatModel?> addChat(String clientId, String influencerId,
       String lastMessage, String userId, String userType) async {
-    var chat = await helper.addChat(clientId, influencerId, lastMessage);
+    var chat =
+        await helper.addChat(clientId, influencerId, lastMessage, userType);
     await fetchUserMessages(userId, userType);
     return chat;
   }
@@ -91,8 +92,10 @@ class ChatProvider extends ChangeNotifier {
     await fetchUserMessages(userId, userType);
   }
 
-  deleteChat(String? chatId, String userId, String userType) async {
-    await helper.deleteChat(chatId: chatId);
+  deleteChat(String? chatId, int index, String userId, String userType) async {
+    userMessages.removeAt(index);
+    notifyListeners();
+    await helper.deleteChat(chatId: chatId, userType: userType);
     await fetchUserMessages(userId, userType);
   }
 

@@ -153,6 +153,7 @@ class __ChatsState extends State<_Chats> with AutomaticKeepAliveClientMixin {
             itemBuilder: (context, index) => ChatTile(
               isClientView: true,
               model: chatList[index],
+              index: index,
             ),
             separatorBuilder: (context, index) => Divider(
               color: const Color(0xffF0F2F6),

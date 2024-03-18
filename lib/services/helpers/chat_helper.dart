@@ -51,8 +51,8 @@ class ChatHelper {
     return chat;
   }
 
-  Future<ChatModel?> addChat(
-      String clientId, String influencerId, String lastMessage) async {
+  Future<ChatModel?> addChat(String clientId, String influencerId,
+      String lastMessage, String userType) async {
     ChatModel? newChat;
     var url = Uri.https(
       Config.apiUrl,
@@ -62,7 +62,8 @@ class ChatHelper {
       var response = await http.post(url, headers: await getHeaders(), body: {
         "company_owner_id": clientId,
         "influencer_id": influencerId,
-        "last_message": lastMessage
+        "last_message": lastMessage,
+        "user_type": userType
       });
 
       newChat = ChatModel.fromMap(jsonDecode(response.body)['data']);
@@ -109,7 +110,7 @@ class ChatHelper {
     }
   }
 
-  Future<List<dynamic>> deleteChat({String? chatId}) async {
+  Future<List<dynamic>> deleteChat({String? chatId, String? userType}) async {
     List<dynamic> resp = [false, 'An error occured, try again later.'];
     var url = Uri.https(
       Config.apiUrl,
@@ -117,8 +118,9 @@ class ChatHelper {
     );
 
     try {
-      var response = await http
-          .delete(url, headers: await getHeaders(), body: {"chat_id": chatId});
+      var response = await http.delete(url,
+          headers: await getHeaders(),
+          body: {"chat_id": chatId, "user_type": userType});
 
       var decodedResponse = jsonDecode(response.body);
 

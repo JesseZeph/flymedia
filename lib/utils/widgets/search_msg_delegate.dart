@@ -55,6 +55,7 @@ class MessageSearchDelegate extends SearchDelegate {
             itemBuilder: (context, index) => ChatTile(
               isClientView: isClientView,
               model: matchQuery[index],
+              index: index,
             ),
             separatorBuilder: (context, index) => Divider(
               color: const Color(0xffF0F2F6),
@@ -86,6 +87,7 @@ class MessageSearchDelegate extends SearchDelegate {
             itemBuilder: (context, index) => ChatTile(
               isClientView: isClientView,
               model: matchQuery[index],
+              index: index,
             ),
             separatorBuilder: (context, index) => Divider(
               color: const Color(0xffF0F2F6),
