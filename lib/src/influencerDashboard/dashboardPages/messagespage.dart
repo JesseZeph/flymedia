@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/providers/chat_provider.dart';
 import 'package:flymedia_app/utils/widgets/alert_loader.dart';
-import 'package:flymedia_app/utils/widgets/chat_tile.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:loading_overlay/loading_overlay.dart';
@@ -12,7 +11,7 @@ import '../../../constants/colors.dart';
 import '../../../providers/login_provider.dart';
 import '../../../utils/global_variables.dart';
 import '../../../utils/modal.dart';
-import '../../../utils/widgets/custom_text.dart';
+import '../../clientdashboard/dashboardPages/messages.dart';
 
 class MessagePage extends StatefulWidget {
   const MessagePage({super.key});
@@ -122,7 +121,14 @@ class _MessagePageState extends State<MessagePage>
                         },
                         color: AppColors.mainColor,
                         child: const TabBarView(
-                          children: [_Chats(), _Groups()],
+                          children: [
+                            Chats(
+                              isClient: false,
+                            ),
+                            Groups(
+                              isClient: false,
+                            )
+                          ],
                         ),
                       ))
                     ],
@@ -132,78 +138,4 @@ class _MessagePageState extends State<MessagePage>
             ),
           );
   }
-}
-
-class _Chats extends StatefulWidget {
-  const _Chats();
-
-  @override
-  State<_Chats> createState() => __ChatsState();
-}
-
-class __ChatsState extends State<_Chats> with AutomaticKeepAliveClientMixin {
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
-    var chatList = context.watch<ChatProvider>().userMessages;
-    return chatList.isEmpty
-        ? const Center(
-            child: CustomKarlaText(
-              text: 'No messages here',
-              weight: FontWeight.bold,
-            ),
-          )
-        : ListView.separated(
-            itemBuilder: (context, index) => ChatTile(
-              isClientView: false,
-              model: chatList[index],
-              index: index,
-            ),
-            separatorBuilder: (context, index) => Divider(
-              color: const Color(0xffF0F2F6),
-              height: 10.h,
-            ),
-            itemCount: chatList.length,
-          );
-  }
-
-  @override
-  bool get wantKeepAlive => true;
-}
-
-class _Groups extends StatefulWidget {
-  const _Groups();
-
-  @override
-  State<_Groups> createState() => __GroupsState();
-}
-
-class __GroupsState extends State<_Groups> with AutomaticKeepAliveClientMixin {
-  @override
-  Widget build(BuildContext context) {
-    super.build(context);
-    var groupList = context.watch<ChatProvider>().userGroups;
-
-    return groupList.isEmpty
-        ? const Center(
-            child: CustomKarlaText(
-              text: 'No messages here',
-              weight: FontWeight.bold,
-            ),
-          )
-        : ListView.separated(
-            itemBuilder: (context, index) => GroupChatTile(
-              isClient: false,
-              model: groupList[index],
-            ),
-            separatorBuilder: (context, index) => Divider(
-              color: const Color(0xffF0F2F6),
-              height: 10.h,
-            ),
-            itemCount: groupList.length,
-          );
-  }
-
-  @override
-  bool get wantKeepAlive => true;
 }

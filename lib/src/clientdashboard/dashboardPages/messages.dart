@@ -118,7 +118,7 @@ class _ClientMessagePageState extends State<ClientMessagePage>
                                 context.read<LoginNotifier>().userId, 'Client'),
                         color: AppColors.mainColor,
                         child: const TabBarView(
-                          children: [_Chats(), _Groups()],
+                          children: [Chats(), Groups()],
                         ),
                       ))
                     ],
@@ -130,24 +130,52 @@ class _ClientMessagePageState extends State<ClientMessagePage>
   }
 }
 
-class _Chats extends StatefulWidget {
-  const _Chats();
+class Chats extends StatefulWidget {
+  const Chats({super.key, this.isClient = true});
+  final bool isClient;
 
   @override
-  State<_Chats> createState() => __ChatsState();
+  State<Chats> createState() => _ChatsState();
 }
 
-class __ChatsState extends State<_Chats> with AutomaticKeepAliveClientMixin {
+class _ChatsState extends State<Chats> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
     var chatList = context.watch<ChatProvider>().userMessages;
     return chatList.isEmpty
-        ? const Center(
-            child: CustomKarlaText(
-              text: 'No messages here',
-              weight: FontWeight.bold,
-            ),
+        ? Column(
+            children: [
+              SizedBox(
+                width: Get.width,
+                height: 50.h,
+              ),
+              SizedBox(
+                height: 200.h,
+                width: 200.w,
+                child: FittedBox(
+                  fit: BoxFit.contain,
+                  child: Image.asset('assets/images/empty_messages.jpg'),
+                ),
+              ),
+              SizedBox(
+                height: 50.h,
+              ),
+              const CustomKarlaText(
+                text: "No Conversations",
+                weight: FontWeight.w700,
+                size: 16,
+              ),
+              SizedBox(
+                height: 50.h,
+              ),
+              CustomKarlaText(
+                text:
+                    "Your messages with ${widget.isClient ? 'influencers' : 'clients'} will appear here once you begin a campaign. ${widget.isClient ? 'Post' : 'Apply for'} campaigns to initiate conversations and collaborations right here.",
+                weight: FontWeight.w400,
+                size: 14,
+              ),
+            ],
           )
         : ListView.separated(
             itemBuilder: (context, index) => ChatTile(
@@ -167,25 +195,53 @@ class __ChatsState extends State<_Chats> with AutomaticKeepAliveClientMixin {
   bool get wantKeepAlive => true;
 }
 
-class _Groups extends StatefulWidget {
-  const _Groups();
+class Groups extends StatefulWidget {
+  const Groups({super.key, this.isClient = true});
+  final bool isClient;
 
   @override
-  State<_Groups> createState() => __GroupsState();
+  State<Groups> createState() => _GroupsState();
 }
 
-class __GroupsState extends State<_Groups> with AutomaticKeepAliveClientMixin {
+class _GroupsState extends State<Groups> with AutomaticKeepAliveClientMixin {
   @override
   Widget build(BuildContext context) {
     super.build(context);
     var groupList = context.watch<ChatProvider>().userGroups;
 
     return groupList.isEmpty
-        ? const Center(
-            child: CustomKarlaText(
-              text: 'No groups here',
-              weight: FontWeight.bold,
-            ),
+        ? Column(
+            children: [
+              SizedBox(
+                width: Get.width,
+                height: 50.h,
+              ),
+              SizedBox(
+                height: 200.h,
+                width: 200.w,
+                child: FittedBox(
+                  fit: BoxFit.contain,
+                  child: Image.asset('assets/images/empty_messages.jpg'),
+                ),
+              ),
+              SizedBox(
+                height: 50.h,
+              ),
+              const CustomKarlaText(
+                text: "No Conversations",
+                weight: FontWeight.w700,
+                size: 16,
+              ),
+              SizedBox(
+                height: 50.h,
+              ),
+              CustomKarlaText(
+                text:
+                    "Your groups with ${widget.isClient ? 'influencers' : 'clients'} and admins will appear here once you begin a campaign. ${widget.isClient ? 'Post' : 'Apply for'} campaigns to initiate conversations and collaborations right here.",
+                weight: FontWeight.w400,
+                size: 14,
+              ),
+            ],
           )
         : ListView.separated(
             itemBuilder: (context, index) => GroupChatTile(
