@@ -126,10 +126,10 @@ class _CampaignPaymentState extends State<CampaignPayment> with PinMixin {
   }
 
   payWithStripe() async {
-    if (await repository.isPinSet() && context.mounted) {
+    if (await repository.isPinSet() && mounted) {
       var pinIsVerified = await verifyPin(context);
 
-      if (pinIsVerified && context.mounted) {
+      if (pinIsVerified && mounted) {
         context
             .read<PaymentNotifier>()
             .influencerPayment(
@@ -148,7 +148,7 @@ class _CampaignPaymentState extends State<CampaignPayment> with PinMixin {
                   ),
                 ) ??
                 false;
-            if (context.mounted) {
+            if (mounted) {
               Navigator.pop(context, successful);
             }
           }

@@ -44,17 +44,17 @@ class _DisplayAccountInfoState extends State<DisplayAccountInfo> with PinMixin {
       builder: (context) => const DeleteDialog(isConfirm: true),
     );
     if (proceed ?? false) {
-      if (await repository.isPinSet() && context.mounted) {
+      if (await repository.isPinSet() && mounted) {
         var pinVerified = await verifyPin(context);
         if (pinVerified) {
           setState(() {
             isDeleting = !isDeleting;
           });
-          if (context.mounted) {
+          if (mounted) {
             var deleteResp = await context
                 .read<InfluencerAccountDetailsProvider>()
                 .deleteAccount('');
-            if (deleteResp.status && context.mounted) {
+            if (deleteResp.status && mounted) {
               setState(() {
                 isDeleting = !isDeleting;
               });

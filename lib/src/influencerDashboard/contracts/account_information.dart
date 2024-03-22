@@ -39,9 +39,9 @@ class _AccountInformationState extends State<AccountInformation> with PinMixin {
 
   addAccount() async {
     if (formKey.currentState?.validate() ?? false) {
-      if (await repository.isPinSet() && context.mounted) {
+      if (await repository.isPinSet() && mounted) {
         var pinVerified = await verifyPin(context);
-        if (pinVerified && context.mounted) {
+        if (pinVerified && mounted) {
           setState(() {
             loading = !loading;
           });
@@ -63,7 +63,7 @@ class _AccountInformationState extends State<AccountInformation> with PinMixin {
                     bankName: bankName.text);
           }
 
-          if (context.mounted) {
+          if (mounted) {
             userAccount = context
                 .read<InfluencerAccountDetailsProvider>()
                 .getAccountResponse;

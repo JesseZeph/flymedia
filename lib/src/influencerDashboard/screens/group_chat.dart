@@ -73,7 +73,7 @@ class _GroupChatPageState extends State<GroupChatPage> {
             ? filePicked?.path.split(Platform.pathSeparator).last ?? ''
             : null);
     if (hasPickedFile) {
-      if (context.mounted) {
+      if (mounted) {
         var downloadUrl = await context
             .read<ChatProvider>()
             .uploadFileToStorage(filePicked ?? File(''), widget.model.client,
@@ -83,7 +83,7 @@ class _GroupChatPageState extends State<GroupChatPage> {
         hasPickedFile = false;
       }
     }
-    if (!context.mounted) return;
+    if (!mounted) return;
     Provider.of<ChatProvider>(context, listen: false)
         .sendGroupMessage(msg, widget.model.groupName);
     context.read<ChatProvider>().updateChat(
