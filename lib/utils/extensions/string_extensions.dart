@@ -20,7 +20,7 @@ extension Formatter on String {
   String formatComma() {
     num fig = num.tryParse(this) ?? 0;
     if (fig == 0) {
-      return '';
+      return '0';
     }
     var formatter = NumberFormat('#,###');
     return formatter.format(fig);
