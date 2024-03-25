@@ -170,7 +170,7 @@ class _ClientVerificationDetailsState extends State<ClientVerificationDetails> {
                 padding: EdgeInsets.symmetric(horizontal: 25.w),
                 child: TextInputField(
                   controller: companyEmail,
-                  hintText: 'Please use your official email address',
+                  hintText: 'Company official email address',
                   onChanged: (_) {},
                   validator: (val) {
                     if (val == null || val.isEmpty) return '';
@@ -182,7 +182,7 @@ class _ClientVerificationDetailsState extends State<ClientVerificationDetails> {
               Padding(
                 padding: EdgeInsets.only(left: 25.w, bottom: 5.h),
                 child: Text(
-                  'Contact number of internal member',
+                  'Company phone contact',
                   style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: AppColors.mainTextColor,
                         fontSize: 12.sp,
@@ -208,7 +208,7 @@ class _ClientVerificationDetailsState extends State<ClientVerificationDetails> {
                       width: 240.w,
                       controller: memberContact,
                       inputType: const TextInputType.numberWithOptions(),
-                      hintText: 'Who can we get in touch with?',
+                      hintText: 'Company official contact',
                       onChanged: (_) {},
                       validator: (val) {
                         if (val == null || val.isEmpty) return '';

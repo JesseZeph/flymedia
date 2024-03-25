@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flymedia_app/providers/campaign_provider.dart';
 import 'package:flymedia_app/providers/chat_provider.dart';
@@ -17,7 +18,6 @@ import 'package:flymedia_app/utils/theme/theme.dart';
 import 'package:get/get_navigation/src/root/get_material_app.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'providers/login_provider.dart';
 import 'providers/onboarding_provider.dart';
 import 'providers/signup_provider.dart';
@@ -25,7 +25,8 @@ import 'providers/subscription_provider.dart';
 import 'src/clientdashboard/screens/verificationinprogress.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetBinding);
 
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   Widget? defaultHome;
@@ -78,6 +79,7 @@ void main() async {
         minTextAdapt: true,
         splitScreenMode: true,
         builder: (context, child) {
+          FlutterNativeSplash.remove();
           return GetMaterialApp(
             debugShowCheckedModeBanner: false,
             title: 'Flymedia',

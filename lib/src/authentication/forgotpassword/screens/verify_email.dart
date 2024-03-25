@@ -35,7 +35,7 @@ class _VerifyEmailState extends State<VerifyEmail> {
   }
 
   startTimer() async {
-    await Future.delayed(const Duration(minutes: 1), () {
+    await Future.delayed(const Duration(seconds: 20), () {
       if (!mounted) return;
       setState(() {
         showResend = true;

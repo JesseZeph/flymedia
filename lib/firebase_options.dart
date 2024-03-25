@@ -17,7 +17,10 @@ import 'package:flutter/foundation.dart'
 class DefaultFirebaseOptions {
   static FirebaseOptions get currentPlatform {
     if (kIsWeb) {
-      return web;
+      throw UnsupportedError(
+        'DefaultFirebaseOptions have not been configured for web - '
+        'you can reconfigure this by running the FlutterFire CLI again.',
+      );
     }
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
@@ -25,7 +28,10 @@ class DefaultFirebaseOptions {
       case TargetPlatform.iOS:
         return ios;
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for windows - '
@@ -43,19 +49,9 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDxXxYb62yNdEzghlRs85Q5JoZj5dvk2Gc',
-    appId: '1:89477570848:web:de122e81ffe8eee6067745',
-    messagingSenderId: '89477570848',
-    projectId: 'flymedia-app-7a2b9',
-    authDomain: 'flymedia-app-7a2b9.firebaseapp.com',
-    databaseURL: 'https://flymedia-app-7a2b9-default-rtdb.europe-west1.firebasedatabase.app',
-    storageBucket: 'flymedia-app-7a2b9.appspot.com',
-  );
-
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyDfwbDKwzd1XyD6wr__SRHrG346GYq9Y3M',
-    appId: '1:89477570848:android:ab9b2fb43f39ce91067745',
+    appId: '1:89477570848:android:7108c411a1b6183e067745',
     messagingSenderId: '89477570848',
     projectId: 'flymedia-app-7a2b9',
     databaseURL: 'https://flymedia-app-7a2b9-default-rtdb.europe-west1.firebasedatabase.app',
@@ -64,25 +60,13 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyAab6xIoRhgIx7InB9l7dD-iv9mfp--rlM',
-    appId: '1:89477570848:ios:d160c20a6fa58fbb067745',
+    appId: '1:89477570848:ios:f3cf1786269ade21067745',
     messagingSenderId: '89477570848',
     projectId: 'flymedia-app-7a2b9',
     databaseURL: 'https://flymedia-app-7a2b9-default-rtdb.europe-west1.firebasedatabase.app',
     storageBucket: 'flymedia-app-7a2b9.appspot.com',
     androidClientId: '89477570848-7a4p75d6tade0an7egardi9bavomlnl9.apps.googleusercontent.com',
-    iosClientId: '89477570848-rm04585n10hq3aq2mrceutnghgdrtno2.apps.googleusercontent.com',
-    iosBundleId: 'com.example.flymedia',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyAab6xIoRhgIx7InB9l7dD-iv9mfp--rlM',
-    appId: '1:89477570848:ios:1ae4a9076ba300e6067745',
-    messagingSenderId: '89477570848',
-    projectId: 'flymedia-app-7a2b9',
-    databaseURL: 'https://flymedia-app-7a2b9-default-rtdb.europe-west1.firebasedatabase.app',
-    storageBucket: 'flymedia-app-7a2b9.appspot.com',
-    androidClientId: '89477570848-7a4p75d6tade0an7egardi9bavomlnl9.apps.googleusercontent.com',
-    iosClientId: '89477570848-mmeibbvie02d7b01n4r80fgssc7aqqhs.apps.googleusercontent.com',
-    iosBundleId: 'com.example.flymedia.RunnerTests',
+    iosClientId: '89477570848-7b77a855a47rplgtb24iap65joi4annh.apps.googleusercontent.com',
+    iosBundleId: 'com.flymedia.app',
   );
 }

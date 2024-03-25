@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.flymedia</string>
+	<string>com.flymedia.app</string>
 	<key>PROJECT_ID</key>
 	<string>flymedia-app-7a2b9</string>
 	<key>STORAGE_BUCKET</key>

@@ -63,7 +63,7 @@ class _InfluencerMenuState extends State<InfluencerMenu> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       SubscriptionInfo(
-                        headerText: 'Account Information',
+                        headerText: 'Bank Account Information',
                         subText:
                             'Provide your account information\nto ensure seamless and timely\npayments',
                         imageUrl: 'assets/images/coins.svg',
@@ -89,7 +89,7 @@ class _InfluencerMenuState extends State<InfluencerMenu> {
                         containerColor: AppColors.cardColor2,
                         headerText: 'Your Contracts',
                         subText:
-                            'Access and review ongoing and\ncompleted contracts with influencers',
+                            'Access and review ongoing and\ncompleted contracts with clients',
                         imageUrl: 'assets/images/bro.svg',
                         buttonText: 'View contracts',
                         buttonColor: AppColors.purplePatch,

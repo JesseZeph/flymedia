@@ -11,7 +11,7 @@ Future<AuthorizationCredentialAppleID> appleAuth() async {
   final rawNonce = _generateNonce();
   final nonce = _sha256ofString(rawNonce);
 
-  String clientID = 'com.example.flymedia-service';
+  String clientID = 'com.flymedia.app-service';
   String callbackUrl =
       'https://${Config.apiUrl}/apple/callbacks/sign_up_with_apple';
   final appleCredential = await SignInWithApple.getAppleIDCredential(

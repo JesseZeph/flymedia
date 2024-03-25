@@ -30,6 +30,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_chat_bubble: ^2.0.2
+  flutter_native_splash: ^2.4.0
   flutter_screenutil: ^5.9.0
   flutter_secure_storage: ^9.0.0
   flutter_svg: ^2.0.7
@@ -68,11 +69,6 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
-flutter_launcher_icons:
-  android: "launcher_icon"
-  ios: true
-  remove_alpha_ios: true
-  image_path: "assets/icons/logo.png"
 
 flutter:
   uses-material-design: true
@@ -90,3 +86,8 @@ flutter:
     - family: Karla
       fonts:
         - asset: assets/fonts/karla.regular.ttf
+flutter_native_splash:
+  color: "#04C1C4"
+  android_12:
+    color: "#04C1C4"
+    icon_background_color: "#eeeeee"

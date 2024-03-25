@@ -75,9 +75,17 @@ class _FirstOnboardState extends State<FirstOnboard>
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Image(
-                image: AssetImage('assets/images/logo.png'),
+              SizedBox(
+                height: 100.h,
+                width: 100.w,
+                child: const FittedBox(
+                  fit: BoxFit.contain,
+                  child: Image(
+                    image: AssetImage('assets/images/logo.png'),
+                  ),
+                ),
               ),
+              SizedBox(height: 10.h),
               Text(
                 'Flymedia',
                 style: Theme.of(context).textTheme.bodySmall?.copyWith(

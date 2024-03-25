@@ -8,20 +8,12 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:89477570848:android:ab9b2fb43f39ce91067745",
+        "mobilesdk_app_id": "1:89477570848:android:7108c411a1b6183e067745",
         "android_client_info": {
-          "package_name": "com.example.flymedia"
+          "package_name": "com.flymedia.app"
         }
       },
       "oauth_client": [
-        {
-          "client_id": "89477570848-eb7gtqjtfv09ormj1ccdbpg45agns6ph.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.flymedia",
-            "certificate_hash": "b8628573620850a69bd35c13c1443f19546a1670"
-          }
-        },
         {
           "client_id": "89477570848-pupb2ebmupac5kao97r3mkp5dnrl3pv6.apps.googleusercontent.com",
           "client_type": 3
@@ -40,54 +32,10 @@
               "client_type": 3
             },
             {
-              "client_id": "89477570848-cba0i1t5a5rrn65co5v21nnu9nhmkssn.apps.googleusercontent.com",
+              "client_id": "89477570848-8ehlfvsrnl37h6qobk4nru2v78tnhdoi.apps.googleusercontent.com",
               "client_type": 2,
               "ios_info": {
-                "bundle_id": "com.example.flymediaApp"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:89477570848:android:879412026daaebdc067745",
-        "android_client_info": {
-          "package_name": "com.example.flymedia_app"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "89477570848-7a4p75d6tade0an7egardi9bavomlnl9.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.flymedia_app",
-            "certificate_hash": "a5d4319d5521a65c3984a199986720347d398250"
-          }
-        },
-        {
-          "client_id": "89477570848-pupb2ebmupac5kao97r3mkp5dnrl3pv6.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDfwbDKwzd1XyD6wr__SRHrG346GYq9Y3M"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "89477570848-pupb2ebmupac5kao97r3mkp5dnrl3pv6.apps.googleusercontent.com",
-              "client_type": 3
-            },
-            {
-              "client_id": "89477570848-cba0i1t5a5rrn65co5v21nnu9nhmkssn.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "com.example.flymediaApp"
+                "bundle_id": "com.example.flymediaAdmin.RunnerTests"
               }
             }
           ]

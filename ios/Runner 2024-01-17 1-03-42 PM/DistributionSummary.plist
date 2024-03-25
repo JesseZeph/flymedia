@@ -1034,7 +1034,7 @@
 			<key>entitlements</key>
 			<dict>
 				<key>application-identifier</key>
-				<string>9CY9WA8P73.com.example.flymedia</string>
+				<string>9CY9WA8P73.com.flymedia.app</string>
 				<key>com.apple.developer.applesignin</key>
 				<array>
 					<string>Default</string>
@@ -1053,7 +1053,7 @@
 				<key>dateExpires</key>
 				<string>16/01/2025</string>
 				<key>name</key>
-				<string>iOS Team Ad Hoc Provisioning Profile: com.example.flymedia</string>
+				<string>iOS Team Ad Hoc Provisioning Profile: com.flymedia.app</string>
 			</dict>
 			<key>team</key>
 			<dict>
