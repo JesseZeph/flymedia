@@ -76,10 +76,10 @@ flutter:
   assets:
     - assets/images/
     - assets/rive_assets/
-    - assets/images/Ellipse16.svg
-    - assets/images/lineOnboard.svg
-    - assets/images/verifyEmail.svg
-    - assets/images/onboardSvg.svg
+    # - assets/images/Ellipse16.svg
+    # - assets/images/lineOnboard.svg
+    # - assets/images/verifyEmail.svg
+    # - assets/images/onboardSvg.svg
     - assets/countrY_list.json
 
   fonts:

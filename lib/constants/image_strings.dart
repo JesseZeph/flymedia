@@ -2,12 +2,9 @@ class SvgImages {
   const SvgImages._();
   static const String cellSVG = 'assets/images/cell.svg';
   static const String ellipse16 = 'assets/images/Ellipse16.svg';
-  static const String firstOnBoard = 'assets/images/firstOnboardEllipes.svg';
   static const String handshakeSvg = 'assets/images/handshake.svg';
   static const String line = 'assets/images/lineOnboard.svg';
-  static const String sophieEllipseSvg = 'assets/images/sophieEllipse.svg';
   static const String verifyEmail = 'assets/images/verifyEmail.svg';
-  static const String onboardingSvg = 'assets/images/onboardSvg.svg';
 }
 
 class AppImages {
@@ -17,7 +14,7 @@ class AppImages {
   static const String bitmoji = 'assets/images/bitmoji.png';
   static const String handshake = 'assets/images/handshake.png';
   static const String secondOnboard = 'assets/images/splash-2.png';
-  static const String firstOnboard = 'assets/images/firstOnboardEllipes.png';
+  // static const String firstOnboard = 'assets/images/firstOnboardEllipes.png';
   static const String sophieEllipse = 'assets/images/sophieEllipse.png';
   static const String onboarding = 'assets/images/splash-1.png';
   static const String fourthOnboard = 'assets/images/splash-3.png';

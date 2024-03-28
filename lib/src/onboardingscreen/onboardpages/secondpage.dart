@@ -87,7 +87,7 @@ class SecondOnboard extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(150.r),
                     image: const DecorationImage(
-                      image: AssetImage(AppImages.firstOnboard),
+                      image: AssetImage(AppImages.sophieEllipse),
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -236,7 +236,7 @@ class SecondOnboard extends StatelessWidget {
               top: 615.h,
               child: GestureDetector(
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
                       builder: (context) => const ThirdOnboard()));
                 },
                 child: Container(

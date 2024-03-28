@@ -138,7 +138,7 @@ class FourthOnboard extends StatelessWidget {
               top: 615.h,
               child: GestureDetector(
                 onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
                       builder: (context) => const AccountOption()));
                 },
                 child: Container(
